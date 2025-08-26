@@ -385,6 +385,11 @@ export const routes: Routes = [
           import('../preview-examples/dropdown-submenu').then((m) => m.default),
       },
       {
+        path: 'dropdown-tree-stackblitz-comparison',
+        loadComponent: () =>
+          import('../preview-examples/dropdown-tree-stackblitz-comparison').then((m) => m.default),
+      },
+      {
         path: 'echarts',
         loadComponent: () =>
           import('../preview-examples/echarts').then((m) => m.default),
