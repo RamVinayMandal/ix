@@ -390,6 +390,16 @@ export const routes: Routes = [
           import('../preview-examples/dropdown-tree-stackblitz-comparison').then((m) => m.default),
       },
       {
+        path: 'family-tree-standalone',
+        loadComponent: () =>
+          import('../preview-examples/family-tree-standalone').then((m) => m.default),
+      },
+      {
+        path: 'family-tree-dropdown',
+        loadComponent: () =>
+          import('../preview-examples/family-tree-dropdown').then((m) => m.default),
+      },
+      {
         path: 'echarts',
         loadComponent: () =>
           import('../preview-examples/echarts').then((m) => m.default),
