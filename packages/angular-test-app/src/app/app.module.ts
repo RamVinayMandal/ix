@@ -74,6 +74,9 @@ import DatepickerLocale from '../preview-examples/datepicker-locale';
 import DatepickerRange from '../preview-examples/datepicker-range';
 import Datetimepicker from '../preview-examples/datetimepicker';
 import Divider from '../preview-examples/divider';
+import TreeInsideDropdown from '../preview-examples/tree-inside-dropdown';
+import TreeWithActions from '../preview-examples/tree-with-actions';
+import TreeWithActionsInsideDropdown from '../preview-examples/tree-with-actions-inside-dropdown';
 import Drawer from '../preview-examples/drawer';
 import DrawerFullHeight from '../preview-examples/drawer-full-height';
 import Dropdown from '../preview-examples/dropdown';
@@ -513,6 +516,9 @@ import ProgressIndicatorCircular from '../preview-examples/progress-indicator-ci
     ProgressIndicatorCircularSizes,
     ProgressIndicatorCircularStatus,
     ProgressIndicatorCircular,
+    TreeInsideDropdown,
+    TreeWithActions,
+    TreeWithActionsInsideDropdown,
   ],
   imports: [
     BrowserModule,

@@ -385,19 +385,19 @@ export const routes: Routes = [
           import('../preview-examples/dropdown-submenu').then((m) => m.default),
       },
       {
-        path: 'dropdown-tree-stackblitz-comparison',
+        path: 'tree-inside-dropdown',
         loadComponent: () =>
-          import('../preview-examples/dropdown-tree-stackblitz-comparison').then((m) => m.default),
+          import('../preview-examples/tree-inside-dropdown').then((m) => m.default),
       },
       {
-        path: 'family-tree-standalone',
+        path: 'tree-with-actions',
         loadComponent: () =>
-          import('../preview-examples/family-tree-standalone').then((m) => m.default),
+          import('../preview-examples/tree-with-actions').then((m) => m.default),
       },
       {
-        path: 'family-tree-dropdown',
+        path: 'tree-with-actions-inside-dropdown',
         loadComponent: () =>
-          import('../preview-examples/family-tree-dropdown').then((m) => m.default),
+          import('../preview-examples/tree-with-actions-inside-dropdown').then((m) => m.default),
       },
       {
         path: 'echarts',

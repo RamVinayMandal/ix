@@ -73,6 +73,9 @@ import DropdownButtonIcon from '../preview-examples/dropdown-button-icon';
 import DropdownIcon from '../preview-examples/dropdown-icon';
 import DropdownQuickActions from '../preview-examples/dropdown-quick-actions';
 import DropdownSubmenu from '../preview-examples/dropdown-submenu';
+import TreeInsideDropdown from '../preview-examples/tree-inside-dropdown';
+import TreeWithActions from '../preview-examples/tree-with-actions';
+import TreeWithActionsInsideDropdown from '../preview-examples/tree-with-actions-inside-dropdown';
 import Echarts from '../preview-examples/echarts';
 import EchartsBarHorizontalStacked from '../preview-examples/echarts-bar-horizontal-stacked';
 import EchartsBarSimple from '../preview-examples/echarts-bar-simple';
@@ -519,6 +522,18 @@ const routes: Routes = [
       {
         path: 'dropdown-submenu',
         component: DropdownSubmenu,
+      },
+      {
+        path: 'tree-inside-dropdown',
+        component: TreeInsideDropdown,
+      },
+      {
+        path: 'tree-with-actions',
+        component: TreeWithActions,
+      },
+      {
+        path: 'tree-with-actions-inside-dropdown',
+        component: TreeWithActionsInsideDropdown,
       },
       {
         path: 'dropdown',

@@ -206,7 +206,7 @@ import { familyTreeData } from './dropdown-tree-family-data';
     </div>
   `,
 })
-export default class DropdownTreeComparison {
+export default class TreeInsideDropdown {
   protected familyTree: TreeModel<{
     id: string;
     name: string;

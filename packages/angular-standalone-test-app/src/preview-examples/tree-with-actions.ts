@@ -180,7 +180,7 @@ type FamilyMember = {
     </div>
   `,
 })
-export default class FamilyTreeStandalone {
+export default class TreeWithActions {
   protected treeModel: TreeModel<FamilyMember> = {};
   protected treeContext: TreeContext = {};
   private nextId: number = 1000;

@@ -214,7 +214,7 @@ const INITIAL_TREE_DATA = familyTreeData;
     </div>
   `,
 })
-export default class FamilyTreeDropdown implements OnDestroy {
+export default class TreeWithActionsInsideDropdown implements OnDestroy {
   protected treeModel: TreeModel<FamilyMember> = {};
   protected treeContext: TreeContext = {};
   private nextId: number = 1000;
