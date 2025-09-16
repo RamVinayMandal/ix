@@ -86,6 +86,7 @@ export class Tabs {
 
   private windowStartSize = window.innerWidth;
   private resizeObserver?: ResizeObserver;
+  private slotObserver?: MutationObserver;
 
   private clickAction: {
     timeout: NodeJS.Timeout | null;
@@ -270,35 +271,53 @@ export class Tabs {
   }
 
   componentWillLoad() {
-    const tabs = this.getTabs();
-
-    tabs.map((element, index) => {
-      if (this.small) element.setAttribute('small', 'true');
-
-      if (this.rounded) element.setAttribute('rounded', 'true');
-
-      element.setAttribute('layout', this.layout);
-      element.setAttribute(
-        'selected',
-        index === this.selected ? 'true' : 'false'
-      );
-
-      element.setAttribute('placement', this.placement);
-    });
-
+    this.updateTabAttributes();
     this.initResizeObserver();
   }
 
   componentDidRender() {
+    // Simple approach: always check and update tabs on every render
+    this.updateTabAttributes();
+  }
+
+  private updateTabAttributes() {
     const tabs = this.getTabs();
     this.totalItems = tabs.length;
 
-    tabs.map((element, index) => {
-      element.setAttribute(
-        'selected',
-        index === this.selected ? 'true' : 'false'
-      );
+    tabs.forEach((element, index) => {
+      this.setTabAttributes(element, index);
     });
+  }
+
+  private setTabAttributes(element: HTMLIxTabItemElement, index: number) {
+    const isSelected = index === this.selected;
+
+    // Set properties directly on the element to trigger Stencil's reactivity
+    if (this.small !== element.small) {
+      element.small = this.small;
+    }
+
+    if (this.rounded !== element.rounded) {
+      element.rounded = this.rounded;
+    }
+
+    if (this.layout !== element.layout) {
+      element.layout = this.layout;
+    }
+
+    if (isSelected !== element.selected) {
+      element.selected = isSelected;
+    }
+
+    if (this.placement !== element.placement) {
+      element.placement = this.placement;
+    }
+
+    // Get existing custom classes from attribute and preserve them
+    const existingCustomClasses = element.getAttribute('custom-classes') || '';
+    if (existingCustomClasses && !element.customClasses) {
+      element.customClasses = existingCustomClasses;
+    }
   }
 
   componentWillRender() {
@@ -319,13 +338,24 @@ export class Tabs {
         this.dragStart(element, event)
       );
     });
+
+    // Set up observer to watch for slot changes (tab additions/removals)
+    this.slotObserver = new MutationObserver(() => {
+      requestAnimationFrame(() => {
+        this.updateTabAttributes();
+      });
+    });
+
+    this.slotObserver.observe(this.hostElement, {
+      childList: true,    // Watch for tab additions/removals
+      subtree: true,      // Watch nested changes
+    });
   }
 
   disconnectedCallback() {
     this.resizeObserver?.disconnect();
-  }
-
-  @Listen('tabClick')
+    this.slotObserver?.disconnect();
+  }  @Listen('tabClick')
   onTabClick(event: CustomEvent) {
     if (event.defaultPrevented) {
       return;

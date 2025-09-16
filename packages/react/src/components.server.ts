@@ -2170,7 +2170,8 @@ export const IxTabItem: StencilReactComponent<IxTabItemElement, IxTabItemEvents>
         rounded: 'rounded',
         counter: 'counter',
         layout: 'layout',
-        placement: 'placement'
+        placement: 'placement',
+        customClasses: 'custom-classes'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
     serializeShadowRoot,

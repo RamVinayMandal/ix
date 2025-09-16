@@ -3329,6 +3329,11 @@ export namespace Components {
          */
         "counter"?: number;
         /**
+          * Custom CSS classes to apply to the tab item
+          * @since 3.3.0
+         */
+        "customClasses"?: string;
+        /**
           * Set disabled tab
           * @default false
          */
@@ -9445,6 +9450,11 @@ declare namespace LocalJSX {
           * Set counter value
          */
         "counter"?: number;
+        /**
+          * Custom CSS classes to apply to the tab item
+          * @since 3.3.0
+         */
+        "customClasses"?: string;
         /**
           * Set disabled tab
           * @default false

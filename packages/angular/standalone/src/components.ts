@@ -2659,14 +2659,14 @@ export declare interface IxSplitButton extends Components.IxSplitButton {
 
 @ProxyCmp({
   defineCustomElementFn: defineIxTabItem,
-  inputs: ['counter', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small']
+  inputs: ['counter', 'customClasses', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small']
 })
 @Component({
   selector: 'ix-tab-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['counter', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small'],
+  inputs: ['counter', 'customClasses', 'disabled', 'icon', 'layout', 'placement', 'rounded', 'selected', 'small'],
   standalone: true
 })
 export class IxTabItem {

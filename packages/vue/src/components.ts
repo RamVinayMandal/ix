@@ -1283,6 +1283,7 @@ export const IxTabItem: StencilVueComponent<JSX.IxTabItem> = /*@__PURE__*/ defin
   'counter',
   'layout',
   'placement',
+  'customClasses',
   'tabClick'
 ], [
   'tabClick'

@@ -57,6 +57,12 @@ export class TabItem {
   @Prop() placement: 'bottom' | 'top' = 'bottom';
 
   /**
+   * Custom CSS classes to apply to the tab item
+   * @since 3.3.0
+   */
+  @Prop() customClasses?: string;
+
+  /**
    * Emitted when the tab is clicked.
    */
   @Event() tabClick!: EventEmitter<TabClickDetail>;
@@ -69,8 +75,9 @@ export class TabItem {
     circle: boolean;
     layout: 'auto' | 'stretched';
     placement: 'bottom' | 'top';
+    customClasses?: string;
   }) {
-    return {
+    const ixClasses: { [key: string]: boolean } = {
       selected: props.selected,
       disabled: props.disabled,
       'small-tab': props.small,
@@ -80,6 +87,16 @@ export class TabItem {
       top: props.placement === 'top',
       circle: props.circle,
     };
+
+    // If custom classes are provided, parse and add them
+    if (props.customClasses) {
+      const customClassList = props.customClasses.split(' ').filter(cls => cls.trim());
+      customClassList.forEach(cls => {
+        ixClasses[cls] = true;
+      });
+    }
+
+    return ixClasses;
   }
 
   render() {
@@ -93,6 +110,7 @@ export class TabItem {
           layout: this.layout,
           placement: this.placement,
           circle: this.rounded,
+          customClasses: this.customClasses,
         })}
         tabIndex={0}
         onClick={(event: MouseEvent) => {
