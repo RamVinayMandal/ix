@@ -3642,7 +3642,7 @@ export namespace Components {
           * Value of the input element
           * @default ''
          */
-        "value": string;
+        "value"?: string;
         /**
           * Warning text below the input field
          */
