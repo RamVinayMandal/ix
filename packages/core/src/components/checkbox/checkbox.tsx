@@ -142,6 +142,15 @@ export class Checkbox implements IxFormComponent<string> {
     return Promise.resolve(this.touched);
   }
 
+  /**
+   * Native form reset callback - automatically called when form.reset() is triggered
+   */
+  formResetCallback() {
+    this.touched = false;
+    this.checked = false;
+    this.updateFormInternalValue();
+  }
+
   @HookValidationLifecycle()
   updateClassMappings() {
     /** This function is intentionally empty */

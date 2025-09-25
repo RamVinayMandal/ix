@@ -25,8 +25,7 @@ import { makeRef } from '../utils/make-ref';
   shadow: true,
 })
 export class CheckboxGroup
-  implements FieldWrapperInterface, IxFormValidationState, IxComponent
-{
+  implements FieldWrapperInterface, IxFormValidationState, IxComponent {
   @Element() hostElement!: HTMLIxCheckboxGroupElement;
   /**
    * Optional helper text displayed below the checkbox group
@@ -88,7 +87,16 @@ export class CheckboxGroup
   });
 
   private checkForRequiredCheckbox() {
-    this.required = this.checkboxElements.some((checkbox) => checkbox.required);
+    const checkboxes = this.checkboxElements;
+    const hasRequiredChild = checkboxes.some((checkbox) => checkbox.required);
+    if (!this.required && hasRequiredChild) {
+      this.required = true;
+    }
+    this.touched = true;
+    const hasAnyChecked = checkboxes.some((checkbox) => checkbox.checked);
+    if (!hasAnyChecked) {
+      this.touched = false;
+    }
   }
 
   connectedCallback(): void {
@@ -98,6 +106,11 @@ export class CheckboxGroup
       attributes: true,
       attributeFilter: ['checked', 'required'],
     });
+
+    const form = this.hostElement.closest('form');
+    if (form) {
+      form.addEventListener('reset', this.handleFormReset.bind(this));
+    }
   }
 
   componentWillLoad(): void | Promise<void> {
@@ -142,6 +155,11 @@ export class CheckboxGroup
     return Promise.resolve(
       this.checkboxElements.some((checkbox) => checkbox.checked)
     );
+  }
+
+  private handleFormReset() {
+    this.touched = false;
+    this.hostElement.classList.remove('ix-invalid', 'ix-invalid--required',);
   }
 
   render() {
