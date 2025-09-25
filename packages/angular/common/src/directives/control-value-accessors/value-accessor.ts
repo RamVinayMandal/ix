@@ -21,10 +21,8 @@ import { Subscription } from 'rxjs';
 
 @Directive()
 export class ValueAccessor
-  implements ControlValueAccessor, AfterViewInit, OnDestroy
-{
+  implements ControlValueAccessor, AfterViewInit, OnDestroy {
   public static readonly ANGULAR_CLASS_PREFIX = 'ng-';
-
   private onChange: (value: any) => void = () => {
     /**/
   };
@@ -39,8 +37,8 @@ export class ValueAccessor
   constructor(
     protected injector: Injector,
     protected elementRef: ElementRef,
-    private readonly checkRequiredValidator = false
-  ) {}
+    private readonly checkRequiredValidator = true
+  ) { }
 
   writeValue(value: any): void {
     this.elementRef.nativeElement.value = this.lastValue = value;
