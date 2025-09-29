@@ -404,12 +404,6 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
           }}
           onFocus={async () => {
             this.openDropdown();
-            setTimeout(() => {
-              if (document.activeElement !== this.inputElementRef.current) {
-                this.ixBlur.emit();
-                this.touched = true;
-              }
-            }, 50);
             this.ixFocus.emit();
           }}
           onBlur={() => {

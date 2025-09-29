@@ -24827,10 +24827,10 @@
         },
         {
           "name": "value",
-          "type": "string",
+          "type": "string | undefined",
           "complexType": {
             "original": "string",
-            "resolved": "string",
+            "resolved": "string | undefined",
             "references": {}
           },
           "mutable": true,
@@ -24847,9 +24847,12 @@
           "values": [
             {
               "type": "string"
+            },
+            {
+              "type": "undefined"
             }
           ],
-          "optional": false,
+          "optional": true,
           "required": false,
           "getter": false,
           "setter": false

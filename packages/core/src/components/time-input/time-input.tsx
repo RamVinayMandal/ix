@@ -74,9 +74,12 @@ export class TimeInput implements IxInputFieldComponent<string> {
   /**
    * Value of the input element
    */
-  @Prop({ reflect: true, mutable: true }) value: string = '';
+  @Prop({ reflect: true, mutable: true }) value?: string = ''
 
-  @Watch('value') watchValuePropHandler(newValue: string) {
+  @Watch('value') watchValuePropHandler(newValue: string | undefined) {
+    if (newValue === null || newValue === undefined) {
+      this.touched = false;
+    }
     this.onInput(newValue);
   }
 
@@ -237,9 +240,34 @@ export class TimeInput implements IxInputFieldComponent<string> {
 
   private disposableChangesAndVisibilityObservers?: DisposableChangesAndVisibilityObservers;
 
-  updateFormInternalValue(value: string): void {
-    this.formInternals.setFormValue(value);
+  updateFormInternalValue(value: string | undefined): void {
+    if (value) {
+      this.formInternals.setFormValue(value);
+    } else {
+      this.formInternals.setFormValue(null);
+    }
     this.value = value;
+  }
+
+  private updateFormValidity(): void {
+    if (!this.formInternals) return;
+
+    const valueMissing = this.required && !this.value;
+    const patternMismatch = this.isInputInvalid;
+
+    if (valueMissing || this.isInputInvalid) {
+      const inputElement = this.inputElementRef.current;
+      this.formInternals.setValidity(
+        {
+          valueMissing,
+          patternMismatch,
+        },
+        ' ',
+        inputElement || undefined
+      );
+    } else {
+      this.formInternals.setValidity({});
+    }
   }
 
   connectedCallback(): void {
@@ -252,6 +280,10 @@ export class TimeInput implements IxInputFieldComponent<string> {
         this.hostElement,
         this.updatePaddings.bind(this)
       );
+  }
+
+  componentDidLoad(): void {
+    this.updateFormValidity();
   }
 
   componentWillLoad(): void {
@@ -288,7 +320,7 @@ export class TimeInput implements IxInputFieldComponent<string> {
 
   @Watch('value')
   watchValue() {
-    this.time = this.value;
+    this.time = this.value ?? null;
   }
 
   /** @internal */
@@ -303,12 +335,13 @@ export class TimeInput implements IxInputFieldComponent<string> {
     return Promise.resolve(this.formInternals.form);
   }
 
-  async onInput(value: string) {
+  async onInput(value: string | undefined) {
     this.value = value;
     if (!value) {
       this.isInputInvalid = false;
       this.updateFormInternalValue(value);
       this.valueChange.emit(value);
+      this.updateFormValidity();
       return;
     }
 
@@ -326,6 +359,7 @@ export class TimeInput implements IxInputFieldComponent<string> {
 
     this.updateFormInternalValue(value);
     this.valueChange.emit(value);
+    this.updateFormValidity();
   }
 
   onTimeIconClick(event: Event) {
@@ -339,7 +373,7 @@ export class TimeInput implements IxInputFieldComponent<string> {
 
   async openDropdown() {
     // keep picker in sync with input
-    this.time = this.value;
+    this.time = this.value ?? null;
 
     return openDropdownUtil(this.dropdownElementRef);
   }
