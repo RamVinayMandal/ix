@@ -7,7 +7,132 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 -->
 
-<ix-checkbox-group label="Terms of something">
-  <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
-  <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
-</ix-checkbox-group>
+<div style="padding: 20px; max-width: 800px; height: 700px; overflow: scroll">
+  <h2>Checkbox Group - NoValidate Testing</h2>
+
+  <!-- Form with validation (default) -->
+  <div style="margin-bottom: 30px">
+    <h3>1. Form with HTML5 Validation Enabled</h3>
+    <form
+      [attr.novalidate]="null"
+      (ngSubmit)="onSubmitWithValidation($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <ix-checkbox-group label="Terms of something">
+        <ix-checkbox
+          label="I agree everything"
+          name="agreed"
+          required
+        ></ix-checkbox>
+        <ix-checkbox
+          label="I agree with most of it"
+          name="most"
+          required
+        ></ix-checkbox>
+      </ix-checkbox-group>
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form
+      </button>
+    </form>
+    <p>
+      <small
+        >This form has [attr.novalidate]="null" to enable HTML5
+        validation</small
+      >
+    </p>
+  </div>
+
+  <!-- Form with novalidate -->
+  <div style="margin-bottom: 30px">
+    <h3>2. Form with Angular Default (No HTML5 Validation)</h3>
+    <form
+      (ngSubmit)="onSubmitDefault($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <ix-checkbox-group label="Terms of something">
+        <ix-checkbox
+          label="I agree everything"
+          name="agreed"
+          required
+        ></ix-checkbox>
+        <ix-checkbox
+          label="I agree with most of it"
+          name="most"
+          required
+        ></ix-checkbox>
+      </ix-checkbox-group>
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #28a745;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form (Angular Default)
+      </button>
+    </form>
+    <p>
+      <small
+        >This form uses Angular's default behavior (novalidate is applied by
+        default)</small
+      >
+    </p>
+  </div>
+
+  <!-- Form with explicit novalidate -->
+  <div style="margin-bottom: 30px">
+    <h3>3. Form with Explicit NoValidate</h3>
+    <form
+      novalidate
+      (ngSubmit)="onSubmitExplicitNoValidate($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <ix-checkbox-group label="Terms of something">
+        <ix-checkbox
+          label="I agree everything"
+          name="agreed"
+          required
+        ></ix-checkbox>
+        <ix-checkbox
+          label="I agree with most of it"
+          name="most"
+          required
+        ></ix-checkbox>
+      </ix-checkbox-group>
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form (Explicit NoValidate)
+      </button>
+    </form>
+    <p><small>This form has explicit novalidate attribute</small></p>
+  </div>
+
+  <!-- Standalone Checkbox Group (for comparison) -->
+  <div style="border: 1px solid #ccc; padding: 15px; border-radius: 4px">
+    <h3>Standalone Checkbox Group (No Form)</h3>
+    <ix-checkbox-group label="Terms of something">
+      <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
+      <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
+    </ix-checkbox-group>
+  </div>
+</div>

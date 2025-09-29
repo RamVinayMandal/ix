@@ -13,13 +13,280 @@ LICENSE file in the root directory of this source tree.
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form checkbox group example</title>
+    <style>
+      body {
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+      }
+      .form-container {
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .button-group {
+        margin-top: 20px;
+      }
+      .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .btn-submit {
+        background: #007bff;
+        color: white;
+      }
+      .btn-reset {
+        background: #dc3545;
+        color: white;
+      }
+      .btn-touch {
+        background: #ffc107;
+        color: black;
+      }
+      .status-display {
+        margin-top: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+      }
+      .test-instructions {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
-    <ix-checkbox-group label="Terms of something">
-      <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
-      <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
-    </ix-checkbox-group>
+    <h2>IX Checkbox Group - Core Validation Testing (HTML)</h2>
+
+    <form id="checkboxForm" class="form-container">
+      <h3>Terms Agreement Form (Required)</h3>
+
+      <ix-checkbox-group
+        id="checkboxGroup"
+        label="Terms of something (At least one required)"
+        invalid-text="Please select at least one option"
+        required
+      >
+        <ix-checkbox
+          id="agreedCheckbox"
+          label="I agree everything"
+          name="agreed"
+        ></ix-checkbox>
+        <ix-checkbox
+          id="mostCheckbox"
+          label="I agree with most of it"
+          name="most"
+        ></ix-checkbox>
+      </ix-checkbox-group>
+
+      <div class="button-group">
+        <button type="submit" class="btn btn-submit">Submit</button>
+        <button type="button" id="resetBtn" class="btn btn-reset">
+          Reset (Test)
+        </button>
+        <button type="button" id="touchBtn" class="btn btn-touch">
+          Touch Checkboxes
+        </button>
+        <button type="button" id="validateBtn" class="btn btn-touch">
+          Force Validation
+        </button>
+      </div>
+
+      <div class="status-display">
+        <div><strong>Core IX Validation Test:</strong></div>
+        <div id="agreedStatus">✓ I agree everything: Unchecked</div>
+        <div id="mostStatus">✓ I agree with most of it: Unchecked</div>
+        <div id="groupStatus">✓ Group validation state: Unknown</div>
+        <div id="validationInfo">✓ Using core IX validation lifecycle</div>
+      </div>
+    </form>
+
+    <!-- Test Instructions -->
+    <div class="test-instructions">
+      <h3>🧪 Core IX Validation Test:</h3>
+      <ol>
+        <li>
+          <strong>Initial State:</strong> Both checkboxes unchecked - Core IX
+          should handle validation
+        </li>
+        <li>
+          <strong>Check One:</strong> Check one checkbox - Should become valid
+        </li>
+        <li>
+          <strong>Uncheck All:</strong> Uncheck all - Core IX should show
+          validation error
+        </li>
+        <li>
+          <strong>Reset Test:</strong> Click "Reset" - Should clear validation
+          state
+        </li>
+        <li>
+          <strong>Submit Test:</strong> Submit empty form - Should trigger core
+          validation
+        </li>
+      </ol>
+      <p>
+        <strong>Expected:</strong> Core IX validation system handles all
+        validation automatically without custom JavaScript logic.
+      </p>
+    </div>
 
     <script type="module" src="./init.js"></script>
+    <script>
+      // Minimal JavaScript - let core IX handle validation
+      const agreedCheckbox = document.getElementById('agreedCheckbox');
+      const mostCheckbox = document.getElementById('mostCheckbox');
+      const checkboxGroup = document.getElementById('checkboxGroup');
+      const checkboxForm = document.getElementById('checkboxForm');
+      const resetBtn = document.getElementById('resetBtn');
+      const touchBtn = document.getElementById('touchBtn');
+      const validateBtn = document.getElementById('validateBtn');
+
+      // Status display elements
+      const agreedStatus = document.getElementById('agreedStatus');
+      const mostStatus = document.getElementById('mostStatus');
+      const groupStatus = document.getElementById('groupStatus');
+
+      // Update status display
+      const updateStatusDisplay = () => {
+        const agreedChecked = agreedCheckbox.checked;
+        const mostChecked = mostCheckbox.checked;
+
+        agreedStatus.textContent = `✓ I agree everything: ${
+          agreedChecked ? 'Checked' : 'Unchecked'
+        }`;
+        mostStatus.textContent = `✓ I agree with most of it: ${
+          mostChecked ? 'Checked' : 'Unchecked'
+        }`;
+
+        // Try to read core IX validation state
+        groupStatus.textContent = `✓ Group has checks: ${
+          agreedChecked || mostChecked
+        }`;
+      };
+
+      // Reset functionality
+      const handleReset = () => {
+        console.log('=== CORE IX RESET TEST ===');
+
+        // Reset checkbox states - let core IX handle validation updates
+        agreedCheckbox.checked = false;
+        mostCheckbox.checked = false;
+
+        // Trigger change events to notify core IX
+        agreedCheckbox.dispatchEvent(
+          new CustomEvent('checkedChange', { detail: false })
+        );
+        mostCheckbox.dispatchEvent(
+          new CustomEvent('checkedChange', { detail: false })
+        );
+
+        console.log('Reset completed - Core IX should handle validation');
+        updateStatusDisplay();
+      };
+
+      // Touch checkboxes (simulate user interaction)
+      const handleTouchCheckboxes = () => {
+        console.log('=== TOUCHING CHECKBOXES FOR VALIDATION ===');
+
+        // Simulate blur events to trigger validation
+        agreedCheckbox.dispatchEvent(new Event('blur'));
+        mostCheckbox.dispatchEvent(new Event('blur'));
+
+        console.log(
+          'Checkboxes touched - Core IX should show validation if needed'
+        );
+      };
+
+      // Force validation check
+      const handleForceValidation = () => {
+        console.log('=== FORCE VALIDATION TEST ===');
+
+        // Try to trigger validation by calling form validation
+        if (checkboxForm.reportValidity) {
+          const isValid = checkboxForm.reportValidity();
+          console.log('HTML5 validation result:', isValid);
+        }
+
+        // Try to access core IX validation methods if available
+        if (checkboxGroup.hasValidValue) {
+          checkboxGroup.hasValidValue().then((valid) => {
+            console.log('Core IX hasValidValue:', valid);
+          });
+        }
+
+        if (checkboxGroup.isTouched) {
+          checkboxGroup.isTouched().then((touched) => {
+            console.log('Core IX isTouched:', touched);
+          });
+        }
+      };
+
+      // Form submission - let core IX handle validation
+      const handleSubmit = (e) => {
+        console.log('=== FORM SUBMISSION - CORE IX VALIDATION ===');
+
+        // Let core IX validation run first
+        const submissionAgreed = agreedCheckbox.checked;
+        const submissionMost = mostCheckbox.checked;
+
+        console.log('Form values:', {
+          agreed: submissionAgreed,
+          most: submissionMost,
+        });
+        console.log(
+          'At least one checked:',
+          submissionAgreed || submissionMost
+        );
+
+        // Only prevent default if no checkboxes are checked (for demo purposes)
+        if (!submissionAgreed && !submissionMost) {
+          e.preventDefault();
+          console.log('Form submission prevented - no checkboxes selected');
+
+          // Try to trigger core IX validation
+          handleForceValidation();
+        } else {
+          e.preventDefault(); // Prevent actual form submission for demo
+          console.log('Form would be submitted - validation passed');
+        }
+
+        updateStatusDisplay();
+      };
+
+      // Event listeners
+      checkboxForm.addEventListener('submit', handleSubmit);
+      resetBtn.addEventListener('click', handleReset);
+      touchBtn.addEventListener('click', handleTouchCheckboxes);
+      validateBtn.addEventListener('click', handleForceValidation);
+
+      // Listen to checkbox changes and update display
+      agreedCheckbox.addEventListener('checkedChange', (e) => {
+        console.log('Agreed checkbox changed:', e.detail);
+        updateStatusDisplay();
+      });
+
+      mostCheckbox.addEventListener('checkedChange', (e) => {
+        console.log('Most checkbox changed:', e.detail);
+        updateStatusDisplay();
+      });
+
+      // Initial status display
+      updateStatusDisplay();
+
+      console.log('Core IX Validation Test initialized');
+      console.log('Checkbox Group Element:', checkboxGroup);
+      console.log(
+        'Available methods:',
+        Object.getOwnPropertyNames(Object.getPrototypeOf(checkboxGroup))
+      );
+    </script>
   </body>
 </html>

@@ -7,4 +7,28 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 -->
 
-<ix-time-input></ix-time-input>
+<ix-time-input
+  #timeInput
+  required
+  [attr.novalidate]="null"
+  invalid-text="Please enter a valid time"
+  (valueChange)="onValueChange($event)"
+></ix-time-input>
+
+<div style="margin-top: 1rem">
+  <button type="button" (click)="setEmptyProgrammatically(timeInput)">
+    Set Empty Programmatically
+  </button>
+  <button type="button" (click)="resetValue(timeInput)">
+    Reset Value (remove touched state)
+  </button>
+  <button type="submit">Submit</button>
+</div>
+
+<div style="margin-top: 1rem">
+  <div>Touched: {{ touched }}</div>
+  <div>Value: {{ value }}</div>
+  <div>Valid: {{ valid }}</div>
+  <div>Invalid: {{ invalid }}</div>
+  <div>Input Invalid: {{ inputInvalid }}</div>
+</div>

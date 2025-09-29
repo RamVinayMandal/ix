@@ -7,35 +7,326 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 -->
 
-<div>
-  <ix-date-input
-    value='1970/01/01'
-    info-text='Info text'
-    class='ix-info'
-  ></ix-date-input>
-</div>
+<div style="margin-bottom: 30px; height: 700px; overflow: scroll">
+  <h3>Date Input Form with Reset and Clear</h3>
 
-<div>
-  <ix-date-input
-    value='1970/01/01'
-    warning-text='Warning text'
-    class='ix-warning'
-  ></ix-date-input>
-</div>
+  <form
+    [formGroup]="dateForm"
+    (ngSubmit)="onSubmit()"
+    #formRef
+    style="
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+    "
+  >
+    <div style="margin-bottom: 20px">
+      <ix-date-input
+        label="Birth Date"
+        helper-text="Select your birth date"
+        formControlName="birthDate"
+        required="true"
+        invalidText="This not a valid date"
+      ></ix-date-input>
+    </div>
 
-<div>
-  <ix-date-input
-    value='1970/01/01'
-    valid-text='Valid text'
-    class='ix-valid'
-  ></ix-date-input>
-</div>
+    <div style="margin-bottom: 20px">
+      <ix-date-input
+        label="Start Date"
+        helper-text="Project start date (optional)"
+        formControlName="startDate"
+      ></ix-date-input>
+    </div>
 
-<div>
-  <ix-date-input
-    value='1970/01/01'
-    invalid-text='Invalid text'
-    class='ix-invalid'
-  ></ix-date-input>
-</div>
+    <div style="margin-bottom: 20px">
+      <ix-date-input
+        label="End Date"
+        helper-text="Project end date"
+        formControlName="endDate"
+        required="true"
+        invalidText="getErrorMessage('endDate')"
+      ></ix-date-input>
+    </div>
 
+    <div style="display: flex; gap: 10px; margin-top: 20px">
+      <!-- <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+      >
+        Submit
+      </button> -->
+
+      <button
+        type="reset"
+        style="
+          padding: 8px 16px;
+          background: #6c757d;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+        (click)="onReset()"
+      >
+        Reset Form
+      </button>
+
+      <button
+        type="button"
+        style="
+          padding: 8px 16px;
+          background: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+        (click)="onClear()"
+      >
+        Clear All
+      </button>
+
+      <button
+        type="button"
+        style="
+          padding: 8px 16px;
+          background: #17a2b8;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        "
+        (click)="onClearSpecific('birthDate')"
+      >
+        Clear Birth Date
+      </button>
+    </div>
+
+    <div
+      style="
+        margin-top: 20px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+      "
+    >
+      <strong>Form Status:</strong>
+      <div>Valid: {{ dateForm.valid }}</div>
+      <div>Touched: {{ dateForm.touched }}</div>
+      <div>Dirty: {{ dateForm.dirty }}</div>
+      <div style="margin-top: 10px">
+        <strong>Form Values:</strong>
+        <pre>{{ getFormValues() }}</pre>
+      </div>
+    </div>
+  </form>
+
+  <div style="margin-bottom: 30px">
+    <h3>Native HTML Date Form (for comparison)</h3>
+
+    <form
+      [attr.novalidate]="null"
+      [formGroup]="nativeDateForm"
+      (ngSubmit)="onNativeSubmit()"
+      #nativeFormRef
+      style="
+        border: 1px solid #007bff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+      "
+    >
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeBirthDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          Birth Date *
+        </label>
+        <input
+          type="date"
+          id="nativeBirthDate"
+          formControlName="nativeBirthDate"
+          required
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Select your birth date (required)</small>
+        <div
+          *ngIf="nativeDateForm.get('nativeBirthDate')?.invalid && nativeDateForm.get('nativeBirthDate')?.touched"
+          style="color: #dc3545; margin-top: 5px; font-size: 12px"
+        >
+          Birth date is required
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeStartDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          Start Date
+        </label>
+        <input
+          type="date"
+          id="nativeStartDate"
+          formControlName="nativeStartDate"
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Project start date (optional)</small>
+      </div>
+
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeEndDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          End Date *
+        </label>
+        <input
+          type="date"
+          id="nativeEndDate"
+          formControlName="nativeEndDate"
+          required
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Project end date (required)</small>
+        <div
+          *ngIf="nativeDateForm.get('nativeEndDate')?.invalid && nativeDateForm.get('nativeEndDate')?.touched"
+          style="color: #dc3545; margin-top: 5px; font-size: 12px"
+        >
+          End date is required
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px">
+        <button
+          type="submit"
+          style="
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+        >
+          Submit Native
+        </button>
+
+        <button
+          type="reset"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+          (click)="onNativeReset()"
+        >
+          Reset Native Form
+        </button>
+
+        <button
+          type="button"
+          style="
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+          (click)="onNativeClear()"
+        >
+          Clear Native All
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 20px;
+          padding: 10px;
+          background: #e3f2fd;
+          border-radius: 4px;
+        "
+      >
+        <strong>Native Form Status:</strong>
+        <div>Valid: {{ nativeDateForm.valid }}</div>
+        <div>Touched: {{ nativeDateForm.touched }}</div>
+        <div>Dirty: {{ nativeDateForm.dirty }}</div>
+        <div style="margin-top: 10px">
+          <strong>Native Form Values:</strong>
+          <pre>{{ getNativeFormValues() }}</pre>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div style="margin-bottom: 30px">
+    <h3>Validation States Examples</h3>
+
+    <div style="margin-bottom: 15px">
+      <ix-date-input
+        value="1970/01/01"
+        label="Info State"
+        info-text="This is info text"
+        class="ix-info"
+      ></ix-date-input>
+    </div>
+
+    <div style="margin-bottom: 15px">
+      <ix-date-input
+        value="1970/01/01"
+        label="Warning State"
+        warning-text="This is warning text"
+        class="ix-warning"
+      ></ix-date-input>
+    </div>
+
+    <div style="margin-bottom: 15px">
+      <ix-date-input
+        value="1970/01/01"
+        label="Valid State"
+        valid-text="This is valid text"
+        class="ix-valid"
+      ></ix-date-input>
+    </div>
+
+    <div style="margin-bottom: 15px">
+      <ix-date-input
+        value="1970/01/01"
+        label="Invalid State"
+        invalidText="This is invalid text"
+        class="ix-invalid"
+      ></ix-date-input>
+    </div>
+  </div>
+</div>

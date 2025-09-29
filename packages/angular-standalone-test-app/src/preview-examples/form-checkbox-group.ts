@@ -20,4 +20,59 @@ import {
   imports: [IxCheckboxGroup, IxCheckbox, IxBooleanValueAccessorDirective],
   templateUrl: `./form-checkbox-group.html`,
 })
-export default class FormCheckboxGroup {}
+export default class FormCheckboxGroup {
+  onSubmitWithValidation(event: Event) {
+    event.preventDefault();
+    console.log('=== FORM 1: HTML5 Validation Enabled ===');
+    console.log('Form submitted with HTML5 validation enabled');
+
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    console.log('Form data:');
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    if (form.checkValidity()) {
+      console.log('✅ Form is valid according to HTML5 validation');
+    } else {
+      console.log('❌ Form is invalid according to HTML5 validation');
+    }
+    console.log('==========================================');
+  }
+
+  onSubmitDefault(event: Event) {
+    event.preventDefault();
+    console.log('=== FORM 2: Angular Default (No HTML5 Validation) ===');
+    console.log('Form submitted with Angular default behavior (novalidate)');
+
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    console.log('Form data:');
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    console.log('Note: HTML5 validation is disabled by Angular default');
+    console.log('====================================================');
+  }
+
+  onSubmitExplicitNoValidate(event: Event) {
+    event.preventDefault();
+    console.log('=== FORM 3: Explicit NoValidate ===');
+    console.log('Form submitted with explicit novalidate attribute');
+
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    console.log('Form data:');
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    console.log('Note: HTML5 validation is explicitly disabled');
+    console.log('=====================================');
+  }
+}

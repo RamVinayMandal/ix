@@ -202,6 +202,7 @@ import TextareaRowCols from './preview-examples/textarea-rows-cols';
 import TextareaValidation from './preview-examples/textarea-validation';
 import ThemeSwitcher from './preview-examples/theme-switcher';
 import Tile from './preview-examples/tile';
+import TimeInput from './preview-examples/time-input';
 import Timepicker from './preview-examples/timepicker';
 import Toast from './preview-examples/toast';
 import ToastCustom from './preview-examples/toast-custom';
@@ -645,6 +646,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/preview/textarea-legacy" element={<TextareaLegacy />} />
         <Route path="/preview/theme-switcher" element={<ThemeSwitcher />} />
         <Route path="/preview/tile" element={<Tile />} />
+        <Route path="/preview/time-input" element={<TimeInput />} />
         <Route path="/preview/timepicker" element={<Timepicker />} />
         <Route path="/preview/toast-custom" element={<ToastCustom />} />
         <Route path="/preview/toast-position" element={<ToastPosition />} />

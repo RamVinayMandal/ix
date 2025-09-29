@@ -14,6 +14,7 @@ import { IxApplicationContext } from "@siemens/ix-vue"
 
 
 import App from './App.vue';
+import TimeInputValidation from './preview-examples/time-input-validation.vue';
 import AboutAndLegal from './preview-examples/about-and-legal.vue';
 import ActionCard from './preview-examples/action-card.vue';
 import AddIcons from './preview-examples/add-icons.vue';
@@ -205,6 +206,7 @@ import TextareaFieldValidation from './preview-examples/textarea-validation.vue'
 import TextareaField from './preview-examples/textarea.vue';
 import ThemeSwitcher from './preview-examples/theme-switcher.vue';
 import Tile from './preview-examples/tile.vue';
+import TimeInput from './preview-examples/time-input.vue';
 import Timepicker from './preview-examples/timepicker.vue';
 import ToastCustom from './preview-examples/toast-custom.vue';
 import ToastPosition from './preview-examples/toast-position.vue';
@@ -384,6 +386,8 @@ const routes: any = {
   '/preview/input-validation': InputValidation,
   '/preview/input-with-slots': InputWithSlots,
   '/preview/tile': Tile,
+  '/preview/time-input': TimeInput,
+  '/preview/time-input-validation': TimeInputValidation,
   '/preview/timepicker': Timepicker,
   '/preview/toast': Toast,
   '/preview/toast-custom': ToastCustom,

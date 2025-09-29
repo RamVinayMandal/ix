@@ -12,33 +12,214 @@ LICENSE file in the root directory of this source tree.
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Radio group example</title>
+    <title>Radio Group - Form Reset Testing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        height: 700px;
+        overflow: scroll;
+      }
+      .form-section {
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      .form-section.native {
+        border-color: #28a745;
+      }
+      .form-section.standalone {
+        border-color: #17a2b8;
+      }
+      .button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .button.primary {
+        background: #007bff;
+        color: white;
+      }
+      .button.secondary {
+        background: #6c757d;
+        color: white;
+      }
+      .button.success {
+        background: #28a745;
+        color: white;
+      }
+      .form-status {
+        margin-top: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+      }
+      .instructions {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
-    <ix-radio-group label="Storage options">
-      <ix-radio
-        label="256GB SSD storage"
-        value="256"
-        name="storage-256gb"
-      ></ix-radio>
-      <ix-radio
-        label="512GB SSD storage"
-        value="512"
-        name="storage-512gb"
-      ></ix-radio>
-      <ix-radio
-        label="1TB SSD storage"
-        value="1024"
-        name="storage-1tb"
-      ></ix-radio>
-      <ix-radio
-        label="2TB SSD storage"
-        value="2048"
-        name="storage-2tb"
-        disabled
-      ></ix-radio>
-    </ix-radio-group>
+    <div
+      style="padding: 20px; max-width: 600px; height: 700px; overflow: scroll"
+    >
+      <h2>Radio Group - Form Reset Testing</h2>
+
+      <!-- Form with validation and reset (Simple IX Siemens behavior) -->
+      <form id="ix-form" class="form-section" onsubmit="submitForm(event)">
+        <h3>IX Radio Group Form</h3>
+        <ix-radio-group
+          label="Storage options"
+          style="margin-bottom: 15px"
+          required
+        >
+          <ix-radio label="256GB SSD storage" value="256"></ix-radio>
+          <ix-radio label="512GB SSD storage" value="512"></ix-radio>
+          <ix-radio label="1TB SSD storage" value="1024"></ix-radio>
+          <ix-radio label="2TB SSD storage" value="2048"></ix-radio>
+        </ix-radio-group>
+
+        <div style="margin-top: 20px">
+          <button type="submit" class="button primary">Submit Order</button>
+          <button type="button" onclick="resetForm()" class="button secondary">
+            Reset Form
+          </button>
+        </div>
+      </form>
+
+      <!-- Standalone Radio Group (for comparison) -->
+      <div class="form-section standalone">
+        <h3>Standalone Radio Group (No Form)</h3>
+        <ix-radio-group label="Storage options">
+          <ix-radio
+            label="256GB SSD storage"
+            value="256"
+            name="storage-standalone"
+          ></ix-radio>
+          <ix-radio
+            label="512GB SSD storage"
+            value="512"
+            name="storage-standalone"
+          ></ix-radio>
+          <ix-radio
+            label="1TB SSD storage"
+            value="1024"
+            name="storage-standalone"
+          ></ix-radio>
+          <ix-radio
+            label="2TB SSD storage"
+            value="2048"
+            name="storage-standalone"
+            disabled
+          ></ix-radio>
+        </ix-radio-group>
+      </div>
+
+      <!-- Native Radio Group Form (for comparison) -->
+      <form
+        id="native-form"
+        class="form-section native"
+        onsubmit="submitNativeForm(event)"
+      >
+        <h3>Native Radio Group (HTML Form)</h3>
+        <div style="margin-bottom: 15px">
+          <label
+            ><input type="radio" value="256" required /> 256GB SSD
+            storage</label
+          ><br />
+          <label
+            ><input type="radio" value="512" required /> 512GB SSD
+            storage</label
+          ><br />
+          <label
+            ><input type="radio" value="1024" required /> 1TB SSD storage</label
+          ><br />
+          <label
+            ><input type="radio" value="2048" required /> 2TB SSD storage</label
+          >
+        </div>
+        <div style="margin-top: 20px">
+          <button type="submit" class="button success">
+            Submit Native Form
+          </button>
+          <button
+            type="button"
+            onclick="resetNativeForm()"
+            class="button secondary"
+          >
+            Reset Native Form
+          </button>
+        </div>
+      </form>
+
+      <!-- Testing instructions -->
+      <div class="instructions">
+        <h3>Simple IX Siemens Behavior Test:</h3>
+        <ol>
+          <li>
+            <strong>Select a storage option</strong> in the IX radio group
+          </li>
+          <li>
+            <strong>Try submitting without selection</strong> to see validation
+          </li>
+          <li><strong>Reset the form</strong> to see reset behavior</li>
+          <li>
+            <strong>Compare with native HTML</strong> radio group behavior
+          </li>
+        </ol>
+        <p><strong>What to observe:</strong></p>
+        <ul>
+          <li>How IX radio group handles form validation</li>
+          <li>Visual styling when invalid/valid</li>
+          <li>Browser validation popup behavior</li>
+          <li>Form reset behavior</li>
+        </ul>
+      </div>
+    </div>
 
     <script type="module" src="./init.js"></script>
+    <script>
+      // Simple form behavior - no complex event handling
+      function resetForm() {
+        document.getElementById('ix-form').reset();
+        console.log('Form reset clicked');
+      }
+
+      function submitForm(event) {
+        debugger;
+        // Don't prevent default - let browser handle validation naturally
+        console.log('Form submitted');
+        console.log('Form valid:', event.target.checkValidity());
+
+        // Only prevent default if form is actually valid
+        if (!event.target.checkValidity()) {
+          console.log('❌ Form invalid - letting browser show validation');
+          return; // Let browser handle invalid form
+        }
+
+        // Form is valid - prevent submission for demo purposes
+        event.preventDefault();
+        console.log('✅ Form valid - preventing actual submission for demo');
+      }
+
+      function resetNativeForm() {
+        document.getElementById('native-form').reset();
+        console.log('Native form reset clicked');
+      }
+
+      function submitNativeForm(event) {
+        // Don't prevent default - let browser handle validation naturally
+        console.log('Native form submitted');
+        console.log('Native form valid:', event.target.checkValidity());
+      }
+    </script>
   </body>
 </html>

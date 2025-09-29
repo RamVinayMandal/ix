@@ -7,7 +7,375 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 -->
 
-<ix-checkbox-group label="Terms of something">
-  <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
-  <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
-</ix-checkbox-group>
+<div style="padding: 20px; max-width: 600px; height: 700px; overflow: scroll">
+  <h2>Checkbox Group - Reactive Form Example</h2>
+
+  <!-- Reactive Form with ix-checkbox-group -->
+  <form
+    [attr.novalidate]="null"
+    [formGroup]="checkboxForm"
+    (ngSubmit)="onCheckboxSubmit($event)"
+    style="
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    "
+  >
+    <h3>Terms and Conditions</h3>
+    <ix-checkbox-group
+      label="Terms of something"
+      invalidText="Please select at least one option"
+      required="true"
+    >
+      <!-- Individual checkboxes should NOT be required when group handles validation -->
+      <ix-checkbox
+        label="I agree everything"
+        name="agreed"
+        formControlName="agreed"
+      ></ix-checkbox>
+      <ix-checkbox
+        label="I agree with most of it"
+        name="most"
+        formControlName="most"
+      ></ix-checkbox>
+    </ix-checkbox-group>
+
+    <div style="margin-top: 20px">
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          margin-right: 10px;
+        "
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        (click)="checkboxForm.reset()"
+        style="
+          padding: 8px 16px;
+          background: #6c757d;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Reset
+      </button>
+    </div>
+    <!-- <div style="margin-top: 15px">
+      <div><strong>Current Values:</strong></div>
+      <div>
+        Agreed: {{ checkboxForm.value.agreed ? 'Yes' : 'No' }}
+      </div>
+      <div>
+        Most: {{ checkboxForm.value.most ? 'Yes' : 'No' }}
+      </div>
+      <div>Form Valid: {{ checkboxForm.valid }}</div>
+      <div>Form Touched: {{ checkboxForm.touched }}</div>
+    </div> -->
+  </form>
+
+  <!-- Standalone Checkbox Group (for comparison) -->
+  <div
+    style="
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    "
+  >
+    <h3>Standalone IX Checkbox Group (No Form)</h3>
+    <ix-checkbox-group label="Terms of something">
+      <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
+      <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
+    </ix-checkbox-group>
+  </div>
+
+  <!-- Native HTML Checkbox Group (for comparison) -->
+  <div
+    style="
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    "
+  >
+    <h3>Native HTML Checkbox Group</h3>
+    <form
+      [attr.novalidate]="null"
+      #nativeForm="ngForm"
+      (ngSubmit)="onNativeSubmit(nativeForm)"
+      style="border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px"
+    >
+      <fieldset style="border: none; padding: 0; margin: 0">
+        <legend style="font-weight: bold; margin-bottom: 10px">
+          Terms of something (Native HTML)
+        </legend>
+
+        <div style="margin-bottom: 8px">
+          <input
+            type="checkbox"
+            id="native-agreed"
+            name="agreed"
+            value="agreed"
+            required
+            #agreedCheckbox="ngModel"
+            [(ngModel)]="nativeFormData.agreed"
+          />
+          <label for="native-agreed" style="margin-left: 8px"
+            >I agree everything</label
+          >
+        </div>
+
+        <div style="margin-bottom: 8px">
+          <input
+            type="checkbox"
+            id="native-most"
+            name="most"
+            value="most"
+            required
+            #mostCheckbox="ngModel"
+            [(ngModel)]="nativeFormData.most"
+          />
+          <label for="native-most" style="margin-left: 8px"
+            >I agree with most of it</label
+          >
+        </div>
+
+        <!-- Custom validation message for "at least one required" -->
+      </fieldset>
+
+      <div style="margin-top: 15px">
+        <button
+          type="submit"
+          style="
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-right: 10px;
+          "
+        >
+          Submit Native
+        </button>
+        <button
+          type="button"
+          (click)="resetNativeForm(nativeForm)"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+          "
+        >
+          Reset Native
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 15px;
+          padding: 10px;
+          background: #f8f9fa;
+          border-radius: 4px;
+        "
+      >
+        <div><strong>Native Form Status:</strong></div>
+        <div>
+          ✓ Agreed: {{ nativeFormData.agreed ? 'Checked' : 'Unchecked' }}
+        </div>
+        <div>✓ Most: {{ nativeFormData.most ? 'Checked' : 'Unchecked' }}</div>
+        <div>✓ Form Valid: {{ nativeForm.valid }}</div>
+        <div>✓ Form Submitted: {{ nativeForm.submitted }}</div>
+        <div>
+          ✓ At least one selected: {{ nativeFormData.agreed ||
+          nativeFormData.most }}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- IX Checkbox Group WITHOUT Angular Reactive Forms (Browser Validation Test) -->
+  <div
+    style="
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    "
+  >
+    <h3>IX Checkbox Group - Browser Validation Test (No Angular Forms)</h3>
+    <form
+      [attr.novalidate]="null"
+      (ngSubmit)="onIXBrowserSubmit($event)"
+      #ixBrowserForm
+      style="border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px"
+    >
+      <ix-checkbox-group
+        label="Terms of something (IX Browser Validation)"
+        required="true"
+      >
+        <!-- Individual checkboxes should NOT be required when group handles validation -->
+        <ix-checkbox label="I agree everything" name="agreed"></ix-checkbox>
+        <ix-checkbox label="I agree with most of it" name="most"></ix-checkbox>
+      </ix-checkbox-group>
+
+      <div style="margin-top: 15px">
+        <button
+          type="submit"
+          style="
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-right: 10px;
+          "
+        >
+          Submit IX (Browser Validation)
+        </button>
+        <button
+          type="reset"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+          "
+        >
+          Reset IX
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 15px;
+          padding: 10px;
+          background: #f8f9fa;
+          border-radius: 4px;
+        "
+      >
+        <div><strong>IX Browser Validation Test:</strong></div>
+        <div>
+          ✓ This should show browser validation popup when submitted empty
+        </div>
+        <div>✓ Uses IX components without Angular reactive forms</div>
+        <div>✓ [attr.novalidate]="null" should enable browser validation</div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Native HTML with Custom Validation -->
+  <div style="border: 1px solid #ccc; padding: 15px; border-radius: 4px">
+    <h3>Native HTML with Custom Validation (Browser API)</h3>
+    <form
+      #browserForm
+      (ngSubmit)="onBrowserSubmit($event, browserForm)"
+      style="border: 1px solid #e0e0e0; padding: 10px; border-radius: 4px"
+    >
+      <fieldset style="border: none; padding: 0; margin: 0">
+        <legend style="font-weight: bold; margin-bottom: 10px">
+          Terms of something (Browser Validation)
+        </legend>
+
+        <div style="margin-bottom: 8px">
+          <input
+            type="checkbox"
+            id="browser-agreed"
+            name="agreed"
+            value="agreed"
+            #browserAgreed
+          />
+          <label for="browser-agreed" style="margin-left: 8px"
+            >I agree everything</label
+          >
+        </div>
+
+        <div style="margin-bottom: 8px">
+          <input
+            type="checkbox"
+            id="browser-most"
+            name="most"
+            value="most"
+            #browserMost
+          />
+          <label for="browser-most" style="margin-left: 8px"
+            >I agree with most of it</label
+          >
+        </div>
+      </fieldset>
+
+      <div style="margin-top: 15px">
+        <button
+          type="submit"
+          style="
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-right: 10px;
+          "
+        >
+          Submit (Browser Validation)
+        </button>
+        <button
+          type="button"
+          (click)="resetBrowserForm(browserAgreed, browserMost)"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+          "
+        >
+          Reset Browser
+        </button>
+        <button
+          type="button"
+          (click)="validateBrowserForm(browserAgreed, browserMost, browserForm)"
+          style="
+            padding: 8px 16px;
+            background: #ffc107;
+            color: black;
+            border: none;
+            border-radius: 4px;
+          "
+        >
+          Force Validation
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 15px;
+          padding: 10px;
+          background: #f8f9fa;
+          border-radius: 4px;
+        "
+      >
+        <div><strong>Browser Form Status:</strong></div>
+        <div>
+          ✓ Agreed: {{ browserAgreed.checked ? 'Checked' : 'Unchecked' }}
+        </div>
+        <div>✓ Most: {{ browserMost.checked ? 'Checked' : 'Unchecked' }}</div>
+        <div>
+          ✓ At least one selected: {{ browserAgreed.checked ||
+          browserMost.checked }}
+        </div>
+        <div>✓ Using browser reportValidity() API</div>
+      </div>
+    </form>
+  </div>
+</div>
