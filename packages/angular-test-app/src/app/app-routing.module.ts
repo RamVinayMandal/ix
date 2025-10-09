@@ -215,6 +215,7 @@ import TextareaRowsCols from '../preview-examples/textarea-rows-cols';
 import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeService from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
+import TimeInput from '../preview-examples/time-input';
 import Timepicker from '../preview-examples/timepicker';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
@@ -822,6 +823,7 @@ const routes: Routes = [
       { path: 'input-with-slots', component: InputWithSlots },
       { path: 'theme-switcher', component: ThemeService },
       { path: 'tile', component: Tile },
+      { path: 'time-input', component: TimeInput },
       { path: 'timepicker', component: Timepicker },
       { path: 'toggle-button-primary', component: ToggleButtonPrimary },
       { path: 'toggle-button-secondary', component: ToggleButtonSecondary },
@@ -905,6 +907,10 @@ const routes: Routes = [
       {
         path: 'tile',
         component: Tile,
+      },
+      {
+        path: 'time-input',
+        component: TimeInput,
       },
       {
         path: 'timepicker',
@@ -1082,4 +1088,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

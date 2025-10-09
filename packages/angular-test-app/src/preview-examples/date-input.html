@@ -7,4 +7,435 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 -->
 
-<ix-date-input value='1970/01/01'></ix-date-input>
+<div style="padding: 20px; max-width: 800px; height: 700px; overflow: scroll">
+  <h2>Date Input - NoValidate Testing</h2>
+
+  <!-- Form with validation (default) -->
+  <div style="margin-bottom: 30px">
+    <h3>1. Form with HTML5 Validation Enabled</h3>
+    <form
+      [attr.novalidate]="null"
+      (ngSubmit)="onSubmitWithValidation($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Required Date Input:</strong>
+        </div>
+        <ix-date-input
+          name="date1"
+          label="datee"
+          placeholder="Enter date (YYYY/MM/DD)"
+          required
+        >
+        </ix-date-input>
+
+        <ix-date-input
+          name="date1"
+          label="datee"
+          placeholder="Enter date (YYYY/MM/DD)"
+        >
+        </ix-date-input>
+      </div>
+
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Date with Min/Max Range:</strong>
+        </div>
+        <ix-date-input
+          name="date2"
+          placeholder="Date range 2023-2025"
+          min-date="2023/01/01"
+          max-date="2025/12/31"
+          required
+        >
+        </ix-date-input>
+      </div>
+
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form
+      </button>
+    </form>
+    <p>
+      <small
+        >This form has [attr.novalidate]="null" to enable HTML5
+        validation</small
+      >
+    </p>
+  </div>
+
+  <div style="margin-bottom: 30px">
+    <h3>Native HTML Date Form (for comparison)</h3>
+
+    <form
+      [attr.novalidate]="null"
+      [formGroup]="nativeDateForm"
+      (ngSubmit)="onNativeSubmit()"
+      #nativeFormRef
+      style="
+        border: 1px solid #007bff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+      "
+    >
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeBirthDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          Birth Date *
+        </label>
+        <input
+          type="date"
+          id="nativeBirthDate"
+          formControlName="nativeBirthDate"
+          required
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Select your birth date (required)</small>
+        <div
+          *ngIf="nativeDateForm.get('nativeBirthDate')?.invalid && nativeDateForm.get('nativeBirthDate')?.touched"
+          style="color: #dc3545; margin-top: 5px; font-size: 12px"
+        >
+          Birth date is required
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeStartDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          Start Date
+        </label>
+        <input
+          type="date"
+          id="nativeStartDate"
+          formControlName="nativeStartDate"
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Project start date (optional)</small>
+      </div>
+
+      <div style="margin-bottom: 20px">
+        <label
+          for="nativeEndDate"
+          style="display: block; margin-bottom: 5px; font-weight: bold"
+        >
+          End Date *
+        </label>
+        <input
+          type="date"
+          id="nativeEndDate"
+          formControlName="nativeEndDate"
+          required
+          style="
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+          "
+        />
+        <small style="color: #6c757d">Project end date (required)</small>
+        <div
+          *ngIf="nativeDateForm.get('nativeEndDate')?.invalid && nativeDateForm.get('nativeEndDate')?.touched"
+          style="color: #dc3545; margin-top: 5px; font-size: 12px"
+        >
+          End date is required
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px">
+        <button
+          type="submit"
+          style="
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+        >
+          Submit Native
+        </button>
+
+        <button
+          type="reset"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+          (click)="onNativeReset()"
+        >
+          Reset Native Form
+        </button>
+
+        <button
+          type="button"
+          style="
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+          (click)="onNativeClear()"
+        >
+          Clear Native All
+        </button>
+      </div>
+
+      <div
+        style="
+          margin-top: 20px;
+          padding: 10px;
+          background: #e3f2fd;
+          border-radius: 4px;
+        "
+      >
+        <strong>Native Form Status:</strong>
+        <div>Valid: {{ nativeDateForm.valid }}</div>
+        <div>Touched: {{ nativeDateForm.touched }}</div>
+        <div>Dirty: {{ nativeDateForm.dirty }}</div>
+        <div style="margin-top: 10px">
+          <strong>Native Form Values:</strong>
+          <pre>{{ getNativeFormValues() }}</pre>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Form with novalidate -->
+  <div style="margin-bottom: 30px">
+    <h3>2. Form with Angular Default (No HTML5 Validation)</h3>
+    <form
+      (ngSubmit)="onSubmitDefault($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Required Date Input:</strong>
+        </div>
+        <ix-date-input
+          name="date3"
+          placeholder="Enter date (YYYY/MM/DD)"
+          required
+        >
+        </ix-date-input>
+      </div>
+
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Date with Min/Max Range:</strong>
+        </div>
+        <ix-date-input
+          name="date4"
+          placeholder="Date range 2023-2025"
+          min-date="2023/01/01"
+          max-date="2025/12/31"
+          required
+        >
+        </ix-date-input>
+      </div>
+
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #28a745;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form (Angular Default)
+      </button>
+    </form>
+    <p>
+      <small
+        >This form uses Angular's default behavior (novalidate is applied by
+        default)</small
+      >
+    </p>
+  </div>
+
+  <!-- Form with explicit novalidate -->
+  <div style="margin-bottom: 30px">
+    <h3>3. Form with Explicit NoValidate</h3>
+    <form
+      novalidate
+      (ngSubmit)="onSubmitExplicitNoValidate($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
+    >
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Required Date Input:</strong>
+        </div>
+        <ix-date-input
+          name="date5"
+          placeholder="Enter date (YYYY/MM/DD)"
+          required
+        >
+        </ix-date-input>
+      </div>
+
+      <div style="margin-bottom: 15px">
+        <div style="margin-bottom: 5px">
+          <strong>Date with Min/Max Range:</strong>
+        </div>
+        <ix-date-input
+          name="date6"
+          placeholder="Date range 2023-2025"
+          min-date="2023/01/01"
+          max-date="2025/12/31"
+          required
+        >
+        </ix-date-input>
+      </div>
+
+      <button
+        type="submit"
+        style="
+          padding: 8px 16px;
+          background: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 4px;
+        "
+      >
+        Submit Form (Explicit NoValidate)
+      </button>
+    </form>
+    <p><small>This form has explicit novalidate attribute</small></p>
+  </div>
+
+  <!-- Individual date inputs for comparison -->
+  <div style="margin-bottom: 30px">
+    <h3>4. Individual Date Inputs (Outside Forms)</h3>
+
+    <div style="margin-bottom: 15px">
+      <div style="margin-bottom: 5px">
+        <strong>Required Date Input:</strong>
+      </div>
+      <ix-date-input placeholder="Required date input" required>
+      </ix-date-input>
+      <p><small>Should show validation when invalid or empty</small></p>
+    </div>
+
+    <div style="margin-bottom: 15px">
+      <div style="margin-bottom: 5px">
+        <strong>Date with Custom Format:</strong>
+      </div>
+      <ix-date-input format="MM/dd/yyyy" placeholder="MM/dd/yyyy format">
+      </ix-date-input>
+      <p><small>Should validate format MM/dd/yyyy</small></p>
+    </div>
+  </div>
+
+  <!-- Testing instructions -->
+  <div
+    style="
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 30px;
+    "
+  >
+    <h3>Testing Instructions:</h3>
+    <ol>
+      <li>
+        <strong>Invalid Date Test:</strong> Enter "invalid" or "99/99/9999" in
+        each field
+      </li>
+      <li>
+        <strong>Empty Required Test:</strong> Leave required fields empty and
+        try to submit
+      </li>
+      <li>
+        <strong>Range Test:</strong> Enter dates outside min/max range (e.g.,
+        "2020/01/01")
+      </li>
+      <li>
+        <strong>Form Submission:</strong>
+        <ul>
+          <li>
+            Form #1 (HTML5 validation enabled): Should prevent submission and
+            show browser validation errors
+          </li>
+          <li>
+            Form #2 (Angular default): Should allow submission (no HTML5
+            validation)
+          </li>
+          <li>
+            Form #3 (Explicit novalidate): Should allow submission (no HTML5
+            validation)
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Console Logging:</strong> Open browser DevTools console to see
+        detailed form submission logs
+      </li>
+    </ol>
+    <p><strong>Expected Behavior in Angular:</strong></p>
+    <ul>
+      <li>
+        <strong>Form #1</strong> - `[attr.novalidate]="null"`: Browser
+        validation enabled, will show HTML5 validation errors
+      </li>
+      <li>
+        <strong>Form #2</strong> - Default Angular form: Browser validation
+        disabled (Angular applies novalidate by default)
+      </li>
+      <li>
+        <strong>Form #3</strong> - `novalidate`: Explicitly disabled browser
+        validation (same as #2)
+      </li>
+      <li>
+        <strong>Individual inputs</strong>: ix-date-input component validation
+        works regardless of form context
+      </li>
+    </ul>
+    <p><strong>Console Output:</strong> Each form submission will log:</p>
+    <ul>
+      <li>Form identification and validation mode</li>
+      <li>All form field names and values</li>
+      <li>HTML5 validation status (for Form #1)</li>
+      <li>Clear visual separation between different form submissions</li>
+    </ul>
+    <p>
+      <strong>Key Angular Insight:</strong> Angular disables HTML5 validation by
+      default. To enable it, use `[attr.novalidate]="null"` or
+      `[attr.novalidate]="false"`.
+    </p>
+  </div>
+</div>

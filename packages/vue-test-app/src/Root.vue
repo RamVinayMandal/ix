@@ -14,6 +14,7 @@ import { IxApplicationContext } from "@siemens/ix-vue"
 
 
 import App from './App.vue';
+import TimeInputValidation from './preview-examples/time-input-validation.vue';
 import AboutAndLegal from './preview-examples/about-and-legal.vue';
 import ActionCard from './preview-examples/action-card.vue';
 import AddIcons from './preview-examples/add-icons.vue';
@@ -66,6 +67,7 @@ import DateDropdownUserRange from './preview-examples/date-dropdown-user-range.v
 import DateDropdown from './preview-examples/date-dropdown.vue';
 import DateInputWithSlots from './preview-examples/date-input-with-slots.vue';
 import DateInput from './preview-examples/date-input.vue';
+import DateInputNoValidateTest from './preview-examples/date-input-novalidate-test.vue';
 import DatepickerLocale from './preview-examples/datepicker-locale.vue';
 import DatepickerRange from './preview-examples/datepicker-range.vue';
 import Datepicker from './preview-examples/datepicker.vue';
@@ -206,6 +208,7 @@ import TextareaFieldValidation from './preview-examples/textarea-validation.vue'
 import TextareaField from './preview-examples/textarea.vue';
 import ThemeSwitcher from './preview-examples/theme-switcher.vue';
 import Tile from './preview-examples/tile.vue';
+import TimeInput from './preview-examples/time-input.vue';
 import Timepicker from './preview-examples/timepicker.vue';
 import ToastCustom from './preview-examples/toast-custom.vue';
 import ToastPosition from './preview-examples/toast-position.vue';
@@ -386,6 +389,8 @@ const routes: any = {
   '/preview/input-validation': InputValidation,
   '/preview/input-with-slots': InputWithSlots,
   '/preview/tile': Tile,
+  '/preview/time-input': TimeInput,
+  '/preview/time-input-validation': TimeInputValidation,
   '/preview/timepicker': Timepicker,
   '/preview/toast': Toast,
   '/preview/toast-custom': ToastCustom,
@@ -408,6 +413,7 @@ const routes: any = {
   '/preview/number-input-with-slots': NumberInputWithSlots,
   '/preview/date-input': DateInput,
   '/preview/date-input-with-slots': DateInputWithSlots,
+  '/preview/date-input-novalidate-test': DateInputNoValidateTest,
   '/preview/workflow': Workflow,
   '/preview/workflow-vertical': WorkflowVertical,
   '/preview/map-navigation': MapNavigation,

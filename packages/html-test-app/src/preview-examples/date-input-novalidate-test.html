@@ -1,0 +1,611 @@
+<!--
+SPDX-FileCopyrightText: 2024 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Input - NoValidate Testing (HTML)</title>
+    <style>
+      body {
+        padding: 20px;
+        max-width: 800px;
+        height: 700px;
+        overflow: scroll;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .test-section {
+        margin-bottom: 30px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 4px;
+      }
+
+      .native-form-section {
+        border: 1px solid #007bff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-group small {
+        color: #6c757d;
+        display: block;
+        margin-top: 5px;
+      }
+
+      .native-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .error-message {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 12px;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .btn-primary {
+        background: #007bff;
+        color: white;
+      }
+
+      .btn-success {
+        background: #28a745;
+        color: white;
+      }
+
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+
+      .status-panel {
+        margin-top: 20px;
+        padding: 10px;
+        background: #e3f2fd;
+        border-radius: 4px;
+      }
+
+      .instructions {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 30px;
+      }
+
+      ix-date-input {
+        margin-bottom: 10px;
+      }
+
+      pre {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Date Input - NoValidate Testing (HTML)</h2>
+
+    <!-- Form with validation enabled -->
+    <div class="test-section">
+      <h3>1. Form with HTML5 Validation Enabled</h3>
+      <form id="form1" class="validation-enabled-form">
+        <div class="form-group">
+          <strong>Required Date Input:</strong>
+          <ix-date-input
+            name="date1"
+            label="Required Date"
+            placeholder="Enter date (YYYY/MM/DD)"
+            required>
+          </ix-date-input>
+
+          <ix-date-input
+            name="date1b"
+            label="Optional Date"
+            placeholder="Enter date (YYYY/MM/DD)">
+          </ix-date-input>
+        </div>
+
+        <div class="form-group">
+          <strong>Date with Min/Max Range:</strong>
+          <ix-date-input
+            name="date2"
+            label="Date Range"
+            placeholder="Date range 2023-2025"
+            min-date="2023/01/01"
+            max-date="2025/12/31"
+            required>
+          </ix-date-input>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Form</button>
+      </form>
+      <small>This form has HTML5 validation enabled (default browser behavior)</small>
+    </div>
+
+    <!-- Native HTML Date Form -->
+    <div class="test-section">
+      <h3>Native HTML Date Form (for comparison)</h3>
+
+      <form id="nativeForm" class="native-form-section">
+        <div class="form-group">
+          <label for="nativeBirthDate">Birth Date *</label>
+          <input
+            type="date"
+            id="nativeBirthDate"
+            name="nativeBirthDate"
+            class="native-input"
+            required>
+          <small>Select your birth date (required)</small>
+          <div id="nativeBirthDateError" class="error-message" style="display: none;"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="nativeStartDate">Start Date</label>
+          <input
+            type="date"
+            id="nativeStartDate"
+            name="nativeStartDate"
+            class="native-input">
+          <small>Project start date (optional)</small>
+        </div>
+
+        <div class="form-group">
+          <label for="nativeEndDate">End Date *</label>
+          <input
+            type="date"
+            id="nativeEndDate"
+            name="nativeEndDate"
+            class="native-input"
+            required>
+          <small>Project end date (required)</small>
+          <div id="nativeEndDateError" class="error-message" style="display: none;"></div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">Submit Native</button>
+          <button type="reset" class="btn btn-secondary">Reset Native Form</button>
+          <button type="button" id="clearNativeAll" class="btn btn-danger">Clear Native All</button>
+        </div>
+
+        <div class="status-panel">
+          <strong>Native Form Status:</strong>
+          <div id="nativeFormStatus">
+            <div>Valid: <span id="nativeValid">false</span></div>
+            <div>Touched: <span id="nativeTouched">false</span></div>
+            <div>Dirty: <span id="nativeDirty">false</span></div>
+          </div>
+          <div style="margin-top: 10px;">
+            <strong>Native Form Values:</strong>
+            <pre id="nativeFormValues">{}</pre>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Form with novalidate default -->
+    <div class="test-section">
+      <h3>2. Form with Explicit NoValidate</h3>
+      <form id="form2" novalidate class="novalidate-form">
+        <div class="form-group">
+          <strong>Required Date Input:</strong>
+          <ix-date-input
+            name="date3"
+            label="Required Date"
+            placeholder="Enter date (YYYY/MM/DD)"
+            required>
+          </ix-date-input>
+        </div>
+
+        <div class="form-group">
+          <strong>Date with Min/Max Range:</strong>
+          <ix-date-input
+            name="date4"
+            label="Date Range"
+            placeholder="Date range 2023-2025"
+            min-date="2023/01/01"
+            max-date="2025/12/31"
+            required>
+          </ix-date-input>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit Form (NoValidate)</button>
+      </form>
+      <small>This form has explicit novalidate attribute (HTML5 validation disabled)</small>
+    </div>
+
+    <!-- Form with custom validation -->
+    <div class="test-section">
+      <h3>3. Form with Custom JavaScript Validation</h3>
+      <form id="form3" novalidate class="custom-validation-form">
+        <div class="form-group">
+          <strong>Required Date Input:</strong>
+          <ix-date-input
+            name="date5"
+            label="Required Date"
+            placeholder="Enter date (YYYY/MM/DD)"
+            required>
+          </ix-date-input>
+        </div>
+
+        <div class="form-group">
+          <strong>Date with Min/Max Range:</strong>
+          <ix-date-input
+            name="date6"
+            label="Date Range"
+            placeholder="Date range 2023-2025"
+            min-date="2023/01/01"
+            max-date="2025/12/31"
+            required>
+          </ix-date-input>
+        </div>
+
+        <button type="submit" class="btn btn-danger">Submit Form (Custom Validation)</button>
+      </form>
+      <small>This form uses custom JavaScript validation logic</small>
+    </div>
+
+    <!-- Individual date inputs for comparison -->
+    <div class="test-section">
+      <h3>4. Individual Date Inputs (Outside Forms)</h3>
+
+      <div class="form-group">
+        <strong>Required Date Input:</strong>
+        <ix-date-input
+          label="Required Date"
+          placeholder="Required date input"
+          required>
+        </ix-date-input>
+        <small>Should show validation when invalid or empty</small>
+      </div>
+
+      <div class="form-group">
+        <strong>Date with Custom Format:</strong>
+        <ix-date-input
+          label="Custom Format"
+          format="MM/dd/yyyy"
+          placeholder="MM/dd/yyyy format">
+        </ix-date-input>
+        <small>Should validate format MM/dd/yyyy</small>
+      </div>
+    </div>
+
+    <!-- Testing instructions -->
+    <div class="instructions">
+      <h3>Testing Instructions:</h3>
+      <ol>
+        <li>
+          <strong>Invalid Date Test:</strong> Enter "invalid" or "99/99/9999" in each field
+        </li>
+        <li>
+          <strong>Empty Required Test:</strong> Leave required fields empty and try to submit
+        </li>
+        <li>
+          <strong>Range Test:</strong> Enter dates outside min/max range (e.g., "2020/01/01")
+        </li>
+        <li>
+          <strong>Clear Button Test:</strong>
+          <ul>
+            <li>Enter invalid date in required field</li>
+            <li>Focus and blur the field (makes it touched)</li>
+            <li>Use the clear button or programmatically set value to empty</li>
+            <li>Field should become valid again (touched state reset)</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Form Submission:</strong>
+          <ul>
+            <li>Form #1 (HTML5 validation enabled): Should prevent submission and show browser validation errors</li>
+            <li>Form #2 (NoValidate): Should allow submission (no HTML5 validation)</li>
+            <li>Form #3 (Custom validation): Should use custom JavaScript validation logic</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Console Logging:</strong> Open browser DevTools console to see detailed form submission logs
+        </li>
+      </ol>
+      <p><strong>Expected Behavior in HTML:</strong></p>
+      <ul>
+        <li><strong>Form #1</strong> - Default: Browser validation enabled, will show HTML5 validation errors</li>
+        <li><strong>Form #2</strong> - novalidate: Browser validation disabled (submissions allowed)</li>
+        <li><strong>Form #3</strong> - Custom: JavaScript validation logic with custom error handling</li>
+        <li><strong>Individual inputs</strong>: ix-date-input component validation works regardless of form context</li>
+      </ul>
+      <p><strong>Console Output:</strong> Each form submission will log:</p>
+      <ul>
+        <li>Form identification and validation mode</li>
+        <li>All form field names and values</li>
+        <li>HTML5 validation status</li>
+        <li>Clear visual separation between different form submissions</li>
+      </ul>
+      <p>
+        <strong>Key HTML Insight:</strong> HTML forms have validation enabled by default.
+        Use novalidate attribute to disable HTML5 validation.
+      </p>
+    </div>
+
+    <script>
+      // Native form state management
+      let nativeFormData = {
+        nativeBirthDate: '',
+        nativeStartDate: '',
+        nativeEndDate: ''
+      };
+
+      let nativeFormErrors = {};
+      let touched = {};
+
+      // Helper function to validate native form
+      function validateNativeForm() {
+        const errors = {};
+
+        if (!nativeFormData.nativeBirthDate.trim()) {
+          errors.nativeBirthDate = 'Birth date is required';
+        }
+
+        if (!nativeFormData.nativeEndDate.trim()) {
+          errors.nativeEndDate = 'End date is required';
+        }
+
+        return errors;
+      }
+
+      // Update native form status display
+      function updateNativeFormStatus() {
+        const errors = validateNativeForm();
+        const isValid = Object.keys(errors).length === 0;
+        const isTouched = Object.values(touched).some(Boolean);
+        const isDirty = Object.values(nativeFormData).some(value => value.trim() !== '');
+
+        document.getElementById('nativeValid').textContent = isValid;
+        document.getElementById('nativeTouched').textContent = isTouched;
+        document.getElementById('nativeDirty').textContent = isDirty;
+        document.getElementById('nativeFormValues').textContent = JSON.stringify(nativeFormData, null, 2);
+      }
+
+      // Form 1: HTML5 validation enabled
+      document.getElementById('form1').addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('=== FORM 1: HTML5 Validation Enabled ===');
+        console.log('Form submitted with HTML5 validation enabled');
+
+        const formData = new FormData(this);
+        console.log('Form data:');
+        formData.forEach((value, key) => {
+          console.log(`${key}: ${value}`);
+        });
+
+        // Check if form is valid using HTML5 validation
+        if (this.checkValidity()) {
+          console.log('✅ Form is valid according to HTML5 validation');
+        } else {
+          console.log('❌ Form is invalid according to HTML5 validation');
+        }
+        console.log('==========================================');
+      });
+
+      // Form 2: NoValidate
+      document.getElementById('form2').addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('=== FORM 2: Explicit NoValidate ===');
+        console.log('Form submitted with explicit novalidate attribute');
+
+        const formData = new FormData(this);
+        console.log('Form data:');
+        formData.forEach((value, key) => {
+          console.log(`${key}: ${value}`);
+        });
+
+        console.log('Note: HTML5 validation is explicitly disabled');
+        console.log('=====================================');
+      });
+
+      // Form 3: Custom validation
+      document.getElementById('form3').addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('=== FORM 3: Custom JavaScript Validation ===');
+        console.log('Form submitted with custom validation logic');
+
+        const formData = new FormData(this);
+        console.log('Form data:');
+        formData.forEach((value, key) => {
+          console.log(`${key}: ${value}`);
+        });
+
+        // Custom validation logic
+        const dateInputs = this.querySelectorAll('ix-date-input[required]');
+        let isValid = true;
+        let errors = [];
+
+        dateInputs.forEach(input => {
+          const value = input.value;
+          if (!value || value.trim() === '') {
+            isValid = false;
+            errors.push(`${input.name || input.label || 'Date field'} is required`);
+          }
+        });
+
+        if (isValid) {
+          console.log('✅ Form is valid according to custom validation');
+          alert('Custom validation passed! Form would be submitted.');
+        } else {
+          console.log('❌ Form is invalid according to custom validation');
+          console.log('Validation errors:', errors);
+          alert('Custom validation failed:\n' + errors.join('\n'));
+        }
+        console.log('=============================================');
+      });
+
+      // Native form handlers
+      document.getElementById('nativeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const errors = validateNativeForm();
+        nativeFormErrors = errors;
+
+        if (Object.keys(errors).length === 0) {
+          console.log('=== NATIVE FORM SUBMISSION ===');
+          console.log('Native Form Values:', nativeFormData);
+          alert('Native form submitted successfully!\nCheck console for details.');
+        } else {
+          console.log('=== NATIVE FORM VALIDATION FAILED ===');
+          console.log('Native Form Errors:', errors);
+          // Mark all fields as touched to show errors
+          touched = {
+            nativeBirthDate: true,
+            nativeStartDate: true,
+            nativeEndDate: true
+          };
+
+          // Show error messages
+          Object.keys(errors).forEach(field => {
+            const errorElement = document.getElementById(field + 'Error');
+            if (errorElement) {
+              errorElement.textContent = errors[field];
+              errorElement.style.display = 'block';
+            }
+          });
+        }
+        updateNativeFormStatus();
+      });
+
+      document.getElementById('nativeForm').addEventListener('reset', function() {
+        console.log('=== NATIVE FORM RESET ===');
+        nativeFormData = {
+          nativeBirthDate: '',
+          nativeStartDate: '',
+          nativeEndDate: ''
+        };
+        nativeFormErrors = {};
+        touched = {};
+
+        // Hide all error messages
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(el => el.style.display = 'none');
+
+        updateNativeFormStatus();
+        console.log('Native form has been reset');
+      });
+
+      document.getElementById('clearNativeAll').addEventListener('click', function() {
+        console.log('=== CLEAR ALL NATIVE FIELDS ===');
+        nativeFormData = {
+          nativeBirthDate: '',
+          nativeStartDate: '',
+          nativeEndDate: ''
+        };
+
+        // Clear actual input values
+        Object.keys(nativeFormData).forEach(field => {
+          const input = document.getElementById(field);
+          if (input) {
+            input.value = '';
+          }
+        });
+
+        updateNativeFormStatus();
+        console.log('All native fields cleared');
+      });
+
+      // Native form input handlers
+      ['nativeBirthDate', 'nativeStartDate', 'nativeEndDate'].forEach(fieldName => {
+        const input = document.getElementById(fieldName);
+        if (input) {
+          input.addEventListener('input', function() {
+            nativeFormData[fieldName] = this.value;
+
+            // Clear error when user starts typing
+            const errorElement = document.getElementById(fieldName + 'Error');
+            if (errorElement) {
+              errorElement.style.display = 'none';
+            }
+
+            updateNativeFormStatus();
+          });
+
+          input.addEventListener('blur', function() {
+            touched[fieldName] = true;
+            updateNativeFormStatus();
+          });
+        }
+      });
+
+      // Initialize native form status
+      updateNativeFormStatus();
+
+      // Add event listeners for ix-date-input components to demonstrate validation behavior
+      document.querySelectorAll('ix-date-input').forEach(input => {
+        input.addEventListener('valueChange', function(event) {
+          console.log(`ix-date-input value changed:`, {
+            name: this.name,
+            label: this.label,
+            value: event.detail,
+            required: this.required,
+            validity: this.checkValidity ? this.checkValidity() : 'unknown'
+          });
+        });
+
+        input.addEventListener('blur', function() {
+          console.log(`ix-date-input blurred:`, {
+            name: this.name,
+            label: this.label,
+            value: this.value,
+            required: this.required,
+            validity: this.checkValidity ? this.checkValidity() : 'unknown'
+          });
+        });
+      });
+
+      console.log('Date Input NoValidate Test initialized');
+      console.log('Available test forms:');
+      console.log('- Form #1: HTML5 validation enabled (default)');
+      console.log('- Form #2: NoValidate (HTML5 validation disabled)');
+      console.log('- Form #3: Custom JavaScript validation');
+      console.log('- Native Form: For comparison with native HTML date inputs');
+    </script>
+    <script type="module" src="./init.js"></script>
+  </body>
+</html>

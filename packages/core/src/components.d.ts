@@ -969,6 +969,10 @@ export namespace Components {
          */
         "ariaLabelPreviousMonthButton"?: string;
         /**
+          * Clears the input value and resets the touched state. This simulates the clear button behavior.
+         */
+        "clear": () => Promise<void>;
+        /**
           * Disabled attribute
           * @default false
          */
@@ -977,6 +981,10 @@ export namespace Components {
           * Focuses the input field
          */
         "focusInput": () => Promise<void>;
+        /**
+          * Manually trigger validation check.  This is needed for Vue where the validation lifecycle doesn't work properly.
+         */
+        "forceValidationCheck": () => Promise<void>;
         /**
           * Date format string. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens} for all available tokens.
           * @default 'yyyy/LL/dd'
@@ -3642,7 +3650,7 @@ export namespace Components {
           * Value of the input element
           * @default ''
          */
-        "value": string;
+        "value"?: string;
         /**
           * Warning text below the input field
          */

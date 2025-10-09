@@ -1,22 +1,175 @@
-<!--
-SPDX-FileCopyrightText: 2025 Siemens AG
-
-SPDX-License-Identifier: MIT
-
-This source code is licensed under the MIT license found in the
-LICENSE file in the root directory of this source tree.
--->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Time input basic example</title>
+    <title>Time input form reset example</title>
   </head>
   <body>
-    <ix-time-input></ix-time-input>
+    <div class="container" style="padding: 2rem; max-width: 800px">
+      <h1>Time Input Form Reset Test</h1>
+
+      <!-- IX Time Input Form -->
+      <div
+        class="form-section"
+        style="
+          margin-bottom: 3rem;
+          padding: 1.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        "
+      >
+        <h2>IX Time Input Form</h2>
+        <form
+          id="ix-form"
+          onsubmit="submitForm(event)"
+          onreset="handleReset(event)"
+        >
+          <ix-time-input
+            name="timeValue"
+            label="Select Time"
+            required
+            helper-text="This field is required"
+            invalid-text="Please enter a valid time"
+            style="margin-bottom: 1rem"
+          >
+          </ix-time-input>
+
+          <div
+            class="button-group"
+            style="display: flex; gap: 1rem; margin-top: 1rem"
+          >
+            <button type="submit" class="button primary">Submit IX Form</button>
+            <button type="reset" class="button secondary">Reset IX Form</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Native HTML Time Input for comparison -->
+      <div
+        class="form-section"
+        style="
+          margin-bottom: 3rem;
+          padding: 1.5rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        "
+      >
+        <h2>Native HTML Time Input Form</h2>
+        <form
+          id="native-form"
+          onsubmit="submitNativeForm(event)"
+          onreset="handleNativeReset(event)"
+        >
+          <div style="margin-bottom: 1rem">
+            <label
+              for="nativeTime"
+              style="display: block; margin-bottom: 0.5rem"
+              >Select Time (Native):</label
+            >
+            <input
+              type="time"
+              id="nativeTime"
+              name="nativeTime"
+              required
+              style="
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+
+          <div
+            class="button-group"
+            style="display: flex; gap: 1rem; margin-top: 1rem"
+          >
+            <button type="submit" class="button primary">
+              Submit Native Form
+            </button>
+            <button type="reset" class="button secondary">
+              Reset Native Form
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Testing instructions -->
+      <div
+        class="instructions"
+        style="background-color: #f5f5f5; padding: 1.5rem; border-radius: 4px"
+      >
+        <h3>Form Reset Test Instructions:</h3>
+        <ol>
+          <li>
+            <strong>Select a time</strong> in both IX and native time inputs
+          </li>
+          <li>
+            <strong>Try submitting without selection</strong> to see validation
+          </li>
+          <li><strong>Reset the forms</strong> to test reset behavior</li>
+          <li>
+            <strong>Compare behavior</strong> between IX and native
+            implementations
+          </li>
+        </ol>
+        <p><strong>What to observe:</strong></p>
+        <ul>
+          <li>How IX time-input handles form reset vs native time input</li>
+          <li>Validation state after reset</li>
+          <li>Touched state behavior after reset</li>
+        </ul>
+      </div>
+    </div>
 
     <script type="module" src="./init.js"></script>
+    <script>
+      // Form behavior - simple and clean
+      function submitForm(event) {
+        console.log('=== IX TIME INPUT FORM SUBMIT ===');
+        console.log('Form valid:', event.target.checkValidity());
+
+        if (!event.target.checkValidity()) {
+          console.log('❌ IX form invalid - letting browser show validation');
+          return;
+        }
+
+        event.preventDefault();
+        console.log('✅ IX form valid - preventing actual submission for demo');
+        console.log('Time value:', event.target.timeValue.value);
+        console.log('=======================================');
+      }
+
+      function handleReset(event) {
+        console.log('=== IX TIME INPUT FORM RESET ===');
+        console.log('IX form reset event fired');
+        console.log('===================================');
+      }
+
+      function submitNativeForm(event) {
+        console.log('=== NATIVE TIME INPUT FORM SUBMIT ===');
+        console.log('Native form valid:', event.target.checkValidity());
+
+        if (!event.target.checkValidity()) {
+          console.log(
+            '❌ Native form invalid - letting browser show validation'
+          );
+          return;
+        }
+
+        event.preventDefault();
+        console.log(
+          '✅ Native form valid - preventing actual submission for demo'
+        );
+        console.log('Native time value:', event.target.nativeTime.value);
+        console.log('========================================');
+      }
+
+      function handleNativeReset(event) {
+        console.log('=== NATIVE TIME INPUT FORM RESET ===');
+        console.log('Native form reset event fired');
+        console.log('====================================');
+      }
+    </script>
   </body>
 </html>

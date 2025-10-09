@@ -61,6 +61,7 @@ import CustomFieldValidation from './preview-examples/custom-field-validation';
 import DateDropdown from './preview-examples/date-dropdown';
 import DateDropdownUserRange from './preview-examples/date-dropdown-user-range';
 import DateInput from './preview-examples/date-input';
+import DateInputNoValidateTest from './preview-examples/date-input-novalidate-test';
 import DateInputWithSlots from './preview-examples/date-input-with-slots';
 import Datepicker from './preview-examples/datepicker';
 import DatepickerLocale from './preview-examples/datepicker-locale';
@@ -203,6 +204,7 @@ import TextareaRowCols from './preview-examples/textarea-rows-cols';
 import TextareaValidation from './preview-examples/textarea-validation';
 import ThemeSwitcher from './preview-examples/theme-switcher';
 import Tile from './preview-examples/tile';
+import TimeInput from './preview-examples/time-input';
 import Timepicker from './preview-examples/timepicker';
 import Toast from './preview-examples/toast';
 import ToastCustom from './preview-examples/toast-custom';
@@ -650,6 +652,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/preview/textarea-legacy" element={<TextareaLegacy />} />
         <Route path="/preview/theme-switcher" element={<ThemeSwitcher />} />
         <Route path="/preview/tile" element={<Tile />} />
+        <Route path="/preview/time-input" element={<TimeInput />} />
         <Route path="/preview/timepicker" element={<Timepicker />} />
         <Route path="/preview/toast-custom" element={<ToastCustom />} />
         <Route path="/preview/toast-position" element={<ToastPosition />} />
@@ -713,6 +716,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           element={<NumberInputValidation />}
         />
         <Route path="/preview/date-input" element={<DateInput />} />
+        <Route
+          path="/preview/date-input-novalidate-test"
+          element={<DateInputNoValidateTest />}
+        />
         <Route
           path="/preview/date-input-with-slots"
           element={<DateInputWithSlots />}

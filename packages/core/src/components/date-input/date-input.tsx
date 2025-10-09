@@ -76,6 +76,9 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   @Prop({ reflect: true, mutable: true }) value?: string = '';
 
   @Watch('value') watchValuePropHandler(newValue: string) {
+    if (newValue === null || newValue === undefined) {
+      this.touched = false;
+    }
     this.onInput(newValue);
   }
 
@@ -242,6 +245,27 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     this.value = value;
   }
 
+  private updateFormValidity(): void {
+    if (!this.formInternals) return;
+
+    const valueMissing = this.required && !this.value && this.touched;
+    const patternMismatch = this.isInputInvalid;
+
+    if (valueMissing || this.isInputInvalid) {
+      const inputElement = this.inputElementRef.current;
+      this.formInternals.setValidity(
+        {
+          valueMissing,
+          patternMismatch,
+        },
+        ' ',
+        inputElement || undefined
+      );
+    } else {
+      this.formInternals.setValidity({});
+    }
+  }
+
   connectedCallback(): void {
     this.classObserver = createClassMutationObserver(this.hostElement, () =>
       this.checkClassList()
@@ -264,6 +288,9 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
 
     this.checkClassList();
     this.updateFormInternalValue(this.value);
+  }
+  componentDidLoad(): void {
+    this.updateFormValidity();
   }
 
   private updatePaddings() {
@@ -299,7 +326,10 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   async onInput(value: string | undefined) {
     this.value = value;
     if (!value) {
+      this.isInputInvalid = this.required === true && this.touched;
       this.valueChange.emit(value);
+      this.updateFormValidity();
+      await this.forceValidationCheck();
       return;
     }
 
@@ -322,6 +352,9 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     }
 
     this.valueChange.emit(value);
+    this.updateFormValidity();
+    // Force validation check for Vue compatibility
+    await this.forceValidationCheck();
   }
 
   onCalenderClick(event: Event) {
@@ -380,9 +413,11 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
             this.openDropdown();
             this.ixFocus.emit();
           }}
-          onBlur={() => {
+          onBlur={async () => {
             this.ixBlur.emit();
             this.touched = true;
+            // Force validation check for Vue compatibility
+            await this.forceValidationCheck();
           }}
         ></input>
         <SlotEnd
@@ -456,6 +491,44 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   @Method()
   isTouched(): Promise<boolean> {
     return Promise.resolve(this.touched);
+  }
+
+  /**
+   * Clears the input value and resets the touched state.
+   * This simulates the clear button behavior.
+   */
+  @Method()
+  async clear(): Promise<void> {
+    this.touched = false;
+    this.value = '';
+    this.onInput('');
+  }
+
+  /**
+   * Manually trigger validation check.
+   * This is needed for Vue where the validation lifecycle doesn't work properly.
+   * @internal
+   */
+  @Method()
+  async forceValidationCheck(): Promise<void> {
+    // Apply required validation CSS class
+    if (this.required) {
+      const hasValue = await this.hasValidValue();
+      const touched = await this.isTouched();
+      this.hostElement.classList.toggle(
+        'ix-invalid--required',
+        !hasValue && touched
+      );
+    } else {
+      this.hostElement.classList.remove('ix-invalid--required');
+    }
+
+    // Apply pattern validation CSS class
+    const validityState = await this.getValidityState();
+    this.hostElement.classList.toggle(
+      'ix-invalid--validity-patternMismatch',
+      validityState.patternMismatch
+    );
   }
 
   render() {

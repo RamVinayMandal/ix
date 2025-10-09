@@ -250,6 +250,7 @@ import ProgressIndicatorLinearStatus from '../preview-examples/progress-indicato
 import ProgressIndicatorCircularSizes from '../preview-examples/progress-indicator-circular-sizes';
 import ProgressIndicatorCircularStatus from '../preview-examples/progress-indicator-circular-status';
 import ProgressIndicatorCircular from '../preview-examples/progress-indicator-circular';
+import TimeInput from '../preview-examples/time-input';
 
 @NgModule({
   declarations: [
@@ -444,6 +445,7 @@ import ProgressIndicatorCircular from '../preview-examples/progress-indicator-ci
     ThemeSwitcher,
     Tile,
     Timepicker,
+    TimeInput,
     ToastCustom,
     ToastPosition,
     Toast,
@@ -500,4 +502,4 @@ import ProgressIndicatorCircular from '../preview-examples/progress-indicator-ci
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

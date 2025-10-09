@@ -7011,6 +7011,28 @@
       ],
       "methods": [
         {
+          "name": "clear",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "clear() => Promise<void>",
+          "parameters": [],
+          "docs": "Clears the input value and resets the touched state.\nThis simulates the clear button behavior.",
+          "docsTags": []
+        },
+        {
           "name": "focusInput",
           "returns": {
             "type": "Promise<void>",
@@ -25062,10 +25084,10 @@
         },
         {
           "name": "value",
-          "type": "string",
+          "type": "string | undefined",
           "complexType": {
             "original": "string",
-            "resolved": "string",
+            "resolved": "string | undefined",
             "references": {}
           },
           "mutable": true,
@@ -25082,9 +25104,12 @@
           "values": [
             {
               "type": "string"
+            },
+            {
+              "type": "undefined"
             }
           ],
-          "optional": false,
+          "optional": true,
           "required": false,
           "getter": false,
           "setter": false

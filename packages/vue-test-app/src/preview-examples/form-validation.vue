@@ -215,8 +215,7 @@ export default {
 
       <IxDateInput
         v-model="end"
-        label="End"
-        :class="{ 'ix-invalid': v$.end.isEnd.$invalid }"
+        label="Endd"
         :invalid-text="v$.end.isEnd.$message"
       ></IxDateInput>
 
