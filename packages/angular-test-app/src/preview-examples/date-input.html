@@ -14,7 +14,7 @@ LICENSE file in the root directory of this source tree.
   <div style="margin-bottom: 30px">
     <h3>1. Form with HTML5 Validation Enabled</h3>
     <form
-      [attr.novalidate]="null"
+      [attr.novalidate]="false"
       (ngSubmit)="onSubmitWithValidation($event)"
       style="border: 1px solid #ccc; padding: 15px; border-radius: 4px"
     >
@@ -100,6 +100,7 @@ LICENSE file in the root directory of this source tree.
           id="nativeBirthDate"
           formControlName="nativeBirthDate"
           required
+          value=""
           style="
             width: 100%;
             padding: 8px;

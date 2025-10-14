@@ -7011,28 +7011,6 @@
       ],
       "methods": [
         {
-          "name": "clear",
-          "returns": {
-            "type": "Promise<void>",
-            "docs": ""
-          },
-          "complexType": {
-            "signature": "() => Promise<void>",
-            "parameters": [],
-            "references": {
-              "Promise": {
-                "location": "global",
-                "id": "global::Promise"
-              }
-            },
-            "return": "Promise<void>"
-          },
-          "signature": "clear() => Promise<void>",
-          "parameters": [],
-          "docs": "Clears the input value and resets the touched state.\nThis simulates the clear button behavior.",
-          "docsTags": []
-        },
-        {
           "name": "focusInput",
           "returns": {
             "type": "Promise<void>",
@@ -7078,6 +7056,28 @@
           "signature": "getNativeInputElement() => Promise<HTMLInputElement>",
           "parameters": [],
           "docs": "Get the native input element",
+          "docsTags": []
+        },
+        {
+          "name": "syncValidationClasses",
+          "returns": {
+            "type": "Promise<void>",
+            "docs": ""
+          },
+          "complexType": {
+            "signature": "() => Promise<void>",
+            "parameters": [],
+            "references": {
+              "Promise": {
+                "location": "global",
+                "id": "global::Promise"
+              }
+            },
+            "return": "Promise<void>"
+          },
+          "signature": "syncValidationClasses() => Promise<void>",
+          "parameters": [],
+          "docs": "",
           "docsTags": []
         }
       ],

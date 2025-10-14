@@ -34,6 +34,8 @@ import {
   IxInputFieldComponent,
   ValidationResults,
   createClassMutationObserver,
+  handleFormNoValidateAttribute,
+  handleInternalValidationOnSubmit,
 } from '../utils/input';
 import { makeRef } from '../utils/make-ref';
 import type { DateInputValidityState } from './date-input.types';
@@ -233,8 +235,11 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   private classObserver?: ClassMutationObserver;
   private invalidReason?: string;
   private touched = false;
+  private isHtml5ValidationEnabled = false;
 
   private disposableChangesAndVisibilityObservers?: DisposableChangesAndVisibilityObservers;
+  private formValidationCleanup?: () => void;
+  private internalValidationCleanup?: () => void;
 
   updateFormInternalValue(value: string | undefined): void {
     if (value) {
@@ -248,17 +253,24 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   private updateFormValidity(): void {
     if (!this.formInternals) return;
 
-    const valueMissing = this.required && !this.value && this.touched;
-    const patternMismatch = this.isInputInvalid;
+    const valueMissing = this.required && !this.value;
+    const patternMismatch = this.isInputInvalid && !!this.value;
 
-    if (valueMissing || this.isInputInvalid) {
+    if (valueMissing || patternMismatch) {
+      let message = '';
+      if (valueMissing) {
+        message = 'Please fill out this field.';
+      } else if (patternMismatch) {
+        message = 'Please enter a valid value. The field is incomplete or has an invalid date.';
+      }
+
       const inputElement = this.inputElementRef.current;
       this.formInternals.setValidity(
         {
           valueMissing,
           patternMismatch,
         },
-        ' ',
+        message,
         inputElement || undefined
       );
     } else {
@@ -290,10 +302,30 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     this.updateFormInternalValue(this.value);
   }
   componentDidLoad(): void {
+    this.updateHtml5ValidationState();
     this.updateFormValidity();
+    this.formValidationCleanup = handleFormNoValidateAttribute(this.formInternals);
+
+    // Set up internal validation handling when HTML5 validation is disabled
+    const component = this;
+    this.internalValidationCleanup = handleInternalValidationOnSubmit(this.formInternals, {
+      required: this.required,
+      get value() { return component.value; },
+      get touched() { return component.touched; },
+      set touched(value) { component.touched = value; },
+      updateFormValidity: () => component.updateFormValidity(),
+      syncValidationClasses: () => component.syncValidationClasses(),
+    });
   }
 
-  private updatePaddings() {
+  private updateHtml5ValidationState(): void {
+    const form = this.formInternals.form;
+    // HTML5 validation is enabled when:
+    // 1. Form exists AND
+    // 2. Form does NOT have 'novalidate' attribute AND
+    // 3. Form does NOT have 'data-novalidate' attribute
+    this.isHtml5ValidationEnabled = !!form && !form.hasAttribute('novalidate') && !form.hasAttribute('data-novalidate');
+  }  private updatePaddings() {
     adjustPaddingForStartAndEnd(
       this.slotStartRef.current,
       this.slotEndRef.current,
@@ -304,6 +336,8 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   disconnectedCallback(): void {
     this.classObserver?.destroy();
     this.disposableChangesAndVisibilityObservers?.();
+    this.formValidationCleanup?.();
+    this.internalValidationCleanup?.();
   }
 
   @Watch('value')
@@ -324,12 +358,15 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   }
 
   async onInput(value: string | undefined) {
+    // Update validation state in case form attributes changed
+    this.updateHtml5ValidationState();
+
     this.value = value;
     if (!value) {
       this.isInputInvalid = this.required === true && this.touched;
       this.valueChange.emit(value);
       this.updateFormValidity();
-      await this.forceValidationCheck();
+      await this.syncValidationClasses();
       return;
     }
 
@@ -353,8 +390,7 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
 
     this.valueChange.emit(value);
     this.updateFormValidity();
-    // Force validation check for Vue compatibility
-    await this.forceValidationCheck();
+    await this.syncValidationClasses();
   }
 
   onCalenderClick(event: Event) {
@@ -388,7 +424,7 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
         <input
           autoComplete="off"
           class={{
-            'is-invalid': this.isInputInvalid,
+            'is-invalid': this.isInputInvalid && !this.isHtml5ValidationEnabled,
           }}
           disabled={this.disabled}
           readOnly={this.readonly}
@@ -401,23 +437,43 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
           name={this.name}
           onInput={(event) => {
             const target = event.target as HTMLInputElement;
+
+            // Clear HTML5 validation tooltip when user starts typing
+            if (this.isHtml5ValidationEnabled) {
+              target.setCustomValidity('');
+            }
+
             this.onInput(target.value);
           }}
           onClick={(event) => {
             if (this.show) {
               event.stopPropagation();
               event.preventDefault();
+            } else if (!this.readonly && !this.disabled) {
+              // Open dropdown on click if not already open
+              this.openDropdown();
             }
           }}
           onFocus={async () => {
-            this.openDropdown();
+            // Update validation state in case form attributes changed
+            this.updateHtml5ValidationState();
+
+            // Don't auto-open dropdown if HTML5 validation is enabled and field is invalid
+            // This prevents dropdown from opening when form validation focuses the field
+            const isFormValidationFocus = this.isHtml5ValidationEnabled && this.required && !this.value;
+
+            if (!this.readonly && !this.disabled && !isFormValidationFocus) {
+              this.openDropdown();
+            }
             this.ixFocus.emit();
           }}
           onBlur={async () => {
             this.ixBlur.emit();
             this.touched = true;
-            // Force validation check for Vue compatibility
-            await this.forceValidationCheck();
+            // Update validation state in case form attributes changed
+            this.updateHtml5ValidationState();
+            await this.updateFormValidity();
+            await this.syncValidationClasses();
           }}
         ></input>
         <SlotEnd
@@ -445,10 +501,21 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     isValid,
     isWarning,
   }: ValidationResults) {
-    this.isInvalid = isInvalid || isInvalidByRequired || this.isInputInvalid;
-    this.isInfo = isInfo;
-    this.isValid = isValid;
-    this.isWarning = isWarning;
+    // Update validation state to ensure we have the latest form attributes
+    this.updateHtml5ValidationState();
+
+    // Don't apply internal validation styling when HTML5 validation is enabled
+    if (this.isHtml5ValidationEnabled) {
+      this.isInvalid = false;
+      this.isInfo = isInfo;
+      this.isValid = false;
+      this.isWarning = isWarning;
+    } else {
+      this.isInvalid = isInvalid || isInvalidByRequired || this.isInputInvalid;
+      this.isInfo = isInfo;
+      this.isValid = isValid;
+      this.isWarning = isWarning;
+    }
   }
 
   @Watch('isInputInvalid')
@@ -493,42 +560,33 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     return Promise.resolve(this.touched);
   }
 
-  /**
-   * Clears the input value and resets the touched state.
-   * This simulates the clear button behavior.
-   */
   @Method()
-  async clear(): Promise<void> {
-    this.touched = false;
-    this.value = '';
-    this.onInput('');
-  }
+  async syncValidationClasses(): Promise<void> {
+    const [hasValue, touched] = await Promise.all([
+      this.hasValidValue(),
+      this.isTouched(),
+    ]);
 
-  /**
-   * Manually trigger validation check.
-   * This is needed for Vue where the validation lifecycle doesn't work properly.
-   * @internal
-   */
-  @Method()
-  async forceValidationCheck(): Promise<void> {
-    // Apply required validation CSS class
+    // Handle required validation
     if (this.required) {
-      const hasValue = await this.hasValidValue();
-      const touched = await this.isTouched();
+      const isRequiredInvalid = !hasValue && touched;
       this.hostElement.classList.toggle(
         'ix-invalid--required',
-        !hasValue && touched
+        isRequiredInvalid
       );
     } else {
       this.hostElement.classList.remove('ix-invalid--required');
     }
 
-    // Apply pattern validation CSS class
+    // Handle pattern/format validation
     const validityState = await this.getValidityState();
     this.hostElement.classList.toggle(
       'ix-invalid--validity-patternMismatch',
       validityState.patternMismatch
     );
+
+    // Sync with HTML5 validation
+    await this.updateFormValidity();
   }
 
   render() {

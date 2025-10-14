@@ -11,6 +11,67 @@ import { IxComponent } from '../internal';
 
 export * from './validation';
 
+/**
+ * Handle form validation setup for different framework scenarios
+ * - React: Convert data-novalidate to novalidate
+ * - All frameworks: Set up form validation listeners when HTML5 validation is enabled
+ */
+export function handleFormNoValidateAttribute(formInternals: ElementInternals): (() => void) | undefined {
+  const form = formInternals.form;
+  if (!form) return;
+
+  // Handle React's data-novalidate attribute
+  if (form.hasAttribute('data-novalidate')) {
+    form.setAttribute('novalidate', '');
+    return;
+  }
+
+  // If form doesn't have novalidate attribute, HTML5 validation is enabled
+  // Set up form submit listener to ensure custom elements participate in validation
+  if (!form.hasAttribute('novalidate')) {
+    const submitHandler = async (e: Event) => {
+      const input = await (formInternals as any).getNativeInputElement?.();
+      if (input && !input.validity.valid) {
+        e.preventDefault();
+        input.reportValidity();
+      }
+    };
+
+    form.addEventListener('submit', submitHandler);
+    return () => form.removeEventListener('submit', submitHandler);
+  }
+}
+
+/**
+ * Handle internal validation on form submit when noValidate is true
+ * This triggers validation display when HTML5 validation is disabled
+ */
+export function handleInternalValidationOnSubmit(
+  formInternals: ElementInternals,
+  component: {
+    required?: boolean;
+    value?: any;
+    touched?: boolean;
+    updateFormValidity?: () => void;
+    syncValidationClasses?: () => Promise<void>;
+  }
+): (() => void) | undefined {
+  const form = formInternals.form;
+  if (!form || !form.hasAttribute('novalidate')) return;
+
+  const submitHandler = async (_e: Event) => {
+    // Mark as touched to trigger validation display
+    if (component.required && !component.value) {
+      (component as any).touched = true;
+      await component.updateFormValidity?.();
+      await component.syncValidationClasses?.();
+    }
+  };
+
+  form.addEventListener('submit', submitHandler);
+  return () => form.removeEventListener('submit', submitHandler);
+}
+
 export interface FieldWrapperInterface {
   /**
    * Label for the field component

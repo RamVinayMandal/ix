@@ -423,7 +423,6 @@ const handleSetInvalidDate = () => {
           style="
             margin-top: 20px;
             padding: 10px;
-            background: #e3f2fd;
             border-radius: 4px;
           "
         >

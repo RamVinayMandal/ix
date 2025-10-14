@@ -183,7 +183,7 @@ export default function DateInputTest() {
         <form
           onSubmit={handleSubmitWithValidation}
           style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '4px' }}
-          noValidate={false} // Enable HTML5 validation
+          noValidate // Enable HTML5 validation
         >
           <div style={{ marginBottom: '15px' }}>
             <div style={{ marginBottom: '5px' }}>
@@ -244,7 +244,7 @@ export default function DateInputTest() {
         <form
           ref={nativeFormRef}
           onSubmit={handleNativeSubmit}
-          noValidate={false} // Enable HTML5 validation
+          noValidate // Enable HTML5 validation
           style={{
             border: '1px solid #007bff',
             padding: '20px',
