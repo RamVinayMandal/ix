@@ -216,6 +216,7 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeService from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
+import TimeInputNovalidateTest from '../preview-examples/time-input-novalidate-test';
 import Timepicker from '../preview-examples/timepicker';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
@@ -824,6 +825,7 @@ const routes: Routes = [
       { path: 'theme-switcher', component: ThemeService },
       { path: 'tile', component: Tile },
       { path: 'time-input', component: TimeInput },
+      { path: 'time-input-novalidate-test', component: TimeInputNovalidateTest },
       { path: 'timepicker', component: Timepicker },
       { path: 'toggle-button-primary', component: ToggleButtonPrimary },
       { path: 'toggle-button-secondary', component: ToggleButtonSecondary },

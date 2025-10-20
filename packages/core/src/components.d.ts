@@ -3636,6 +3636,10 @@ export namespace Components {
          */
         "showTextAsTooltip"?: boolean;
         /**
+          * Sync validation CSS classes with the component state
+         */
+        "syncValidationClasses": () => Promise<void>;
+        /**
           * Valid text below the input field
          */
         "validText"?: string;

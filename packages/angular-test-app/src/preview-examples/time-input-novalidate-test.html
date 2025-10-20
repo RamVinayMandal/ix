@@ -1,0 +1,187 @@
+<!--
+SPDX-FileCopyrightText: 2025 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<div style="padding: 20px; max-width: 800px; height: 700px; overflow: auto;">
+  <h1>Angular Time Input - NoValidate Test</h1>
+
+  <!-- Form 1: HTML5 Validation Enabled -->
+  <div style="margin-bottom: 30px;">
+    <h2>1. Form with HTML5 Validation Enabled</h2>
+    <form
+      [attr.novalidate]="false"
+      (submit)="handleSubmitWithValidation($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px;"
+    >
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 5px;">
+          <strong>Required Time Field:</strong>
+        </div>
+        <ix-time-input
+          name="time1"
+          label="Required Time"
+          placeholder="Enter time (HH:mm)"
+          required
+          [value]="timeValue1"
+          (valueChange)="onTimeValue1Change($event)"
+        ></ix-time-input>
+
+        <div style="margin-top: 5px; font-size: 12px; color: #666;">
+          Expected: Attempting to enable HTML5 validation (Angular typically suppresses this by default)
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 5px;">
+          <strong>Optional Time Field:</strong>
+        </div>
+        <ix-time-input
+          name="time2"
+          label="Optional Time"
+          placeholder="Enter time (HH:mm)"
+          [value]="timeValue2"
+          (valueChange)="onTimeValue2Change($event)"
+        ></ix-time-input>
+      </div>
+
+      <button type="submit" style="margin-top: 10px;">
+        Submit Form (HTML5 Validation)
+      </button>
+    </form>
+
+    <div *ngIf="formMessage" style="margin-top: 10px; padding: 10px; background: #f0f8ff; border: 1px solid #007acc; border-radius: 4px;">
+      {{ formMessage }}
+    </div>
+
+    <p style="font-size: 12px; color: #666; margin-top: 10px;">
+      <strong>Test:</strong> Click submit without filling required field. Angular usually shows internal validation, but we're trying to enable HTML5 validation.
+    </p>
+  </div>
+
+  <!-- Form 2: Internal Validation (noValidate) -->
+  <div style="margin-bottom: 30px;">
+    <h2>2. Form with Internal Validation (noValidate="true")</h2>
+    <form
+      novalidate
+      (submit)="handleSubmitWithoutValidation($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px;"
+    >
+      <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 5px;">
+          <strong>Required Time Field:</strong>
+        </div>
+        <ix-time-input
+          name="time3"
+          label="Required Time"
+          placeholder="Enter time (HH:mm)"
+          required
+          [value]="timeValue3"
+          (valueChange)="onTimeValue3Change($event)"
+        ></ix-time-input>
+
+        <div style="margin-top: 5px; font-size: 12px; color: #666;">
+          Expected: Internal validation (red borders) on submit - Angular's default behavior with novalidate
+        </div>
+      </div>
+
+      <button type="submit" style="margin-top: 10px;">
+        Submit Form (Internal Validation)
+      </button>
+    </form>
+
+    <p style="font-size: 12px; color: #666; margin-top: 10px;">
+      <strong>Test:</strong> Click submit without filling required field. Should show red borders and validation styling.
+    </p>
+
+    <!-- Reset and Clear Buttons -->
+    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+      <h3>Form Controls</h3>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button
+          type="button"
+          (click)="onReset()"
+          style="
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+        >
+          Reset All Forms
+        </button>
+        <button
+          type="button"
+          (click)="onClear()"
+          style="
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          "
+        >
+          Clear All Fields
+        </button>
+      </div>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        <strong>Reset:</strong> Resets all forms and clears validation states<br>
+        <strong>Clear:</strong> Clears all field values but maintains form state
+      </p>
+    </div>
+  </div>
+
+  <!-- Native HTML Time Input Comparison -->
+  <div style="margin-bottom: 30px;">
+    <h2>3. Native HTML Time Input (for comparison)</h2>
+    <form
+      (submit)="handleNativeFormSubmit($event)"
+      style="border: 1px solid #ccc; padding: 15px; border-radius: 4px;"
+    >
+      <div style="margin-bottom: 15px;">
+        <label for="nativeTime" style="display: block; margin-bottom: 5px;">
+          <strong>Native Time Input:</strong>
+        </label>
+        <input
+          id="nativeTime"
+          name="nativeTime"
+          type="time"
+          required
+          style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+        />
+
+        <div style="margin-top: 5px; font-size: 12px; color: #666;">
+          Reference: Native browser validation behavior
+        </div>
+      </div>
+
+      <button type="submit" style="margin-top: 10px;">
+        Submit Native Form
+      </button>
+    </form>
+
+    <p style="font-size: 12px; color: #666; margin-top: 10px;">
+      <strong>Reference:</strong> This shows how native time input behaves with HTML5 validation.
+    </p>
+  </div>
+
+  <!-- Debug Information -->
+  <div style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+    <h3>Debug Information</h3>
+    <div style="font-family: monospace; font-size: 12px;">
+      <div>Form 1 Value: {{ timeValue1 || 'empty' }}</div>
+      <div>Form 2 Value: {{ timeValue3 || 'empty' }}</div>
+      <div>Optional Field Value: {{ timeValue2 || 'empty' }}</div>
+    </div>
+    <p style="font-size: 12px; color: #666; margin-top: 10px;">
+      Open browser console to see detailed form submission logs.
+    </p>
+  </div>
+</div>

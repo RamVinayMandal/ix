@@ -244,7 +244,7 @@ export default function DateInputTest() {
         <form
           ref={nativeFormRef}
           onSubmit={handleNativeSubmit}
-          noValidate // Enable HTML5 validation
+          // noValidate // Enable HTML5 validation
           style={{
             border: '1px solid #007bff',
             padding: '20px',

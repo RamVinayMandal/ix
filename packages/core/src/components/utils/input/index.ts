@@ -12,23 +12,11 @@ import { IxComponent } from '../internal';
 export * from './validation';
 
 /**
- * Handle form validation setup for different framework scenarios
- * - React: Convert data-novalidate to novalidate
- * - All frameworks: Set up form validation listeners when HTML5 validation is enabled
+ * Handle form validation setup for HTML5 validation mode
  */
 export function handleFormNoValidateAttribute(formInternals: ElementInternals): (() => void) | undefined {
   const form = formInternals.form;
-  if (!form) return;
-
-  // Handle React's data-novalidate attribute
-  if (form.hasAttribute('data-novalidate')) {
-    form.setAttribute('novalidate', '');
-    return;
-  }
-
-  // If form doesn't have novalidate attribute, HTML5 validation is enabled
-  // Set up form submit listener to ensure custom elements participate in validation
-  if (!form.hasAttribute('novalidate')) {
+  if (!form?.noValidate) {
     const submitHandler = async (e: Event) => {
       const input = await (formInternals as any).getNativeInputElement?.();
       if (input && !input.validity.valid) {
@@ -37,14 +25,14 @@ export function handleFormNoValidateAttribute(formInternals: ElementInternals): 
       }
     };
 
-    form.addEventListener('submit', submitHandler);
-    return () => form.removeEventListener('submit', submitHandler);
+    form?.addEventListener('submit', submitHandler);
+    return () => form?.removeEventListener('submit', submitHandler);
   }
 }
 
 /**
- * Handle internal validation on form submit when noValidate is true
- * This triggers validation display when HTML5 validation is disabled
+ * Handle internal validation on form submit for security
+ * This always runs regardless of HTML5 validation to prevent tampering
  */
 export function handleInternalValidationOnSubmit(
   formInternals: ElementInternals,
@@ -57,14 +45,35 @@ export function handleInternalValidationOnSubmit(
   }
 ): (() => void) | undefined {
   const form = formInternals.form;
-  if (!form || !form.hasAttribute('novalidate')) return;
+  if (!form) return;
 
-  const submitHandler = async (_e: Event) => {
-    // Mark as touched to trigger validation display
+  const submitHandler = async (event: Event) => {
+    // Always check internal validation for security (prevent tampering)
+    let hasValidationError = false;
+
+    // Check required field validation
     if (component.required && !component.value) {
       (component as any).touched = true;
-      await component.updateFormValidity?.();
+      component.updateFormValidity?.();
       await component.syncValidationClasses?.();
+      hasValidationError = true;
+    }
+
+    // Check format validation (if component has getValidityState)
+    if ((component as any).isInputInvalid) {
+      hasValidationError = true;
+    }
+
+    // Prevent form submission if validation fails
+    if (hasValidationError) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Focus the invalid field for better UX
+      const input = await (formInternals as any).getNativeInputElement?.();
+      if (input) {
+        input.focus();
+      }
     }
   };
 

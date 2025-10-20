@@ -1,0 +1,395 @@
+<!--
+SPDX-FileCopyrightText: 2025 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Input NoValidate Test</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f5f5;
+        color: #333;
+      }
+      .container {
+        max-width: 800px;
+        height: 700px;
+        overflow: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        color: #333;
+      }
+      .form-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: #fafafa;
+        color: #333;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+      .form-description {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #666;
+      }
+      .form-test-description {
+        font-size: 12px;
+        color: #666;
+        margin-top: 10px;
+      }
+      .submit-btn {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: #007acc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .submit-btn:hover {
+        background: #005a99;
+      }
+      .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+      .btn-secondary:hover {
+        background: #545b62;
+      }
+      .btn-info {
+        background: #17a2b8;
+        color: white;
+      }
+      .btn-info:hover {
+        background: #138496;
+      }
+      .message {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f0f8ff;
+        border: 1px solid #007acc;
+        border-radius: 4px;
+        color: #333;
+      }
+      .debug-info {
+        margin-top: 30px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        color: #333;
+      }
+      .debug-values {
+        font-family: monospace;
+        font-size: 12px;
+        color: #333;
+      }
+      h1, h2, h3 {
+        color: #333;
+      }
+      p {
+        color: #333;
+      }
+      ix-time-input {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>HTML Time Input - NoValidate Test</h1>
+
+      <!-- Form 1: HTML5 Validation Enabled -->
+      <div class="form-section">
+        <h2>1. Form with HTML5 Validation Enabled</h2>
+        <form id="form1">
+          <div class="form-group">
+            <span class="form-label">Required Time Field:</span>
+            <ix-time-input
+              id="time1"
+              name="time1"
+              label="Required Time"
+              placeholder="Enter time (HH:mm)"
+              required
+            ></ix-time-input>
+
+            <div class="form-description">
+              Expected: Native HTML5 validation tooltip on submit, no red borders
+            </div>
+          </div>
+
+          <div class="form-group">
+            <span class="form-label">Optional Time Field:</span>
+            <ix-time-input
+              id="time2"
+              name="time2"
+              label="Optional Time"
+              placeholder="Enter time (HH:mm)"
+            ></ix-time-input>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+            <button type="submit" class="submit-btn">
+              Submit Form (HTML5 Validation)
+            </button>
+            <button type="button" id="resetForm1" class="btn btn-secondary">
+              Reset Form
+            </button>
+            <button type="button" id="clearForm1" class="btn btn-info">
+              Clear Fields
+            </button>
+          </div>
+        </form>
+
+        <div id="message1" class="message" style="display: none;"></div>
+
+        <p class="form-test-description">
+          <strong>Test:</strong> Click submit without filling required field. Should show native browser validation tooltip.
+        </p>
+      </div>
+
+      <!-- Form 2: Internal Validation (noValidate) -->
+      <div class="form-section">
+        <h2>2. Form with Internal Validation (novalidate)</h2>
+        <form id="form2" novalidate>
+          <div class="form-group">
+            <span class="form-label">Required Time Field:</span>
+            <ix-time-input
+              id="time3"
+              name="time3"
+              label="Required Time"
+              placeholder="Enter time (HH:mm)"
+              required
+            ></ix-time-input>
+
+            <div class="form-description">
+              Expected: Internal validation (red borders) on submit and interaction
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+            <button type="submit" class="submit-btn">
+              Submit Form (Internal Validation)
+            </button>
+            <button type="button" id="resetForm2" class="btn btn-secondary">
+              Reset Form
+            </button>
+            <button type="button" id="clearForm2" class="btn btn-info">
+              Clear Fields
+            </button>
+          </div>
+        </form>
+
+        <p class="form-test-description">
+          <strong>Test:</strong> Click submit without filling required field. Should show red borders and validation styling.
+        </p>
+      </div>
+
+      <!-- Native HTML Time Input Comparison -->
+      <div class="form-section">
+        <h2>3. Native HTML Time Input (for comparison)</h2>
+        <form id="nativeForm">
+          <div class="form-group">
+            <label for="nativeTime" class="form-label">Native Time Input:</label>
+            <input
+              id="nativeTime"
+              name="nativeTime"
+              type="time"
+              required
+              style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 200px;"
+            />
+
+            <div class="form-description">
+              Reference: Native browser validation behavior
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            Submit Native Form
+          </button>
+        </form>
+
+        <p class="form-test-description">
+          <strong>Reference:</strong> This shows how native time input behaves with HTML5 validation.
+        </p>
+      </div>
+
+      <!-- Debug Information -->
+      <div class="debug-info">
+        <h3>Debug Information</h3>
+        <div id="debugValues" class="debug-values">
+          <div>Form 1 Value: <span id="time1Value">empty</span></div>
+          <div>Form 2 Value: <span id="time3Value">empty</span></div>
+          <div>Optional Field Value: <span id="time2Value">empty</span></div>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: 10px;">
+          Open browser console to see detailed form submission logs.
+        </p>
+      </div>
+    </div>
+
+    <script type="module" src="./init.js"></script>
+    <script>
+      // Form handling
+      document.getElementById('form1').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = e.target;
+
+        console.log('=== FORM 1: HTML5 Validation Enabled ===');
+        console.log('Form submitted with HTML5 validation enabled');
+
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        console.log('Form data:');
+        Object.entries(data).forEach(([key, value]) => {
+          console.log(`  ${key}: ${value}`);
+        });
+
+        // HTML5 validation check
+        const messageEl = document.getElementById('message1');
+        if (form.checkValidity()) {
+          console.log('✅ Form is valid according to HTML5 validation');
+          messageEl.textContent = '✅ Form submitted successfully! HTML5 validation passed.';
+          messageEl.style.display = 'block';
+        } else {
+          console.log('❌ Form is invalid according to HTML5 validation');
+          messageEl.textContent = '❌ Form validation failed. Please check the fields.';
+          messageEl.style.display = 'block';
+        }
+        console.log('==========================================');
+      });
+
+      document.getElementById('form2').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const form = e.target;
+
+        console.log('=== FORM 2: Internal Validation (noValidate) ===');
+        console.log('Form submitted with noValidate (HTML5 validation bypassed)');
+
+        // Get form data
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        console.log('Form data:');
+        Object.entries(data).forEach(([key, value]) => {
+          console.log(`  ${key}: ${value}`);
+        });
+
+        // Manual validation check could be added here
+        console.log('✅ Form submitted with internal validation handling');
+        console.log('==========================================');
+      });
+
+      document.getElementById('nativeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Native form submitted');
+      });
+
+      // Debug value updates
+      function updateDebugValues() {
+        const time1 = document.getElementById('time1');
+        const time2 = document.getElementById('time2');
+        const time3 = document.getElementById('time3');
+
+        document.getElementById('time1Value').textContent = time1.value || 'empty';
+        document.getElementById('time2Value').textContent = time2.value || 'empty';
+        document.getElementById('time3Value').textContent = time3.value || 'empty';
+      }
+
+      // Reset and Clear handlers for Form 1
+      document.getElementById('resetForm1').addEventListener('click', function() {
+        console.log('=== FORM 1 RESET ===');
+        const form = document.getElementById('form1');
+        form.reset();
+
+        // Reset IX time inputs specifically
+        const time1 = document.getElementById('time1');
+        const time2 = document.getElementById('time2');
+        time1.value = '';
+        time2.value = '';
+
+        console.log('Form 1 has been reset');
+        updateDebugValues();
+        console.log('=====================');
+      });
+
+      document.getElementById('clearForm1').addEventListener('click', function() {
+        console.log('=== FORM 1 CLEAR ===');
+        const time1 = document.getElementById('time1');
+        const time2 = document.getElementById('time2');
+
+        time1.value = '';
+        time2.value = '';
+
+        console.log('Form 1 fields cleared');
+        updateDebugValues();
+        console.log('=====================');
+      });
+
+      // Reset and Clear handlers for Form 2
+      document.getElementById('resetForm2').addEventListener('click', function() {
+        console.log('=== FORM 2 RESET ===');
+        const form = document.getElementById('form2');
+        form.reset();
+
+        // Reset IX time input specifically
+        const time3 = document.getElementById('time3');
+        time3.value = '';
+
+        console.log('Form 2 has been reset');
+        updateDebugValues();
+        console.log('=====================');
+      });
+
+      document.getElementById('clearForm2').addEventListener('click', function() {
+        console.log('=== FORM 2 CLEAR ===');
+        const time3 = document.getElementById('time3');
+
+        time3.value = '';
+
+        console.log('Form 2 fields cleared');
+        updateDebugValues();
+        console.log('=====================');
+      });
+
+      // Listen for value changes
+      document.addEventListener('DOMContentLoaded', function() {
+        const timeInputs = document.querySelectorAll('ix-time-input');
+        timeInputs.forEach(input => {
+          input.addEventListener('valueChange', updateDebugValues);
+        });
+
+        // Initial update
+        updateDebugValues();
+      });
+    </script>
+  </body>
+</html>

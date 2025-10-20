@@ -51,6 +51,7 @@ import CategoryFilter from './preview-examples/category-filter';
 import CategoryFilterSuggestions from './preview-examples/category-filter-suggestions';
 import Checkbox from './preview-examples/checkbox';
 import CheckboxIndeterminate from './preview-examples/checkbox-indeterminate';
+import CheckboxRequiredTest from './preview-examples/checkbox-required-test';
 import Chip from './preview-examples/chip';
 import Content from './preview-examples/content';
 import ContentHeader from './preview-examples/content-header';
@@ -178,6 +179,7 @@ import Radio from './preview-examples/radio';
 import RadioButton from './preview-examples/radio-button';
 import RadioDisabled from './preview-examples/radio-disabled';
 import RadioGroup from './preview-examples/radio-group';
+import RadioRequiredTest from './preview-examples/radio-required-test';
 import RadioValidation from './preview-examples/radio-validation';
 import Select from './preview-examples/select';
 import SelectEditable from './preview-examples/select-editable';
@@ -205,6 +207,7 @@ import TextareaValidation from './preview-examples/textarea-validation';
 import ThemeSwitcher from './preview-examples/theme-switcher';
 import Tile from './preview-examples/tile';
 import TimeInput from './preview-examples/time-input';
+import TimeInputNovalidateTest from './preview-examples/time-input-novalidate-test';
 import Timepicker from './preview-examples/timepicker';
 import Toast from './preview-examples/toast';
 import ToastCustom from './preview-examples/toast-custom';
@@ -324,6 +327,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           element={<CheckboxIndeterminate />}
         />
         <Route path="/preview/checkbox" element={<Checkbox />} />
+        <Route
+          path="/preview/checkbox-required-test"
+          element={<CheckboxRequiredTest />}
+        />
         <Route path="/preview/custom-field" element={<CustomField />} />
         <Route
           path="/preview/custom-field-validation"
@@ -571,6 +578,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/preview/radio" element={<Radio />} />
         <Route path="/preview/radio-disabled" element={<RadioDisabled />} />
         <Route path="/preview/radio-group" element={<RadioGroup />} />
+        <Route
+          path="/preview/radio-required-test"
+          element={<RadioRequiredTest />}
+        />
         <Route path="/preview/radio-validation" element={<RadioValidation />} />
         <Route path="/preview/select" element={<Select />} />
         <Route path="/preview/select-editable" element={<SelectEditable />} />
@@ -653,6 +664,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/preview/theme-switcher" element={<ThemeSwitcher />} />
         <Route path="/preview/tile" element={<Tile />} />
         <Route path="/preview/time-input" element={<TimeInput />} />
+        <Route
+          path="/preview/time-input-novalidate-test"
+          element={<TimeInputNovalidateTest />}
+        />
         <Route path="/preview/timepicker" element={<Timepicker />} />
         <Route path="/preview/toast-custom" element={<ToastCustom />} />
         <Route path="/preview/toast-position" element={<ToastPosition />} />

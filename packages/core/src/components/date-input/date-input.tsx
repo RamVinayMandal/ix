@@ -235,7 +235,6 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   private classObserver?: ClassMutationObserver;
   private invalidReason?: string;
   private touched = false;
-  private isHtml5ValidationEnabled = false;
 
   private disposableChangesAndVisibilityObservers?: DisposableChangesAndVisibilityObservers;
   private formValidationCleanup?: () => void;
@@ -301,8 +300,7 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     this.checkClassList();
     this.updateFormInternalValue(this.value);
   }
-  componentDidLoad(): void {
-    this.updateHtml5ValidationState();
+  async componentDidLoad(): Promise<void> {
     this.updateFormValidity();
     this.formValidationCleanup = handleFormNoValidateAttribute(this.formInternals);
 
@@ -318,14 +316,7 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
     });
   }
 
-  private updateHtml5ValidationState(): void {
-    const form = this.formInternals.form;
-    // HTML5 validation is enabled when:
-    // 1. Form exists AND
-    // 2. Form does NOT have 'novalidate' attribute AND
-    // 3. Form does NOT have 'data-novalidate' attribute
-    this.isHtml5ValidationEnabled = !!form && !form.hasAttribute('novalidate') && !form.hasAttribute('data-novalidate');
-  }  private updatePaddings() {
+  private updatePaddings() {
     adjustPaddingForStartAndEnd(
       this.slotStartRef.current,
       this.slotEndRef.current,
@@ -358,9 +349,6 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   }
 
   async onInput(value: string | undefined) {
-    // Update validation state in case form attributes changed
-    this.updateHtml5ValidationState();
-
     this.value = value;
     if (!value) {
       this.isInputInvalid = this.required === true && this.touched;
@@ -424,7 +412,7 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
         <input
           autoComplete="off"
           class={{
-            'is-invalid': this.isInputInvalid && !this.isHtml5ValidationEnabled,
+            'is-invalid': this.isInputInvalid,
           }}
           disabled={this.disabled}
           readOnly={this.readonly}
@@ -435,13 +423,11 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
           value={this.value ?? ''}
           placeholder={this.placeholder}
           name={this.name}
-          onInput={(event) => {
+          onInput={async (event) => {
             const target = event.target as HTMLInputElement;
 
-            // Clear HTML5 validation tooltip when user starts typing
-            if (this.isHtml5ValidationEnabled) {
-              target.setCustomValidity('');
-            }
+            // Clear HTML5 custom validity when user starts typing (for both validation modes)
+            target.setCustomValidity('');
 
             this.onInput(target.value);
           }}
@@ -455,14 +441,8 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
             }
           }}
           onFocus={async () => {
-            // Update validation state in case form attributes changed
-            this.updateHtml5ValidationState();
-
-            // Don't auto-open dropdown if HTML5 validation is enabled and field is invalid
-            // This prevents dropdown from opening when form validation focuses the field
-            const isFormValidationFocus = this.isHtml5ValidationEnabled && this.required && !this.value;
-
-            if (!this.readonly && !this.disabled && !isFormValidationFocus) {
+            // Always open dropdown on focus to align with Figma design
+            if (!this.readonly && !this.disabled) {
               this.openDropdown();
             }
             this.ixFocus.emit();
@@ -470,8 +450,6 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
           onBlur={async () => {
             this.ixBlur.emit();
             this.touched = true;
-            // Update validation state in case form attributes changed
-            this.updateHtml5ValidationState();
             await this.updateFormValidity();
             await this.syncValidationClasses();
           }}
@@ -494,28 +472,19 @@ export class DateInput implements IxInputFieldComponent<string | undefined> {
   }
 
   @HookValidationLifecycle()
-  hookValidationLifecycle({
+  async hookValidationLifecycle({
     isInfo,
     isInvalid,
     isInvalidByRequired,
     isValid,
     isWarning,
   }: ValidationResults) {
-    // Update validation state to ensure we have the latest form attributes
-    this.updateHtml5ValidationState();
-
-    // Don't apply internal validation styling when HTML5 validation is enabled
-    if (this.isHtml5ValidationEnabled) {
-      this.isInvalid = false;
-      this.isInfo = isInfo;
-      this.isValid = false;
-      this.isWarning = isWarning;
-    } else {
-      this.isInvalid = isInvalid || isInvalidByRequired || this.isInputInvalid;
-      this.isInfo = isInfo;
-      this.isValid = isValid;
-      this.isWarning = isWarning;
-    }
+    // Always apply IX validation styling for consistent appearance
+    // Internal validation (JS validation) works alongside HTML5 validation
+    this.isInvalid = isInvalid || isInvalidByRequired || this.isInputInvalid;
+    this.isInfo = isInfo;
+    this.isValid = isValid;
+    this.isWarning = isWarning;
   }
 
   @Watch('isInputInvalid')
