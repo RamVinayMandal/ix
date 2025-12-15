@@ -127,6 +127,11 @@ export namespace Components {
          */
         "icon": string | undefined;
         /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive": boolean;
+        /**
           * Card selection
           * @default false
          */
@@ -425,6 +430,11 @@ export namespace Components {
         "variant": ButtonVariant;
     }
     interface IxCard {
+        /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive": boolean;
         /**
           * Show card in selected state
           * @default false
@@ -2895,6 +2905,11 @@ export namespace Components {
          */
         "notification"?: string;
         /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive": boolean;
+        /**
           * Card subheading
          */
         "subheading"?: string;
@@ -3726,6 +3741,11 @@ export namespace Components {
           * @default 5000
          */
         "autoCloseDelay": number;
+        /**
+          * Allows to hide the icon in the toast.
+          * @default false
+         */
+        "hideIcon": boolean;
         /**
           * Icon of toast
          */
@@ -5920,6 +5940,11 @@ declare namespace LocalJSX {
          */
         "icon"?: string | undefined;
         /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive"?: boolean;
+        /**
           * Card selection
           * @default false
          */
@@ -6240,6 +6265,11 @@ declare namespace LocalJSX {
         "variant"?: ButtonVariant;
     }
     interface IxCard {
+        /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive"?: boolean;
         /**
           * Show card in selected state
           * @default false
@@ -8870,6 +8900,11 @@ declare namespace LocalJSX {
          */
         "notification"?: string;
         /**
+          * If true, disables hover and active styles and changes cursor to default
+          * @default false
+         */
+        "passive"?: boolean;
+        /**
           * Card subheading
          */
         "subheading"?: string;
@@ -9710,6 +9745,11 @@ declare namespace LocalJSX {
           * @default 5000
          */
         "autoCloseDelay"?: number;
+        /**
+          * Allows to hide the icon in the toast.
+          * @default false
+         */
+        "hideIcon"?: boolean;
         /**
           * Icon of toast
          */
