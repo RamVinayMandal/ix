@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -69,6 +69,7 @@ import DateInputLabel from '../preview-examples/date-input-label';
 import DateInputReadonly from '../preview-examples/date-input-readonly';
 import DateInputValidation from '../preview-examples/date-input-validation';
 import DateInputWithSlots from '../preview-examples/date-input-with-slots';
+import DateInputFormTest from '../preview-examples/date-input-form-test';
 import Datepicker from '../preview-examples/datepicker';
 import DatepickerLocale from '../preview-examples/datepicker-locale';
 import DatepickerRange from '../preview-examples/datepicker-range';
@@ -219,6 +220,8 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeSwitcher from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import Timepicker from '../preview-examples/timepicker';
+import TimeInput from '../preview-examples/time-input';
+import TimeInputFormTest from '../preview-examples/time-input-form-test';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
 import ToastPosition from '../preview-examples/toast-position';
@@ -299,6 +302,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     DateInputReadonly,
     DateInputValidation,
     DateInputWithSlots,
+    DateInputFormTest,
     ContentExample,
     ContentHeader,
     ContentHeaderNoBack,
@@ -434,6 +438,8 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     ThemeSwitcher,
     Tile,
     Timepicker,
+    TimeInput,
+    TimeInputFormTest,
     ToastCustom,
     ToastPosition,
     Toast,
@@ -489,5 +495,6 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
