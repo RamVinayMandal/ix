@@ -15,213 +15,162 @@ LICENSE file in the root directory of this source tree.
 
   <button
     (click)="clearLogs()"
-    style="padding: 0.5rem 1rem; margin-bottom: 1rem; border: none; border-radius: 4px; cursor: pointer; color: #333">
-    Clear Logs
+    style="padding: 0.5rem 1rem; margin-bottom: 1rem; border: none; border-radius: 4px; cursor: pointer; color: white">
+    🧹 Clear Log
   </button>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem">
+  <!-- Grid Layout for Examples -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem">
 
-    <!-- Scenario 1: Required (Standalone) -->
-    <div style="border: 2px solid #c62828; border-radius: 8px; padding: 1rem">
+    <!-- 1. Required Standalone -->
+    <div style="border: 1px solid #f44336; padding: 1rem; border-radius: 4px">
       <h4 style="margin: 0 0 0.5rem 0; color: #c62828">1️⃣ Required (Standalone)</h4>
       <ix-time-input
-        #requiredInput
+        #requiredRef
         name="req1"
         label="Required Time"
         [required]="true"
-        (valueChange)="onValueChange($event, '1️⃣')"
-        (focus)="onFocus('1️⃣')"
-        (blur)="onBlur('1️⃣')"
+        [value]="requiredValue"
+        (valueChange)="onValueChange($event, '1️⃣', 'requiredValue')"
+        (focus)="onFocus('1️⃣', requiredRef, '1️⃣ FOCUS')"
+        (blur)="onBlur('1️⃣', requiredRef, '1️⃣ BLUR')"
       ></ix-time-input>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
-        <button
-          type="button"
-          (click)="setEmpty(requiredInput, '1️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">
-          Empty
-        </button>
-        <button
-          type="button"
-          (click)="setValid(requiredInput, '1️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">
-          Valid (14:30:00)
-        </button>
-        <button
-          type="button"
-          (click)="setInvalid(requiredInput, '1️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">
-          Invalid
-        </button>
-        <button
-          type="button"
-          (click)="triggerManualBlur(requiredInput, '1️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">
-          Manual Blur
-        </button>
-        <button
-          type="button"
-          (click)="clearInput(requiredInput, '1️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">
-          Clear()
-        </button>
+        <button type="button" (click)="requiredValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+        <button type="button" (click)="requiredValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+        <button type="button" (click)="requiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+        <button type="button" (click)="manualBlurAndDebug(requiredRef, '1️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+        <button type="button" (click)="clearAndLog(requiredRef, assignEmpty.bind(this, 'requiredValue'), '1️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
       </div>
     </div>
 
-    <!-- Scenario 2: Optional (Standalone) -->
-    <div style="border: 2px solid #1976d2; border-radius: 8px; padding: 1rem;">
-      <h4 style="margin: 0 0 0.5rem 0; color: #1976d2">2️⃣ Optional (Standalone)</h4>
+    <!-- 2. Optional Standalone -->
+    <div style="border: 1px solid #4caf50; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #2e7d32">2️⃣ Optional (Standalone)</h4>
       <ix-time-input
-        #optionalInput
+        #optionalRef
         name="opt1"
         label="Optional Time"
-        [required]="false"
-        (valueChange)="onValueChange($event, '2️⃣')"
-        (focus)="onFocus('2️⃣')"
-        (blur)="onBlur('2️⃣')"
+        [value]="optionalValue"
+        (valueChange)="onValueChange($event, '2️⃣', 'optionalValue')"
+        (focus)="onFocus('2️⃣', optionalRef, '2️⃣ FOCUS')"
+        (blur)="onBlur('2️⃣', optionalRef, '2️⃣ BLUR')"
       ></ix-time-input>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
-        <button
-          type="button"
-          (click)="setEmpty(optionalInput, '2️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">
-          Empty
-        </button>
-        <button
-          type="button"
-          (click)="setValid(optionalInput, '2️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">
-          Valid (14:30:00)
-        </button>
-        <button
-          type="button"
-          (click)="setInvalid(optionalInput, '2️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">
-          Invalid
-        </button>
-        <button
-          type="button"
-          (click)="triggerManualBlur(optionalInput, '2️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">
-          Manual Blur
-        </button>
-        <button
-          type="button"
-          (click)="clearInput(optionalInput, '2️⃣')"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">
-          Clear()
-        </button>
+        <button type="button" (click)="optionalValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; color: white">Empty</button>
+        <button type="button" (click)="optionalValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+        <button type="button" (click)="optionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+        <button type="button" (click)="manualBlurAndDebug(optionalRef, '2️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+        <button type="button" (click)="clearAndLog(optionalRef, assignEmpty.bind(this, 'optionalValue'), '2️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
       </div>
     </div>
 
-    <!-- Scenario 3: Form Context (Required) -->
-    <div style="border: 2px solid #388e3c; border-radius: 8px; padding: 1rem">
-      <h4 style="margin: 0 0 0.5rem 0; color: #388e3c">3️⃣ Form Required</h4>
-      <form [formGroup]="testForm" (ngSubmit)="onFormSubmit($event, '3️⃣')" novalidate>
+    <!-- 3. Form Required -->
+    <div style="border: 1px solid #2196F3; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #1565c0">3️⃣ Required (In Form)</h4>
+      <form ngNativeValidate [formGroup]="testForm" (ngSubmit)="onSubmit('3️⃣', 'Form')">
         <ix-time-input
-          #formRequiredInput
-          name="form_req"
-          label="Form Required Time"
-          formControlName="requiredTime"
-          (valueChange)="onValueChange($event, '3️⃣')"
-          (focus)="onFocus('3️⃣')"
-          (blur)="onBlur('3️⃣')"
+          #formRequiredRef
+          name="formReq"
+          label="Required Time"
+          [required]="true"
+          [value]="formRequiredValue"
+          (valueChange)="onValueChange($event, '3️⃣', 'formRequiredValue')"
+          (focus)="onFocus('3️⃣', formRequiredRef, '3️⃣ FOCUS')"
+          (blur)="onBlur('3️⃣', formRequiredRef, '3️⃣ BLUR')"
         ></ix-time-input>
         <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
-          <button
-            type="button"
-            (click)="setEmpty(formRequiredInput, '3️⃣')"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">
-            Empty
-          </button>
-          <button
-            type="button"
-            (click)="setValid(formRequiredInput, '3️⃣')"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">
-            Valid (14:30:00)
-          </button>
-          <button
-            type="button"
-            (click)="setInvalid(formRequiredInput, '3️⃣')"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">
-            Invalid
-          </button>
-          <button
-            type="button"
-            (click)="triggerManualBlur(formRequiredInput, '3️⃣')"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">
-            Manual Blur
-          </button>
-          <button
-            type="button"
-            (click)="clearInput(formRequiredInput, '3️⃣')"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">
-            Clear()
-          </button>
-          <button
-            type="submit"
-            style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #795548; color: white">
-            Submit
-          </button>
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="formRequiredValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="formRequiredValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="formRequiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+          <button type="button" (click)="manualBlurAndDebug(formRequiredRef, '3️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearAndLog(formRequiredRef, assignEmpty.bind(this, 'formRequiredValue'), '3️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
         </div>
       </form>
     </div>
-  </div>
 
-  <!-- Time Range Example -->
-  <div style="border: 2px solid #673ab7; border-radius: 8px; padding: 1rem; margin-bottom: 1rem">
-    <h4 style="margin: 0 0 0.5rem 0; color: #673ab7">4️⃣ Time Range</h4>
-    <div style="display: flex; gap: 1rem; align-items: end; flex-wrap: wrap">
-      <div style="flex: 1; min-width: 200px">
+    <!-- 4. Form Optional -->
+    <div style="border: 1px solid #009688; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #00695c">4️⃣ Optional (In Form)</h4>
+      <form ngNativeValidate [formGroup]="testForm" (ngSubmit)="onSubmit('4️⃣', 'Form')">
         <ix-time-input
-          #rangeStartInput
-          name="range_start"
-          label="Start Time"
-          (valueChange)="onValueChange($event, '4️⃣ Start')"
-          (focus)="onFocus('4️⃣ Start')"
-          (blur)="onBlur('4️⃣ Start')"
+          #formOptionalRef
+          name="formOpt"
+          label="Optional Time"
+          [value]="formOptionalValue"
+          (valueChange)="onValueChange($event, '4️⃣', 'formOptionalValue')"
+          (focus)="onFocus('4️⃣', formOptionalRef, '4️⃣ FOCUS')"
+          (blur)="onBlur('4️⃣', formOptionalRef, '4️⃣ BLUR')"
         ></ix-time-input>
-      </div>
-      <div style="flex: 1; min-width: 200px">
-        <ix-time-input
-          #rangeEndInput
-          name="range_end"
-          label="End Time"
-          (valueChange)="onValueChange($event, '4️⃣ End')"
-          (focus)="onFocus('4️⃣ End')"
-          (blur)="onBlur('4️⃣ End')"
-        ></ix-time-input>
-      </div>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
-        <button
-          type="button"
-          (click)="setTimeRange()"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #673ab7; color: white">
-          Set Work Hours
-        </button>
-        <button
-          type="button"
-          (click)="setMeetingTimes()"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #3f51b5; color: white">
-          Set Meeting
-        </button>
-        <button
-          type="button"
-          (click)="setCurrentTime()"
-          style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">
-          Current Time
-        </button>
-      </div>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="formOptionalValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="formOptionalValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="formOptionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+          <button type="button" (click)="manualBlurAndDebug(formOptionalRef, '4️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearAndLog(formOptionalRef, assignEmpty.bind(this, 'formOptionalValue'), '4️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
     </div>
+
+    <!-- 5. NoValidate Required -->
+    <div style="border: 1px solid #ff9800; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #e65100">5️⃣ Required (NoValidate Form)</h4>
+      <form [formGroup]="noValidateForm" (ngSubmit)="onSubmit('5️⃣', 'NoValidate form')" novalidate>
+        <ix-time-input
+          #noValidateRequiredRef
+          name="noValReq"
+          label="Required Time"
+          [required]="true"
+          [value]="noValidateRequiredValue"
+          (valueChange)="onValueChange($event, '5️⃣', 'noValidateRequiredValue')"
+          (focus)="onFocus('5️⃣', noValidateRequiredRef, '5️⃣ FOCUS')"
+          (blur)="onBlur('5️⃣', noValidateRequiredRef, '5️⃣ BLUR')"
+        ></ix-time-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="noValidateRequiredValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="noValidateRequiredValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="noValidateRequiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+          <button type="button" (click)="manualBlurAndDebug(noValidateRequiredRef, '5️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearAndLog(noValidateRequiredRef, assignEmpty.bind(this, 'noValidateRequiredValue'), '5️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 6. NoValidate Optional -->
+    <div style="border: 1px solid #9c27b0; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #6a1b9a">6️⃣ Optional (NoValidate Form)</h4>
+      <form [formGroup]="noValidateForm" (ngSubmit)="onSubmit('6️⃣', 'NoValidate form')" novalidate>
+        <ix-time-input
+          #noValidateOptionalRef
+          name="noValOpt"
+          label="Optional Time"
+          [value]="noValidateOptionalValue"
+          (valueChange)="onValueChange($event, '6️⃣', 'noValidateOptionalValue')"
+          (focus)="onFocus('6️⃣', noValidateOptionalRef, '6️⃣ FOCUS')"
+          (blur)="onBlur('6️⃣', noValidateOptionalRef, '6️⃣ BLUR')"
+        ></ix-time-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="noValidateOptionalValue = ''" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="noValidateOptionalValue = '14:30:00'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="noValidateOptionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
+          <button type="button" (click)="manualBlurAndDebug(noValidateOptionalRef, '6️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearAndLog(noValidateOptionalRef, assignEmpty.bind(this, 'noValidateOptionalValue'), '6️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
   </div>
 
-  <!-- Event Logs -->
-  <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem;">
-    <h4 style="margin: 0 0 0.5rem 0; color: #333">📋 Event Logs</h4>
-    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 4px; padding: 0.5rem; background-color: white; font-family: monospace; font-size: 0.85rem">
-      <div *ngIf="logs.length === 0" style="color: #666; font-style: italic">
-        No events yet. Interact with the time inputs above to see logs here.
-      </div>
-      <div *ngFor="let log of logs" [style.color]="getLogColor(log)" style="margin-bottom: 0.25rem">
+  <!-- Event Log -->
+  <div style="margin-top: 1rem">
+    <h3 style="margin: 0 0 0.5rem 0">🪵 Event Log</h3>
+    <div style="border: 1px solid #ccc; border-radius: 4px; padding: 0.75rem; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.8rem">
+      <div *ngIf="logs.length === 0" style="color: #666; font-style: italic">No events yet... Interact with fields above</div>
+      <div *ngFor="let log of logs" [ngStyle]="{ 'margin-bottom': '1px', 'padding': '1px 0', 'color': getLogColor(log) }">
         {{ log }}
       </div>
     </div>
