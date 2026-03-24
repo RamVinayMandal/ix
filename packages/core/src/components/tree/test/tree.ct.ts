@@ -110,7 +110,7 @@ regressionTest('update tree', async ({ mount, page }) => {
 
   const item3 = tree.locator('ix-tree-item').nth(4);
   await expect(item3).toBeVisible();
-  await expect(item3).toHaveText('Sample Child 3');
+  await expect(item3).toHaveText(/Sample Child 3/);
   await expect(item3).toHaveCSS('padding-left', '16px');
 
   await updateModel(tree, {
@@ -465,41 +465,177 @@ regressionTest(
 );
 
 regressionTest(
-  'disabled item should have disabled class',
+  'should handle click events on custom rendered tree items',
+  async ({ mount, page }) => {
+    const tree = await initializeTree(mount, page);
+
+    await tree.evaluate(
+      (t) =>
+        ((t as HTMLIxTreeElement).renderItem = (
+          _index,
+          item,
+          _dataList,
+          context,
+          update
+        ) => {
+          const el = document.createElement('ix-tree-item');
+          const treeItem = item as TreeItem<any>;
+          el.hasChildren = treeItem.hasChildren;
+          el.context = context[treeItem.id];
+
+          const container = document.createElement('div');
+          container.classList.add('custom-content');
+          container.style.display = 'flex';
+          container.style.alignItems = 'center';
+
+          const name = document.createElement('span');
+          name.classList.add('custom-name');
+          name.innerText = treeItem.data.name;
+
+          container.appendChild(name);
+          el.appendChild(container);
+
+          update((updateTreeItem) => {
+            name.innerText = updateTreeItem.data.name;
+          });
+
+          return el;
+        })
+    );
+
+    const root = tree.locator('ix-tree-item').first();
+    await root.locator('.icon-toggle-container').click();
+
+    const customItem = tree.locator('ix-tree-item').nth(1);
+    const customName = customItem.locator('.custom-name');
+    await expect(customName).toBeVisible();
+    await expect(customName).toHaveText('Sample Child 1');
+    await customName.click();
+    await expect(customItem).toHaveClass(/selected/);
+  }
+);
+
+const createLargeTreeModel = (itemCount: number): Record<string, any> => {
+  const model: Record<string, any> = {
+    root: {
+      id: 'root',
+      data: { name: '' },
+      hasChildren: true,
+      children: [] as string[],
+    },
+  };
+
+  for (let i = 1; i <= itemCount; i++) {
+    const id = `item-${i}`;
+    model['root'].children.push(id);
+    model[id] = {
+      id,
+      data: { name: `Item ${i}` },
+      hasChildren: false,
+      children: [],
+    };
+  }
+
+  return model;
+};
+
+regressionTest(
+  'should not trigger continuous requestAnimationFrame when idle',
   async ({ mount, page }) => {
     await mount(`
-    <div style="height: 20rem; width: 100%;">
-      <ix-tree root="root"></ix-tree>
-    </div>
-  `);
+      <div style="height: 10rem; width: 100%;">
+        <ix-tree root="root"></ix-tree>
+      </div>
+    `);
 
     const tree = page.locator('ix-tree');
-
-    const modelWithDisabled = {
-      ...defaultModel,
-      'sample-child-1': {
-        ...defaultModel['sample-child-1'],
-        disabled: true,
-      },
-    };
-
     await tree.evaluate(
       (element: HTMLIxTreeElement, [model]) => {
         element.model = model;
       },
-      [modelWithDisabled]
+      [createLargeTreeModel(50)]
     );
 
     await expect(tree).toHaveClass(/hydrated/);
 
-    const sampleItem = tree.locator('ix-tree-item').first();
-    await sampleItem.locator('ix-icon').click();
+    const rafCallCount = await page.evaluate(() => {
+      return new Promise<number>((resolve) => {
+        let count = 0;
+        const originalRAF = globalThis.requestAnimationFrame;
 
-    const disabledItem = tree.locator('ix-tree-item', {
-      hasText: 'Sample Child 1',
+        globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
+          count++;
+          return originalRAF(callback);
+        };
+
+        setTimeout(() => {
+          globalThis.requestAnimationFrame = originalRAF;
+          resolve(count);
+        }, 500);
+      });
     });
 
-    await expect(disabledItem).toBeVisible();
-    await expect(disabledItem).toHaveClass(/disabled/);
+    expect(rafCallCount).toBeLessThan(5);
+  }
+);
+
+regressionTest(
+  'should trigger requestAnimationFrame only during scroll',
+  async ({ mount, page }) => {
+    await mount(`
+      <div style="height: 10rem; width: 100%;">
+        <ix-tree root="root"></ix-tree>
+      </div>
+    `);
+
+    const tree = page.locator('ix-tree');
+    await tree.evaluate(
+      (element: HTMLIxTreeElement, [model]) => {
+        element.model = model;
+      },
+      [createLargeTreeModel(100)]
+    );
+
+    await expect(tree).toHaveClass(/hydrated/);
+
+    const rafCalledDuringScroll = await tree.evaluate((element) => {
+      return new Promise<boolean>((resolve) => {
+        let rafCalled = false;
+        const originalRAF = globalThis.requestAnimationFrame;
+
+        globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
+          rafCalled = true;
+          return originalRAF(callback);
+        };
+
+        element.scrollTop = 200;
+
+        setTimeout(() => {
+          globalThis.requestAnimationFrame = originalRAF;
+          resolve(rafCalled);
+        }, 100);
+      });
+    });
+
+    expect(rafCalledDuringScroll).toBe(true);
+
+    const rafCallCountAfterScroll = await page.evaluate(() => {
+      return new Promise<number>((resolve) => {
+        let count = 0;
+        const originalRAF = globalThis.requestAnimationFrame;
+
+        globalThis.requestAnimationFrame = (callback: FrameRequestCallback) => {
+          count++;
+          return originalRAF(callback);
+        };
+
+        setTimeout(() => {
+          globalThis.requestAnimationFrame = originalRAF;
+          resolve(count);
+        }, 300);
+      });
+    });
+
+    expect(rafCallCountAfterScroll).toBeLessThan(5);
   }
 );

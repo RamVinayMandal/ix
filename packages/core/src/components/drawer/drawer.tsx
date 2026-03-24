@@ -68,7 +68,7 @@ export class Drawer {
    *
    * @since 3.2.0
    */
-  @Prop() ariaLabelCloseButton?: string;
+  @Prop() ariaLabelCloseButton?: string = 'Close drawer';
 
   /**
    * Fire event after drawer is open
@@ -140,7 +140,7 @@ export class Drawer {
   }
 
   private onCloseClicked() {
-    this.toggleDrawer(false);
+    this.show = false;
   }
 
   private clickedOutside(evt: any) {

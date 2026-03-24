@@ -331,6 +331,18 @@ export class Tree {
     this.hyperlist = new VirtualList(this.hostElement, config);
   }
 
+  private getTreeNodeId(target: HTMLElement): string | undefined {
+    let current: HTMLElement | null = target;
+    while (current && current !== this.hostElement) {
+      const id = current.dataset.treeNodeId;
+      if (id) {
+        return id;
+      }
+      current = current.parentElement;
+    }
+    return undefined;
+  }
+
   @Listen('toggle')
   onToggle(event: CustomEvent) {
     const { target } = event;
@@ -341,7 +353,8 @@ export class Tree {
       return;
     }
 
-    const id = target.getAttribute('data-tree-node-id');
+    const id = this.getTreeNodeId(target);
+
     if (!id) {
       return;
     }
@@ -367,7 +380,8 @@ export class Tree {
       return;
     }
 
-    const id = target.getAttribute('data-tree-node-id');
+    const id = this.getTreeNodeId(target);
+
     if (!id) {
       return;
     }
@@ -388,7 +402,9 @@ export class Tree {
     }
 
     if (!event.defaultPrevented) {
-      Object.values(this.context).forEach((c) => (c.isSelected = false));
+      for (const itemContext of Object.values(this.context)) {
+        itemContext.isSelected = false;
+      }
       const context = this.getContext(id);
       context.isSelected = true;
       this.setContext(id, context);

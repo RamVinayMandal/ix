@@ -7,6 +7,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { expect, Locator, Page } from '@playwright/test';
+import { iconGlobe, iconRocket } from '@siemens/ix-icons/icons';
 import { regressionTest } from '@utils/test';
 
 regressionTest('renders', async ({ mount, page }) => {
@@ -304,12 +305,53 @@ regressionTest('should have correct aria label', async ({ mount, page }) => {
 
   const expandButton = page.locator('ix-menu').locator('ix-menu-expand-icon');
 
-  await expect(expandButton).toHaveAttribute('aria-label', 'Expand sidebar');
+  await expect(expandButton).toHaveAttribute('aria-hidden', 'true');
 
   await expandButton.click();
 
-  await expect(expandButton).toHaveAttribute('aria-label', 'Expand sidebar');
+  await expect(expandButton).toHaveAttribute('aria-hidden', 'true');
 });
+
+regressionTest(
+  'should collapse category when menu is programmatically collapsed',
+  async ({ mount, page }) => {
+    await mount(
+      `
+    <ix-application force-breakpoint="lg">
+      <ix-menu>
+        <ix-menu-category label="Top level Category" icon="rocket">
+          <ix-menu-item icon="globe">Nested Tab</ix-menu-item>
+          <ix-menu-item icon="globe">Nested Tab</ix-menu-item>
+        </ix-menu-category>
+      </ix-menu>
+    </ix-application>
+  `,
+      {
+        icons: {
+          iconRocket,
+          iconGlobe,
+        },
+      }
+    );
+
+    const menu = page.locator('ix-menu');
+    const menuExpandIcon = menu.locator('ix-menu-expand-icon');
+    const menuCategory = page.locator('ix-menu-category');
+
+    await menuExpandIcon.click();
+    await expect(menu).toHaveClass(/expanded/);
+
+    await menuCategory.click();
+    await expect(menuCategory).toHaveClass(/expanded/);
+
+    await menu.evaluate((element: HTMLIxMenuElement) => {
+      element.expand = false;
+    });
+
+    await expect(menu).not.toHaveClass(/expanded/);
+    await expect(menuCategory).not.toHaveClass(/expanded/);
+  }
+);
 
 async function clickAboutButton(element: Locator, page: Page) {
   const aboutButton = element.locator('ix-menu-item#aboutAndLegal');
@@ -322,3 +364,53 @@ async function clickSettingsButton(element: Locator, page: Page) {
   await settingsButton.click();
   await page.waitForTimeout(1000);
 }
+
+regressionTest.describe('menu-avatar tooltip', () => {
+  regressionTest(
+    'should show no tooltip when no top(username) property is set',
+    async ({ page, mount }) => {
+      await mount(`
+      <ix-menu>
+        <ix-menu-avatar></ix-menu-avatar>
+      </ix-menu>
+    `);
+
+      const menuAvatar = page.locator('ix-menu-avatar');
+      await menuAvatar.hover();
+
+      const tooltip = page.locator('ix-tooltip');
+      await expect(tooltip).not.toBeAttached();
+    }
+  );
+
+  regressionTest(
+    'should show tooltip text with top(username) or tooltip-text',
+    async ({ page, mount }) => {
+      await mount(`
+        <ix-menu>
+          <ix-menu-avatar top="John Doe"></ix-menu-avatar>
+        </ix-menu>
+      `);
+
+      const menuAvatar = page.locator('ix-menu-avatar');
+      const button = menuAvatar.locator('button.avatar');
+
+      await button.hover();
+
+      const tooltip = page.locator('ix-tooltip');
+      await expect(tooltip).toHaveClass(/hydrated/);
+      await expect(tooltip).toHaveClass(/visible/);
+      await expect(tooltip).toHaveText('John Doe');
+
+      await menuAvatar.evaluate((element) =>
+        element.setAttribute('tooltip-text', 'other text')
+      );
+
+      await button.hover();
+
+      await expect(tooltip).toHaveClass(/hydrated/);
+      await expect(tooltip).toHaveClass(/visible/);
+      await expect(tooltip).toHaveText('other text');
+    }
+  );
+});

@@ -1,5 +1,64 @@
 # @siemens/ix-angular
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2341](https://github.com/siemens/ix/pull/2341) [`0299abd`](https://github.com/siemens/ix/commit/0299abd202dcbdfb8b9483015ae8548fb7a21372) Thanks [@alexkaduk](https://github.com/alexkaduk)! - **feat(dropdown): add enableTopLayer prop for Popover API rendering**
+
+  Introduces a new `enableTopLayer` prop for `ix-dropdown` and all consuming components to enable rendering in the browser's top layer using the Popover API. This resolves z-index and stacking context issues, particularly with AG Grid and other complex layouts.
+
+- [#2280](https://github.com/siemens/ix/pull/2280) [`9842b69`](https://github.com/siemens/ix/commit/9842b690e3a56a585436d493dfe085ee7ded6e64) Thanks [@1307-Dev](https://github.com/1307-Dev)! - Add property `passive` to **ix-card**, **ix-action-card**, and **ix-push-card** allowing to suppress mouse states.
+
+- [#2287](https://github.com/siemens/ix/pull/2287) [`fb0edfd`](https://github.com/siemens/ix/commit/fb0edfde119ae83bcb0acb6af641a7e24401b7fc) Thanks [@alexkaduk](https://github.com/alexkaduk)! - Improved accessibility for the following components: `ix-menu`, `ix-menu-item`, `ix-menu-settings`, `ix-menu-about`, `ix-menu-expand-icon`, and `ix-icon-button`.
+
+  **API changes:**
+
+  - `ix-menu-settings`: Added `ariaLabelCloseButton` prop (default: "Close Settings")
+  - `ix-menu-about`: Added `ariaLabelCloseButton` prop (default: "Close About")
+
+  **Deprecations (will be removed in 5.0.0):**
+
+  - `ix-menu`: `i18nExpandSidebar` prop
+  - `ix-application-header`: `ariaLabelMenuExpandIconButton` prop
+
+- [#2051](https://github.com/siemens/ix/pull/2051) [`3c937af`](https://github.com/siemens/ix/commit/3c937afc722fa2d09e6c8e43756c8e7a15391448) Thanks [@1307-Dev](https://github.com/1307-Dev)! - `ix-slider` is now `form-ready`
+
+### Patch Changes
+
+- [#2337](https://github.com/siemens/ix/pull/2337) [`8a1de8b`](https://github.com/siemens/ix/commit/8a1de8b1c0142d8c3a162b740e40d68301330768) Thanks [@lakshmi-priya-b](https://github.com/lakshmi-priya-b)! - Add properties **tooltipText** and **ariaLabelTooltip** to **ix-menu-avatar**.
+
+- [#2373](https://github.com/siemens/ix/pull/2373) [`3d0bbb9`](https://github.com/siemens/ix/commit/3d0bbb976b23db3b50721f198109be0a2c9aef42) Thanks [@danielleroux](https://github.com/danielleroux)! - Remove blur effect from modal backdrop
+
+- Updated dependencies [[`0299abd`](https://github.com/siemens/ix/commit/0299abd202dcbdfb8b9483015ae8548fb7a21372), [`1340274`](https://github.com/siemens/ix/commit/1340274534b269f89151452ab48093b5800951ad), [`605ef5b`](https://github.com/siemens/ix/commit/605ef5b30a4cae9d6091cae48504fa42ba69f9ff), [`8a1de8b`](https://github.com/siemens/ix/commit/8a1de8b1c0142d8c3a162b740e40d68301330768), [`9842b69`](https://github.com/siemens/ix/commit/9842b690e3a56a585436d493dfe085ee7ded6e64), [`04279c1`](https://github.com/siemens/ix/commit/04279c1a2bb3c92344c0958731d1f061faff6af6), [`fb0edfd`](https://github.com/siemens/ix/commit/fb0edfde119ae83bcb0acb6af641a7e24401b7fc), [`79eed16`](https://github.com/siemens/ix/commit/79eed1645d0f9e23203b26c81e81dc21c818bde3), [`00366ae`](https://github.com/siemens/ix/commit/00366ae3fd06d74a6af7a037728de9b60694d80f), [`0847ca9`](https://github.com/siemens/ix/commit/0847ca9ca8d258ffd64657bd823fbb90cf44f250), [`dcc06b0`](https://github.com/siemens/ix/commit/dcc06b0f924f468ae4341f729062408b6689093b), [`07e1ad1`](https://github.com/siemens/ix/commit/07e1ad1954afb98479441c90167787535e5c432e), [`3c937af`](https://github.com/siemens/ix/commit/3c937afc722fa2d09e6c8e43756c8e7a15391448), [`3d0bbb9`](https://github.com/siemens/ix/commit/3d0bbb976b23db3b50721f198109be0a2c9aef42), [`f7345bd`](https://github.com/siemens/ix/commit/f7345bde3489d6eea36aa7d85b7fba6f2ee0092e), [`ca01772`](https://github.com/siemens/ix/commit/ca01772b9f6cb83b84e5ebccbdf740ca3920727b), [`828110e`](https://github.com/siemens/ix/commit/828110eadd0658df444405fd9eb7f89bc7fa7aef), [`089f850`](https://github.com/siemens/ix/commit/089f85033cad045dc55133577073ab58c074f4b4), [`d2a0d17`](https://github.com/siemens/ix/commit/d2a0d17153c5c62cbee4e6a483076c9fad990984)]:
+  - @siemens/ix@4.3.0
+
+## 4.2.0
+
+### Minor Changes
+
+- [#2267](https://github.com/siemens/ix/pull/2267) [`4b76803`](https://github.com/siemens/ix/commit/4b76803a0e2f2d2a6dae58b2502e3fa12e10fc46) Thanks [@lzeiml](https://github.com/lzeiml)! - Framework specific functions/services for modals and messages have been added to **ix-angular**, **ix-react** and **ix-vue**.
+
+  - `MessageService` has been added to **ix-angular** and **ix-angular/standalone**. This service can be used to show messages using the `showMessage` function and different pre defined messages using the functions `info`, `warning`, `error`, `success` and `question`.
+  - `LoadingService` has been added to **ix-angular** and **ix-angular/standalone**. This service can be used to display the loading modal using `showModalLoading`.
+  - `showModalLoading` utility function has been added to **ix-react** and **ix-vue**.
+  - `showMessage`, `showMessage.info`, `showMessage.warning`, `showMessage.error`, `showMessage.success`, `showMessage.question` utility functions have been added to **ix-react** and **ix-vue**.
+
+### Patch Changes
+
+- [#2267](https://github.com/siemens/ix/pull/2267) [`4b76803`](https://github.com/siemens/ix/commit/4b76803a0e2f2d2a6dae58b2502e3fa12e10fc46) Thanks [@lzeiml](https://github.com/lzeiml)! - An issue for `ModalService` and `ToastService` in **ix-angular/standalone** has been fixed and can now be injected correctly.
+
+  Fixes #2060
+
+- [#2267](https://github.com/siemens/ix/pull/2267) [`4b76803`](https://github.com/siemens/ix/commit/4b76803a0e2f2d2a6dae58b2502e3fa12e10fc46) Thanks [@lzeiml](https://github.com/lzeiml)! - `defineCustomElement` is now called for modal related functions in **ix-angular/standalone**, fixing production builds. Fixes #2263, make sure to swap to the ModalService from **ix-angular/standalone** instead of **ix-angular** for this fix.
+
+- [#2283](https://github.com/siemens/ix/pull/2283) [`052bf07`](https://github.com/siemens/ix/commit/052bf075e250e3d6c8ea194dc1048fa1892b8e9c) Thanks [@alexkaduk](https://github.com/alexkaduk)! - Fixed an issue where **ix-tree** with a custom `renderItem` function would throw a runtime error ("TypeError: this.renderItem is not a function")
+
+  Fixes #2274
+
+- Updated dependencies [[`3cb0ab3`](https://github.com/siemens/ix/commit/3cb0ab37db2d75dac634e44ca1dfe16652836829), [`9cb98da`](https://github.com/siemens/ix/commit/9cb98da8dcf6f1a30a22bfc66f36a818904290c3), [`4dbed06`](https://github.com/siemens/ix/commit/4dbed06e2ace5396754eb88ac7bbe57802bdea7d)]:
+  - @siemens/ix@4.2.0
+
 ## 4.1.0
 
 ### Minor Changes

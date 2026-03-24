@@ -8,6 +8,10 @@
  */
 
 import {
+  iconChevronLeftSmall,
+  iconChevronRightSmall,
+} from '@siemens/ix-icons/icons';
+import {
   Component,
   Element,
   Event,
@@ -20,10 +24,25 @@ import {
   Watch,
 } from '@stencil/core';
 import { requestAnimationFrameNoNgZone } from '../utils/requestAnimationFrame';
-import {
-  iconChevronLeftSmall,
-  iconChevronRightSmall,
-} from '@siemens/ix-icons/icons';
+
+type ManagedClass =
+  (typeof TAB_MANAGED_CLASSES)[keyof typeof TAB_MANAGED_CLASSES];
+
+const TAB_MANAGED_CLASSES = {
+  SELECTED: 'selected',
+  DISABLED: 'disabled',
+  SMALL_TAB: 'small-tab',
+  ICON: 'icon',
+  STRETCHED: 'stretched',
+  BOTTOM: 'bottom',
+  TOP: 'top',
+  CIRCLE: 'circle',
+  HYDRATED: 'hydrated',
+} as const;
+
+const MANAGED_CLASSES_SET = new Set(
+  Object.values(TAB_MANAGED_CLASSES) as ManagedClass[]
+);
 
 @Component({
   tag: 'ix-tabs',
@@ -63,14 +82,14 @@ export class Tabs {
    *
    * @since 3.2.0
    */
-  @Prop() ariaLabelChevronLeftIconButton?: string;
+  @Prop() ariaLabelChevronLeftIconButton = 'Scroll tabs left';
 
   /**
    * ARIA label for the chevron right icon button
    *
    * @since 3.2.0
    */
-  @Prop() ariaLabelChevronRightIconButton?: string;
+  @Prop() ariaLabelChevronRightIconButton = 'Scroll tabs right';
 
   /**
    * `selected` property changed
@@ -86,14 +105,17 @@ export class Tabs {
 
   private windowStartSize = window.innerWidth;
   private resizeObserver?: ResizeObserver;
+  private readonly ARROW_WIDTH = 32;
+  /** Movement in px beyond which we treat as drag (not tap). */
+  private readonly TAP_THRESHOLD_PX = 10;
+  private classObserver?: MutationObserver;
+  private updateScheduled = false;
 
-  private clickAction: {
-    timeout: NodeJS.Timeout | null;
-    isClick: boolean;
-  } = {
-    timeout: null,
+  private readonly clickAction = {
     isClick: true,
   };
+
+  private isDragging = false;
 
   @Listen('resize', { target: 'window' })
   onWindowResize() {
@@ -118,6 +140,10 @@ export class Tabs {
     return this.hostElement.shadowRoot?.querySelector('.items-content');
   }
 
+  private getTabsContainer() {
+    return this.hostElement.shadowRoot?.querySelector('.tab-items');
+  }
+
   private initResizeObserver() {
     const parentElement = this.hostElement.parentElement;
     if (!parentElement) return;
@@ -125,6 +151,135 @@ export class Tabs {
       this.renderArrows();
     });
     this.resizeObserver.observe(parentElement);
+  }
+
+  private observeSlotChanges() {
+    this.classObserver?.disconnect();
+
+    this.classObserver = new MutationObserver(() => {
+      this.scheduleTabUpdate();
+    });
+
+    this.classObserver.observe(this.hostElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  private scheduleTabUpdate() {
+    if (this.updateScheduled) return;
+    this.updateScheduled = true;
+
+    requestAnimationFrame(() => {
+      this.updateTabAttributes();
+      this.updateScheduled = false;
+    });
+  }
+
+  private setTabAttributes(element: HTMLIxTabItemElement, index: number) {
+    const isSelected = index === this.selected;
+    const isDisabled = element.disabled;
+
+    if (this.small) element.setAttribute('small', 'true');
+
+    if (this.rounded) element.setAttribute('rounded', 'true');
+
+    element.setAttribute('layout', this.layout);
+    element.setAttribute('selected', isSelected.toString());
+    element.setAttribute('placement', this.placement);
+    element.toggleAttribute('disabled', isDisabled);
+
+    this.applyRequiredClasses(element, isSelected, isDisabled);
+  }
+
+  private applyRequiredClasses(
+    element: HTMLIxTabItemElement,
+    isSelected: boolean,
+    isDisabled: boolean
+  ) {
+    const requiredClasses = new Set(
+      this.buildRequiredClasses(isSelected, isDisabled)
+    );
+    const { classList } = element;
+
+    for (const cls of requiredClasses) {
+      classList.add(cls);
+    }
+
+    for (const managedClass of MANAGED_CLASSES_SET) {
+      if (!requiredClasses.has(managedClass)) {
+        classList.remove(managedClass);
+      }
+    }
+  }
+
+  private buildRequiredClasses(
+    isSelected: boolean,
+    isDisabled: boolean
+  ): string[] {
+    const classConditions = {
+      [TAB_MANAGED_CLASSES.HYDRATED]: true,
+      [TAB_MANAGED_CLASSES.SELECTED]: isSelected,
+      [TAB_MANAGED_CLASSES.DISABLED]: isDisabled,
+      [TAB_MANAGED_CLASSES.SMALL_TAB]: this.small,
+      [TAB_MANAGED_CLASSES.STRETCHED]: this.layout === 'stretched',
+      [TAB_MANAGED_CLASSES.BOTTOM]: this.placement === 'bottom',
+      [TAB_MANAGED_CLASSES.TOP]: this.placement === 'top',
+      [TAB_MANAGED_CLASSES.CIRCLE]: this.rounded,
+    };
+
+    return Object.entries(classConditions)
+      .filter(([, condition]) => condition)
+      .map(([className]) => className);
+  }
+
+  private ensureSelectedIndex() {
+    if (this.totalItems === 0) {
+      console.warn('ix-tabs: No tabs available for selection');
+      this.selected = -1;
+      return;
+    }
+
+    if (this.selected < this.totalItems) {
+      return;
+    }
+
+    const originalIndex = this.selected;
+    const previousIndex = originalIndex - 1;
+
+    if (previousIndex >= 0 && previousIndex < this.totalItems) {
+      this.updateSelected(previousIndex);
+      return;
+    }
+
+    if (this.totalItems > 0) {
+      this.updateSelected(0);
+    }
+  }
+
+  private updateSelected(index: number) {
+    this.selected = index;
+    this.selectedChange.emit(index);
+  }
+
+  private updateTabAttributes() {
+    const tabs = this.getTabs();
+    this.totalItems = tabs.length;
+
+    this.ensureSelectedIndex();
+
+    for (const [index, element] of tabs.entries()) {
+      this.setTabAttributes(element, index);
+    }
+
+    const overflow = this.showArrows();
+    tabs.forEach((el) => {
+      (el as HTMLElement).style.touchAction = overflow ? 'none' : '';
+    });
+
+    this.renderArrows();
   }
 
   private showArrows() {
@@ -136,7 +291,7 @@ export class Tabs {
           Math.ceil(tabWrapper.getBoundingClientRect().width) &&
         this.layout === 'auto'
       );
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -144,7 +299,7 @@ export class Tabs {
   private showPreviousArrow() {
     try {
       return this.showArrows() === true && this.scrollActionAmount < 0;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -164,7 +319,7 @@ export class Tabs {
         this.scrollActionAmount >
           (tabWrapper.scrollWidth - tabWrapperRect.width) * -1
       );
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -201,14 +356,23 @@ export class Tabs {
   onSelectedChange(newValue: number) {
     if (!this.showArrows()) return;
 
-    const tabRect = this.getTab(newValue).getBoundingClientRect();
-    const wrapperWidth = this.getTabsWrapper()?.clientWidth;
-    const arrowWidth = 32;
+    const tab = this.getTab(newValue);
+    const container = this.getTabsContainer();
 
-    if (tabRect.left < arrowWidth) {
-      this.move(-tabRect.left + arrowWidth, true);
-    } else if (wrapperWidth && tabRect.right > wrapperWidth - arrowWidth) {
-      this.move(wrapperWidth - tabRect.right - arrowWidth, true);
+    if (!tab || !container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const tabRect = tab.getBoundingClientRect();
+    const tabLeftRelative = tabRect.left - containerRect.left;
+    const tabRightRelative = tabLeftRelative + tabRect.width;
+
+    if (tabLeftRelative < this.ARROW_WIDTH) {
+      this.move(-tabLeftRelative + this.ARROW_WIDTH, true);
+    } else if (tabRightRelative > containerRect.width - this.ARROW_WIDTH) {
+      this.move(
+        containerRect.width - tabRightRelative - this.ARROW_WIDTH,
+        true
+      );
     }
   }
 
@@ -217,7 +381,8 @@ export class Tabs {
   }
 
   private clickTab(index: number) {
-    if (!this.clickAction.isClick || this.dragStop()) {
+    // Don't select if it was a drag
+    if (!this.clickAction.isClick) {
       return;
     }
 
@@ -229,76 +394,84 @@ export class Tabs {
     this.setSelected(index);
   }
 
-  private dragStart(element: HTMLIxTabItemElement, event: MouseEvent) {
+  private dragStart(element: HTMLIxTabItemElement, event: PointerEvent) {
     if (!this.showArrows()) return;
     if (event.button > 0) return;
+    if (this.isDragging) return;
 
-    this.clickAction.timeout =
-      this.clickAction.timeout === null
-        ? setTimeout(() => (this.clickAction.isClick = false), 300)
-        : null;
+    event.preventDefault();
 
-    const tabPositionX = parseFloat(window.getComputedStyle(element).left);
-    const mousedownPositionX = event.clientX;
-    const move = (event: MouseEvent) =>
-      this.dragMove(event, tabPositionX, mousedownPositionX);
-    const windowClick = () => {
-      window.removeEventListener('mousemove', move, false);
-      window.removeEventListener('click', windowClick, false);
-      this.dragStop();
+    this.isDragging = true;
+    this.clickAction.isClick = true;
+
+    element.setPointerCapture(event.pointerId);
+
+    const pointerdownPositionX = event.clientX;
+    const initialScrollAmount = this.currentScrollAmount;
+
+    const move = (event: PointerEvent) =>
+      this.dragMove(event, pointerdownPositionX);
+
+    const cleanupPointerListeners = () => {
+      element.removeEventListener('pointermove', move, false);
+      element.removeEventListener('pointerup', pointerUp, false);
+      element.removeEventListener('pointercancel', pointerCancel, false);
     };
-    window.addEventListener('click', windowClick);
-    window.addEventListener('mousemove', move, false);
+
+    const pointerUp = () => {
+      cleanupPointerListeners();
+      this.isDragging = false;
+      this.dragStop();
+      if (this.clickAction.isClick) {
+        const tabs = this.getTabs();
+        const index = tabs.indexOf(element);
+        if (index >= 0 && !element.disabled) {
+          this.clickTab(index);
+        }
+      }
+    };
+
+    const pointerCancel = () => {
+      cleanupPointerListeners();
+      this.isDragging = false;
+      this.scrollActionAmount = initialScrollAmount;
+      const tabsWrapper = this.getTabsWrapper();
+      if (tabsWrapper) {
+        tabsWrapper.setAttribute(
+          'style',
+          `transform: translateX(${initialScrollAmount}px);`
+        );
+      }
+      this.clickAction.isClick = true;
+    };
+
+    element.addEventListener('pointerup', pointerUp);
+    element.addEventListener('pointercancel', pointerCancel);
+    element.addEventListener('pointermove', move, false);
   }
 
-  private dragMove(event: MouseEvent, tabX: number, mousedownX: number) {
-    this.move(event.clientX + tabX - mousedownX);
+  private dragMove(event: PointerEvent, pointerdownX: number) {
+    const delta = event.clientX - pointerdownX;
+    if (Math.abs(delta) > this.TAP_THRESHOLD_PX) {
+      this.clickAction.isClick = false;
+    }
+    this.move(delta);
   }
 
   private dragStop() {
-    if (this.clickAction.timeout) {
-      clearTimeout(this.clickAction.timeout);
-      this.clickAction.timeout = null;
+    if (this.clickAction.isClick) {
+      return;
     }
 
-    if (this.clickAction.isClick) return false;
-
     this.currentScrollAmount = this.scrollActionAmount;
-    this.clickAction.isClick = true;
-
-    return true;
   }
 
   componentWillLoad() {
-    const tabs = this.getTabs();
-
-    tabs.map((element, index) => {
-      if (this.small) element.setAttribute('small', 'true');
-
-      if (this.rounded) element.setAttribute('rounded', 'true');
-
-      element.setAttribute('layout', this.layout);
-      element.setAttribute(
-        'selected',
-        index === this.selected ? 'true' : 'false'
-      );
-
-      element.setAttribute('placement', this.placement);
-    });
-
     this.initResizeObserver();
   }
 
   componentDidRender() {
-    const tabs = this.getTabs();
-    this.totalItems = tabs.length;
-
-    tabs.map((element, index) => {
-      element.setAttribute(
-        'selected',
-        index === this.selected ? 'true' : 'false'
-      );
-    });
+    this.updateTabAttributes();
   }
 
   componentWillRender() {
@@ -315,14 +488,30 @@ export class Tabs {
   componentDidLoad() {
     const tabs = this.getTabs();
     tabs.forEach((element) => {
-      element.addEventListener('mousedown', (event) =>
+      element.addEventListener('pointerdown', (event) =>
         this.dragStart(element, event)
       );
     });
+
+    const wrapper = this.getTabsWrapper();
+    if (wrapper) {
+      wrapper.addEventListener(
+        'touchstart',
+        (e) => {
+          if (this.showArrows()) {
+            e.preventDefault();
+          }
+        },
+        { passive: false }
+      );
+    }
+
+    this.observeSlotChanges();
   }
 
   disconnectedCallback() {
     this.resizeObserver?.disconnect();
+    this.classObserver?.disconnect();
   }
 
   @Listen('tabClick')
@@ -350,7 +539,7 @@ export class Tabs {
             onClick={() => this.move(this.scrollAmount, true)}
             aria-label={this.ariaLabelChevronLeftIconButton}
           >
-            <ix-icon name={iconChevronLeftSmall}></ix-icon>
+            <ix-icon name={iconChevronLeftSmall} aria-hidden="true"></ix-icon>
           </button>
         )}
         <div
@@ -362,7 +551,7 @@ export class Tabs {
             'shadow-both': this.showArrowNext && this.showArrowPrevious,
           }}
         >
-          <div class="items-content">
+          <div class="items-content" role="tablist">
             <slot></slot>
           </div>
         </div>
@@ -372,7 +561,7 @@ export class Tabs {
             onClick={() => this.move(-this.scrollAmount, true)}
             aria-label={this.ariaLabelChevronRightIconButton}
           >
-            <ix-icon name={iconChevronRightSmall}></ix-icon>
+            <ix-icon name={iconChevronRightSmall} aria-hidden="true"></ix-icon>
           </button>
         )}
       </Host>
