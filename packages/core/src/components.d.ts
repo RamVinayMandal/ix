@@ -11475,6 +11475,7 @@ declare namespace LocalJSX {
     interface IxTreeItemAttributes {
         "text": string;
         "hasChildren": boolean;
+        "disabled": boolean;
         "ariaLabelChevronIcon": string;
     }
     interface IxTypographyAttributes {
