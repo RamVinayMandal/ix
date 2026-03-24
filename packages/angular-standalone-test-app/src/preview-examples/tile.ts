@@ -12,12 +12,11 @@ import {
   IxTile,
   IxIconButton,
   IxButton,
-  IxIcon,
 } from '@siemens/ix-angular/standalone';
 
 @Component({
   selector: 'app-example',
-  imports: [IxTile, IxIconButton, IxButton, IxIcon],
+  imports: [IxTile, IxIconButton, IxButton],
   template: `
     <div class="example">
       <ix-tile size="small">92.8 °C</ix-tile>
