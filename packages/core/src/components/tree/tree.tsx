@@ -122,6 +122,7 @@ export class Tree {
       width: '100%',
       height: '100%',
       itemHeight: 32,
+      scrollerTagName: 'div',
       total: list.length,
       generate: (index: number) => {
         const item = list[index];
@@ -380,6 +381,11 @@ export class Tree {
     }
 
     const context = this.getContext(id);
+
+    if (context.isDisabled) {
+      return;
+    }
+
     context.isExpanded = !context.isExpanded;
     this.nodeToggled.emit({ id, isExpanded: context.isExpanded });
     this.setContext(id, context);
@@ -398,8 +404,9 @@ export class Tree {
     }
 
     const item = this.model[id];
+    const context = this.getContext(id);
 
-    if (item.disabled) {
+    if (item.disabled || context.isDisabled) {
       return;
     }
 
@@ -416,13 +423,11 @@ export class Tree {
       for (const itemContext of Object.values(this.context)) {
         itemContext.isSelected = false;
       }
-      const context = this.getContext(id);
       context.isSelected = true;
       this.setContext(id, context);
     }
 
     if (this.toggleOnItemClick && item.hasChildren) {
-      const context = this.getContext(id);
       context.isExpanded = !context.isExpanded;
       this.nodeToggled.emit({
         id: id,

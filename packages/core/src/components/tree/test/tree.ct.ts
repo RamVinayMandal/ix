@@ -83,6 +83,17 @@ const initializeTree = async (mount: Mount, page: Page) => {
   return tree;
 };
 
+const assertPositionalAriaAttributes = async (
+  item: Locator,
+  level: number,
+  setsize: number,
+  posinset: number
+) => {
+  await expect(item).toHaveAttribute('aria-level', String(level));
+  await expect(item).toHaveAttribute('aria-setsize', String(setsize));
+  await expect(item).toHaveAttribute('aria-posinset', String(posinset));
+};
+
 const updateModel = async (tree: Locator, updatedModel: any) => {
   await tree.evaluate(
     (element: HTMLIxTreeElement, [model]) => {
@@ -637,5 +648,241 @@ regressionTest(
     });
 
     expect(rafCallCountAfterScroll).toBeLessThan(5);
+  }
+);
+
+regressionTest(
+  'should have role="tree" on the host and role="treeitem" on collapsed item',
+  async ({ mount, page }) => {
+    await initializeTree(mount, page);
+    const tree = page.locator('ix-tree');
+    const sampleItem = tree.locator('ix-tree-item', {
+      hasText: 'Sample',
+      hasNotText: 'Child',
+    });
+
+    await expect(tree).toHaveAttribute('role', 'tree');
+    await expect(sampleItem).toHaveAttribute('role', 'treeitem');
+    await expect(sampleItem).toHaveAttribute('aria-expanded', 'false');
+    await expect(sampleItem).toHaveAttribute('aria-selected', 'false');
+    await assertPositionalAriaAttributes(sampleItem, 1, 1, 1);
+  }
+);
+
+regressionTest(
+  'should set correct aria attributes on expanded tree with children',
+  async ({ mount, page }) => {
+    const tree = await initializeTree(mount, page);
+
+    const sampleItem = tree.locator('ix-tree-item', {
+      hasText: 'Sample',
+      hasNotText: 'Child',
+    });
+    await sampleItem.locator('.icon-toggle-container').click();
+
+    await expect(sampleItem).toHaveAttribute('aria-expanded', 'true');
+    await assertPositionalAriaAttributes(sampleItem, 1, 1, 1);
+
+    const child1 = tree.locator('ix-tree-item', { hasText: 'Sample Child 1' });
+    const child2 = tree.locator('ix-tree-item', { hasText: 'Sample Child 2' });
+    const child3 = tree.locator('ix-tree-item', { hasText: 'Sample Child 3' });
+
+    await expect(child1).toHaveAttribute('role', 'treeitem');
+    await expect(child1).not.toHaveAttribute('aria-expanded');
+    await expect(child1).toHaveAttribute('aria-selected', 'false');
+    await assertPositionalAriaAttributes(child1, 2, 3, 1);
+
+    await expect(child2).toHaveAttribute('aria-expanded', 'false');
+    await assertPositionalAriaAttributes(child2, 2, 3, 2);
+
+    await assertPositionalAriaAttributes(child3, 2, 3, 3);
+  }
+);
+
+regressionTest(
+  'should update aria-selected and retain positional aria attributes after selection',
+  async ({ mount, page }) => {
+    const tree = await initializeTree(mount, page);
+
+    const sampleItem = tree.locator('ix-tree-item', {
+      hasText: 'Sample',
+      hasNotText: 'Child',
+    });
+    await sampleItem.locator('.icon-toggle-container').click();
+
+    const child1 = tree.locator('ix-tree-item', { hasText: 'Sample Child 1' });
+    const child2 = tree.locator('ix-tree-item', { hasText: 'Sample Child 2' });
+    await child1.click();
+
+    await expect(child1).toHaveAttribute('aria-selected', 'true');
+    await assertPositionalAriaAttributes(child1, 2, 3, 1);
+
+    await child2.click();
+    await expect(child1).toHaveAttribute('aria-selected', 'false');
+    await expect(child2).toHaveAttribute('aria-selected', 'true');
+  }
+);
+
+regressionTest(
+  'should set aria-disabled on disabled items and not on enabled items',
+  async ({ mount, page }) => {
+    await mount(`
+      <div style="height: 20rem; width: 100%;">
+        <ix-tree root="root"></ix-tree>
+      </div>
+    `);
+
+    const tree = page.locator('ix-tree');
+    await tree.evaluate((element: HTMLIxTreeElement) => {
+      element.model = {
+        root: {
+          id: 'root',
+          data: { name: '' },
+          hasChildren: true,
+          children: ['item-1', 'item-2'],
+        },
+        'item-1': {
+          id: 'item-1',
+          data: { name: 'Item 1' },
+          hasChildren: false,
+          children: [],
+          disabled: true,
+        },
+        'item-2': {
+          id: 'item-2',
+          data: { name: 'Item 2' },
+          hasChildren: false,
+          children: [],
+        },
+      };
+      element.context = {
+        root: { isExpanded: true, isSelected: false },
+        'item-1': { isExpanded: false, isSelected: false, isDisabled: true },
+        'item-2': { isExpanded: false, isSelected: false },
+      };
+    });
+
+    await expect(tree).toHaveClass(/hydrated/);
+
+    const item1 = tree.locator('ix-tree-item', { hasText: 'Item 1' });
+    const item2 = tree.locator('ix-tree-item', { hasText: 'Item 2' });
+
+    await expect(item1).toHaveAttribute('aria-disabled', 'true');
+    await assertPositionalAriaAttributes(item1, 1, 2, 1);
+    await expect(item2).not.toHaveAttribute('aria-disabled');
+    await assertPositionalAriaAttributes(item2, 1, 2, 2);
+  }
+);
+
+async function assertDisabledItemCannotBeSelectedOrToggled(
+  mount: Mount,
+  page: Page,
+  model: TreeModel<unknown>,
+  context: TreeContext,
+  parentLabel: string
+) {
+  await mount(`
+      <div style="height: 20rem; width: 100%;">
+        <ix-tree root="root"></ix-tree>
+      </div>
+    `);
+
+  const tree = page.locator('ix-tree');
+  await tree.evaluate(
+    (element: HTMLIxTreeElement, args) => {
+      element.model = args.model;
+      element.context = args.context;
+    },
+    { model, context }
+  );
+
+  await expect(tree).toHaveClass(/hydrated/);
+
+  const parent = tree.locator('ix-tree-item', { hasText: parentLabel });
+
+  await expect(parent).toHaveAttribute('aria-disabled', 'true');
+  await expect(parent).toHaveClass(/disabled/);
+
+  await parent.click({ force: true });
+  await expect(parent).toHaveAttribute('aria-selected', 'false');
+  await expect(parent).not.toHaveClass(/selected/);
+
+  await parent.locator('.icon-toggle-container').click({ force: true });
+  await expect(parent).toHaveAttribute('aria-expanded', 'false');
+  await expect(
+    tree.locator('ix-tree-item', { hasText: 'Child' })
+  ).not.toBeVisible();
+}
+
+regressionTest(
+  'item.disabled - cannot be selected or toggled',
+  async ({ mount, page }) => {
+    await assertDisabledItemCannotBeSelectedOrToggled(
+      mount,
+      page,
+      {
+        root: {
+          id: 'root',
+          data: { name: '' },
+          hasChildren: true,
+          children: ['parent'],
+        },
+        parent: {
+          id: 'parent',
+          data: { name: 'Disabled Parent' },
+          hasChildren: true,
+          children: ['child'],
+          disabled: true,
+        },
+        child: {
+          id: 'child',
+          data: { name: 'Child' },
+          hasChildren: false,
+          children: [],
+        },
+      },
+      {
+        root: { isExpanded: true, isSelected: false },
+        parent: { isExpanded: false, isSelected: false },
+        child: { isExpanded: false, isSelected: false },
+      },
+      'Disabled Parent'
+    );
+  }
+);
+
+regressionTest(
+  'context.isDisabled - cannot be selected or toggled',
+  async ({ mount, page }) => {
+    await assertDisabledItemCannotBeSelectedOrToggled(
+      mount,
+      page,
+      {
+        root: {
+          id: 'root',
+          data: { name: '' },
+          hasChildren: true,
+          children: ['parent'],
+        },
+        parent: {
+          id: 'parent',
+          data: { name: 'Context Disabled Parent' },
+          hasChildren: true,
+          children: ['child'],
+        },
+        child: {
+          id: 'child',
+          data: { name: 'Child' },
+          hasChildren: false,
+          children: [],
+        },
+      },
+      {
+        root: { isExpanded: true, isSelected: false },
+        parent: { isExpanded: false, isSelected: false, isDisabled: true },
+        child: { isExpanded: false, isSelected: false },
+      },
+      'Context Disabled Parent'
+    );
   }
 );
