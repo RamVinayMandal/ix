@@ -44,6 +44,8 @@ export class TreeItem {
 
   /**
    * Disable tree item
+   *
+   * @since 4.4.0
    */
   @Prop() disabled = false;
 
