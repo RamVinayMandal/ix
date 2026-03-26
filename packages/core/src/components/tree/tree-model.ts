@@ -26,6 +26,8 @@ export interface TreeItem<T> {
 
 export interface TreeItemVisual<T> extends TreeItem<T> {
   level: number;
+  posinset: number;
+  setsize: number;
 }
 
 export interface TreeItemContext {

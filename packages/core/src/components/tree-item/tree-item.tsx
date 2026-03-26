@@ -7,7 +7,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Component, Event, EventEmitter, h, Host, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
 import { TreeItemContext } from '../tree/tree-model';
 import { iconChevronRightSmall } from '@siemens/ix-icons/icons';
 
@@ -17,6 +25,8 @@ import { iconChevronRightSmall } from '@siemens/ix-icons/icons';
   shadow: true,
 })
 export class TreeItem {
+  @Element() hostElement!: HTMLIxTreeItemElement;
+
   /**
    * Text
    */
@@ -52,14 +62,50 @@ export class TreeItem {
    */
   @Event() itemClick!: EventEmitter<void>;
 
+  componentDidRender() {
+    this.setAriaAttributes();
+  }
+
+  private isDisabled() {
+    return this.disabled || !!this.context?.isDisabled;
+  }
+
+  private setAriaAttributes() {
+    this.hostElement.setAttribute('role', 'treeitem');
+
+    if (this.isDisabled()) {
+      this.hostElement.setAttribute('aria-disabled', 'true');
+    } else {
+      this.hostElement.removeAttribute('aria-disabled');
+    }
+
+    if (this.hasChildren) {
+      this.hostElement.setAttribute(
+        'aria-expanded',
+        String(!!this.context?.isExpanded)
+      );
+    } else {
+      this.hostElement.removeAttribute('aria-expanded');
+    }
+
+    if (this.context !== undefined) {
+      this.hostElement.setAttribute(
+        'aria-selected',
+        this.context.isSelected ? 'true' : 'false'
+      );
+    } else {
+      this.hostElement.removeAttribute('aria-selected');
+    }
+  }
+
   render() {
-    const isDisabled = this.disabled || this.context?.isDisabled;
+    const disabled = this.isDisabled();
 
     return (
       <Host
         class={{
           selected: !!this.context?.isSelected,
-          disabled: !!isDisabled,
+          disabled,
         }}
       >
         <div class="icon-toggle-container">
@@ -72,7 +118,7 @@ export class TreeItem {
               }}
               color="color-std-text"
               onClick={(e: Event) => {
-                if (isDisabled) {
+                if (disabled) {
                   return;
                 }
                 e.preventDefault();
@@ -91,7 +137,7 @@ export class TreeItem {
         <div
           class="tree-node-container"
           onClick={() => {
-            if (isDisabled) {
+            if (disabled) {
               return;
             }
             this.itemClick.emit();
