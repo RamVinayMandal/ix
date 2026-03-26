@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
 
     <script>
       (async () => {
-        await window.customElements.whenDefined('ix-tree');
+        await globalThis.customElements.whenDefined('ix-tree');
         const tree = document.getElementById('tree');
         const context = {
           root: {
