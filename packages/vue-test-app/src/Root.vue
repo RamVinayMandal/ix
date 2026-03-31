@@ -31,13 +31,13 @@ import Blind from './preview-examples/blind.vue';
 import BreadcrumbNextItems from './preview-examples/breadcrumb-next-items.vue';
 import BreadcrumbTruncate from './preview-examples/breadcrumb-truncate.vue';
 import Breadcrumb from './preview-examples/breadcrumb.vue';
-import ButtonDangerGhost from './preview-examples/button-danger-ghost.vue';
-import ButtonDangerOutline from './preview-examples/button-danger-outline.vue';
-import ButtonDanger from './preview-examples/button-danger.vue';
-import ButtonGhost from './preview-examples/button-ghost.vue';
-import ButtonGreyGhost from './preview-examples/button-grey-ghost.vue';
-import ButtonGreySecondary from './preview-examples/button-grey-secondary.vue';
-import ButtonGrey from './preview-examples/button-grey.vue';
+import ButtonDangerTertiary from './preview-examples/button-danger-tertiary.vue';
+import ButtonDangerSecondary from './preview-examples/button-danger-secondary.vue';
+import ButtonDangerPrimary from './preview-examples/button-danger-primary.vue';
+import ButtonTertiary from './preview-examples/button-tertiary.vue';
+import ButtonSubtleTertiary from './preview-examples/button-subtle-tertiary.vue';
+import ButtonSubtleSecondary from './preview-examples/button-subtle-secondary.vue';
+import ButtonSubtlePrimary from './preview-examples/button-subtle-primary.vue';
 import ButtonGroup from './preview-examples/button-group.vue';
 import ButtonLoading from './preview-examples/button-loading.vue';
 import ButtonSecondary from './preview-examples/button-secondary.vue';
@@ -60,9 +60,18 @@ import CustomFieldValidation from './preview-examples/custom-field-validation.vu
 import CustomField from './preview-examples/custom-field.vue';
 import DateDropdownUserRange from './preview-examples/date-dropdown-user-range.vue';
 import DateDropdown from './preview-examples/date-dropdown.vue';
+import DateRange from './preview-examples/date-range.vue';
+import DatetimeRange from './preview-examples/datetime-range.vue';
 import DateInputWithSlots from './preview-examples/date-input-with-slots.vue';
 import DateInput from './preview-examples/date-input.vue';
 import DatepickerLocale from './preview-examples/datepicker-locale.vue';
+import DatetimeInput from './preview-examples/datetime-input.vue';
+import DatetimeInputDisabled from './preview-examples/datetime-input-disabled.vue';
+import DatetimeInputLabel from './preview-examples/datetime-input-label.vue';
+import DatetimeInputMinMaxDate from './preview-examples/datetime-input-min-max-date.vue';
+import DatetimeInputReadonly from './preview-examples/datetime-input-readonly.vue';
+import DatetimeInputValidation from './preview-examples/datetime-input-validation.vue';
+import DatetimeInputWithSlots from './preview-examples/datetime-input-with-slots.vue';
 import DatepickerRange from './preview-examples/datepicker-range.vue';
 import Datepicker from './preview-examples/datepicker.vue';
 import Datetimepicker from './preview-examples/datetimepicker.vue';
@@ -174,6 +183,7 @@ import RadioDisabled from './preview-examples/radio-disabled.vue';
 import RadioGroup from './preview-examples/radio-group.vue';
 import RadioValidation from './preview-examples/radio-validation.vue';
 import Radio from './preview-examples/radio.vue';
+import RangeField from './preview-examples/range-field.vue';
 import SelectEditable from './preview-examples/select-editable.vue';
 import SelectMultiple from './preview-examples/select-multiple.vue';
 import SelectValidation from './preview-examples/select-validation.vue';
@@ -182,6 +192,7 @@ import Settings from './preview-examples/settings.vue';
 import SliderError from './preview-examples/slider-error.vue';
 import SliderMarker from './preview-examples/slider-marker.vue';
 import SliderTrace from './preview-examples/slider-trace.vue';
+import SliderValidation from './preview-examples/slider-validation.vue';
 import Slider from './preview-examples/slider.vue';
 import SpinnerLarge from './preview-examples/spinner-large.vue';
 import Spinner from './preview-examples/spinner.vue';
@@ -189,6 +200,7 @@ import SplitButtonIcons from './preview-examples/split-button-icons.vue';
 import SplitButton from './preview-examples/split-button.vue';
 import TabsRounded from './preview-examples/tabs-rounded.vue';
 import Tabs from './preview-examples/tabs.vue';
+import TabsOverflow from './preview-examples/tabs-overflow.vue';
 import TextareaFieldDisabled from './preview-examples/textarea-disabled.vue';
 import TextareaLegacyDisabled from './preview-examples/textarea-legacy-disabled.vue';
 import TextareaLegacyReadonly from './preview-examples/textarea-legacy-readonly.vue';
@@ -199,6 +211,7 @@ import TextareaFieldValidation from './preview-examples/textarea-validation.vue'
 import TextareaField from './preview-examples/textarea.vue';
 import ThemeSwitcher from './preview-examples/theme-switcher.vue';
 import Tile from './preview-examples/tile.vue';
+import TimeRange from './preview-examples/time-range.vue';
 import Timepicker from './preview-examples/timepicker.vue';
 import ToastCustom from './preview-examples/toast-custom.vue';
 import ToastPosition from './preview-examples/toast-position.vue';
@@ -239,6 +252,8 @@ type IxPreviewRoutes = {
   '/': any;
 } & {
   [K in (typeof exampleNames)[number] as `/preview/${K}`]: any;
+} & {
+  '/preview/tabs-overflow': any;
 };
 
 const routes: IxPreviewRoutes = {
@@ -262,10 +277,10 @@ const routes: IxPreviewRoutes = {
   '/preview/breadcrumb-next-items': BreadcrumbNextItems,
   '/preview/breadcrumb-truncate': BreadcrumbTruncate,
   '/preview/breadcrumb': Breadcrumb,
-  '/preview/button-ghost': ButtonGhost,
-  '/preview/button-grey-ghost': ButtonGreyGhost,
-  '/preview/button-grey-secondary': ButtonGreySecondary,
-  '/preview/button-grey': ButtonGrey,
+  '/preview/button-tertiary': ButtonTertiary,
+  '/preview/button-subtle-tertiary': ButtonSubtleTertiary,
+  '/preview/button-subtle-secondary': ButtonSubtleSecondary,
+  '/preview/button-subtle-primary': ButtonSubtlePrimary,
   '/preview/button-group': ButtonGroup,
   '/preview/button-loading': ButtonLoading,
   '/preview/button-secondary': ButtonSecondary,
@@ -285,6 +300,8 @@ const routes: IxPreviewRoutes = {
   '/preview/custom-field-validation': CustomFieldValidation,
   '/preview/date-dropdown': DateDropdown,
   '/preview/date-dropdown-user-range': DateDropdownUserRange,
+  '/preview/date-range': DateRange,
+  '/preview/datetime-range': DatetimeRange,
   '/preview/content-header-no-back': ContentHeaderNoBack,
   '/preview/content-header': ContentHeader,
   '/preview/content-header-with-slot': ContentHeaderWithSlot,
@@ -356,6 +373,7 @@ const routes: IxPreviewRoutes = {
   '/preview/radio-disabled': RadioDisabled,
   '/preview/radio-group': RadioGroup,
   '/preview/radio-validation': RadioValidation,
+  '/preview/range-field': RangeField,
   '/preview/select': Select,
   '/preview/select-editable': SelectEditable,
   '/preview/select-multiple': SelectMultiple,
@@ -367,6 +385,7 @@ const routes: IxPreviewRoutes = {
   '/preview/split-button': SplitButton,
   '/preview/split-button-icons': SplitButtonIcons,
   '/preview/tabs': Tabs,
+  '/preview/tabs-overflow': TabsOverflow,
   '/preview/textarea-legacy': TextareaLegacy,
   '/preview/textarea-legacy-disabled': TextareaLegacyDisabled,
   '/preview/textarea-legacy-readonly': TextareaLegacyReadonly,
@@ -384,6 +403,7 @@ const routes: IxPreviewRoutes = {
   '/preview/input-validation': InputValidation,
   '/preview/input-with-slots': InputWithSlots,
   '/preview/tile': Tile,
+  '/preview/time-range': TimeRange,
   '/preview/timepicker': Timepicker,
   '/preview/toast': Toast,
   '/preview/toast-custom': ToastCustom,
@@ -407,6 +427,13 @@ const routes: IxPreviewRoutes = {
   '/preview/number-input-with-slots': NumberInputWithSlots,
   '/preview/date-input': DateInput,
   '/preview/date-input-with-slots': DateInputWithSlots,
+  '/preview/datetime-input': DatetimeInput,
+  '/preview/datetime-input-disabled': DatetimeInputDisabled,
+  '/preview/datetime-input-label': DatetimeInputLabel,
+  '/preview/datetime-input-min-max-date': DatetimeInputMinMaxDate,
+  '/preview/datetime-input-readonly': DatetimeInputReadonly,
+  '/preview/datetime-input-validation': DatetimeInputValidation,
+  '/preview/datetime-input-with-slots': DatetimeInputWithSlots,
   '/preview/workflow': Workflow,
   '/preview/workflow-vertical': WorkflowVertical,
   '/preview/tooltip': Tooltip,
@@ -439,6 +466,7 @@ const routes: IxPreviewRoutes = {
   '/preview/layout-auto-custom': LayoutAutoCustom,
   '/preview/slider-marker': SliderMarker,
   '/preview/slider-trace': SliderTrace,
+  '/preview/slider-validation': SliderValidation,
   '/preview/slider': Slider,
   '/preview/tabs-rounded': TabsRounded,
   '/preview/theme-switcher': ThemeSwitcher,
@@ -455,9 +483,9 @@ const routes: IxPreviewRoutes = {
   '/preview/validation': Validation,
   '/preview/vertical-tabs-with-avatar': VerticalTabsWithAvatar,
   '/preview/vertical-tabs': VerticalTabs,
-  '/preview/button-danger': ButtonDanger,
-  '/preview/button-danger-ghost': ButtonDangerGhost,
-  '/preview/button-danger-outline': ButtonDangerOutline,
+  '/preview/button-danger-primary': ButtonDangerPrimary,
+  '/preview/button-danger-tertiary': ButtonDangerTertiary,
+  '/preview/button-danger-secondary': ButtonDangerSecondary,
   '/preview/form-layout-auto': FormLayoutAuto,
   '/preview/form-layout-grid': FormLayoutGrid,
   '/preview/progress-indicator-linear-status': ProgressIndicatorLinearStatus,
@@ -480,4 +508,3 @@ const currentView = computed(() => {
     <component :is="currentView"></component>
   </IxApplicationContext>
 </template>
-import layoutAutoVue from './preview-examples/layout-auto.vue';

@@ -19,6 +19,7 @@ type IxPreviewRoutes = {
   'preview/modal-by-instance': AngularComponent;
   'preview/modal-by-template': AngularComponent;
   'preview/select-ng-model': AngularComponent;
+  'preview/tabs-overflow': AngularComponent;
   'preview/toggle-ng-model': AngularComponent;
 };
 
@@ -62,14 +63,14 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/breadcrumb-next-items').then((m) => m.default),
   'preview/breadcrumb-truncate': () =>
     import('../preview-examples/breadcrumb-truncate').then((m) => m.default),
-  'preview/button-ghost': () =>
-    import('../preview-examples/button-ghost').then((m) => m.default),
-  'preview/button-grey': () =>
-    import('../preview-examples/button-grey').then((m) => m.default),
-  'preview/button-grey-ghost': () =>
-    import('../preview-examples/button-grey-ghost').then((m) => m.default),
-  'preview/button-grey-secondary': () =>
-    import('../preview-examples/button-grey-secondary').then((m) => m.default),
+  'preview/button-tertiary': () =>
+    import('../preview-examples/button-tertiary').then((m) => m.default),
+  'preview/button-subtle-primary': () =>
+    import('../preview-examples/button-subtle-primary').then((m) => m.default),
+  'preview/button-subtle-tertiary': () =>
+    import('../preview-examples/button-subtle-tertiary').then((m) => m.default),
+  'preview/button-subtle-secondary': () =>
+    import('../preview-examples/button-subtle-secondary').then((m) => m.default),
   'preview/button-group': () =>
     import('../preview-examples/button-group').then((m) => m.default),
   'preview/button-loading': () =>
@@ -122,6 +123,10 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/date-dropdown-user-range').then(
       (m) => m.default
     ),
+  'preview/date-range': () =>
+    import('../preview-examples/date-range').then((m) => m.default),
+  'preview/datetime-range': () =>
+    import('../preview-examples/datetime-range').then((m) => m.default),
   'preview/date-input': () =>
     import('../preview-examples/date-input').then((m) => m.default),
   'preview/date-input-disabled': () =>
@@ -142,6 +147,28 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/datepicker-range').then((m) => m.default),
   'preview/datetimepicker': () =>
     import('../preview-examples/datetimepicker').then((m) => m.default),
+  'preview/datetime-input': () =>
+    import('../preview-examples/datetime-input').then((m) => m.default),
+  'preview/datetime-input-disabled': () =>
+    import('../preview-examples/datetime-input-disabled').then((m) => m.default),
+  'preview/datetime-input-label': () =>
+    import('../preview-examples/datetime-input-label').then((m) => m.default),
+  'preview/datetime-input-min-max-date': () =>
+    import('../preview-examples/datetime-input-min-max-date').then(
+      (m) => m.default
+    ),
+  'preview/datetime-input-readonly': () =>
+    import('../preview-examples/datetime-input-readonly').then(
+      (m) => m.default
+    ),
+  'preview/datetime-input-validation': () =>
+    import('../preview-examples/datetime-input-validation').then(
+      (m) => m.default
+    ),
+  'preview/datetime-input-with-slots': () =>
+    import('../preview-examples/datetime-input-with-slots').then(
+      (m) => m.default
+    ),
   'preview/drawer': () =>
     import('../preview-examples/drawer').then((m) => m.default),
   'preview/drawer-full-height': () =>
@@ -405,6 +432,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/radio-group').then((m) => m.default),
   'preview/radio-validation': () =>
     import('../preview-examples/radio-validation').then((m) => m.default),
+  'preview/range-field': () =>
+    import('../preview-examples/range-field').then((m) => m.default),
   'preview/select': () =>
     import('../preview-examples/select').then((m) => m.default),
   'preview/select-editable': () =>
@@ -425,6 +454,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/slider-marker').then((m) => m.default),
   'preview/slider-trace': () =>
     import('../preview-examples/slider-trace').then((m) => m.default),
+  'preview/slider-validation': () =>
+    import('../preview-examples/slider-validation').then((m) => m.default),
   'preview/spinner': () =>
     import('../preview-examples/spinner').then((m) => m.default),
   'preview/spinner-large': () =>
@@ -435,6 +466,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/split-button-icons').then((m) => m.default),
   'preview/tabs': () =>
     import('../preview-examples/tabs').then((m) => m.default),
+  'preview/tabs-overflow': () =>
+    import('../preview-examples/tabs-overflow').then((m) => m.default),
   'preview/tabs-rounded': () =>
     import('../preview-examples/tabs-rounded').then((m) => m.default),
   'preview/textarea': () =>
@@ -459,6 +492,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/theme-switcher').then((m) => m.default),
   'preview/tile': () =>
     import('../preview-examples/tile').then((m) => m.default),
+  'preview/time-range': () =>
+    import('../preview-examples/time-range').then((m) => m.default),
   'preview/timepicker': () =>
     import('../preview-examples/timepicker').then((m) => m.default),
   'preview/toast': () =>
@@ -543,12 +578,12 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/progress-indicator-circular').then(
       (m) => m.default
     ),
-  'preview/button-danger': () =>
-    import('../preview-examples/button-danger').then((m) => m.default),
-  'preview/button-danger-ghost': () =>
-    import('../preview-examples/button-danger-ghost').then((m) => m.default),
-  'preview/button-danger-outline': () =>
-    import('../preview-examples/button-danger-outline').then((m) => m.default),
+  'preview/button-danger-primary': () =>
+    import('../preview-examples/button-danger-primary').then((m) => m.default),
+  'preview/button-danger-tertiary': () =>
+    import('../preview-examples/button-danger-tertiary').then((m) => m.default),
+  'preview/button-danger-secondary': () =>
+    import('../preview-examples/button-danger-secondary').then((m) => m.default),
   'preview/date-input-min-max-date': () =>
     import('../preview-examples/date-input-min-max-date').then(
       (m) => m.default
