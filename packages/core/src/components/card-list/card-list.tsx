@@ -141,6 +141,7 @@ export class CardList {
 
   @Element() hostElement!: HTMLIxCardListElement;
 
+  @State() private isShowingAll = false;
   @State() private hasOverflowingElements = false;
   @State() private numberOfOverflowingElements = 0;
   @State() private numberOfAllChildElements = 0;
@@ -155,9 +156,16 @@ export class CardList {
   }
 
   private onShowAllClick(event: MouseEvent) {
-    this.showAllClick.emit({
+    const { defaultPrevented } = this.showAllClick.emit({
       nativeEvent: event,
     });
+
+    if (defaultPrevented) {
+      return;
+    }
+
+    this.isShowingAll = true;
+    this.changeVisibilityOfSlotChildren();
   }
 
   private getListChildren() {
@@ -169,19 +177,22 @@ export class CardList {
 
   private changeVisibilityOfSlotChildren() {
     const childElements = this.getListChildren();
+    const visibleLimit = this.isShowingAll
+      ? childElements.length
+      : this.maxVisibleCards;
+
     childElements.forEach((element, index) => {
       if (element instanceof HTMLElement) {
-        if (index > this.maxVisibleCards - 1) {
+        if (index > visibleLimit - 1) {
           element.classList.add('display-none');
           return;
         }
         element.classList.remove('display-none');
       }
     });
-    this.hasOverflowingElements = childElements.length > this.maxVisibleCards;
-    this.numberOfOverflowingElements =
-      childElements.length - this.maxVisibleCards;
 
+    this.hasOverflowingElements = visibleLimit < childElements.length;
+    this.numberOfOverflowingElements = childElements.length - visibleLimit;
     this.numberOfAllChildElements = childElements.length;
     this.detectOverflow();
   }
@@ -320,18 +331,28 @@ export class CardList {
             onScroll={() => this.onCardListScroll()}
           >
             <slot
-              onSlotchange={() => this.changeVisibilityOfSlotChildren()}
+              onSlotchange={() => {
+                this.isShowingAll = false;
+                this.changeVisibilityOfSlotChildren();
+              }}
             ></slot>
             {this.isShowMoreCardVisible() ? (
               <ix-card
                 class={{
                   Show__All__Card: true,
                 }}
-                onClick={(event) =>
-                  this.showMoreCardClick.emit({
+                onClick={(event) => {
+                  const { defaultPrevented } = this.showMoreCardClick.emit({
                     nativeEvent: event,
-                  })
-                }
+                  });
+
+                  if (defaultPrevented) {
+                    return;
+                  }
+
+                  this.isShowingAll = true;
+                  this.changeVisibilityOfSlotChildren();
+                }}
               >
                 <ix-card-content>
                   <div class="Show__All__Card__Content">
