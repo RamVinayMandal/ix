@@ -10,7 +10,10 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     lib: {
-      entry: './src/index.ts',
+      entry: {
+        index: './src/index.ts',
+        'internal-components': './src/internal-components.ts',
+      },
     },
     rollupOptions: {
       external: (id) =>

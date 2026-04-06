@@ -19,8 +19,6 @@
   "sideEffects": [
     "./dist/index.js",
     "./dist/internal-components.js",
-    "./dist/ix-icon.js",
-    "./dist/toast/toast.js",
     "./dist/modal/index.js",
     "./dist/message/message.js"
   ],
