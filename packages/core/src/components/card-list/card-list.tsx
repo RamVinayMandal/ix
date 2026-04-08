@@ -11,6 +11,7 @@ import {
 } from '@stencil/core';
 import { createMutationObserver } from '../utils/mutation-observer';
 import { iconChevronDown, iconMoreMenu } from '@siemens/ix-icons/icons';
+import { requestAnimationFrameNoNgZone } from '../utils/requestAnimationFrame';
 
 function CardListTitle(props: {
   label?: string;
@@ -128,14 +129,20 @@ export class CardList {
   /**
    * Fire event when the collapse state is changed by the user
    */
-  @Event() showAllClick!: EventEmitter<{
+  @Event({
+    cancelable: true,
+  })
+  showAllClick!: EventEmitter<{
     nativeEvent: MouseEvent;
   }>;
 
   /**
    * Fire event when the show more card is clicked.
    */
-  @Event() showMoreCardClick!: EventEmitter<{
+  @Event({
+    cancelable: true,
+  })
+  showMoreCardClick!: EventEmitter<{
     nativeEvent: MouseEvent;
   }>;
 
@@ -194,7 +201,7 @@ export class CardList {
     this.hasOverflowingElements = visibleLimit < childElements.length;
     this.numberOfOverflowingElements = childElements.length - visibleLimit;
     this.numberOfAllChildElements = childElements.length;
-    this.detectOverflow();
+    requestAnimationFrameNoNgZone(() => this.detectOverflow());
   }
 
   private registerOverflowHandler() {
@@ -210,7 +217,7 @@ export class CardList {
       }
     );
 
-    requestAnimationFrame(() => {
+    requestAnimationFrameNoNgZone(() => {
       this.changeVisibilityOfSlotChildren();
     });
   }
