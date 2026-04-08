@@ -13,6 +13,7 @@
   },
   "type": "module",
   "sideEffects": [
+    "./dist/index.js",
     "./dist/internal-components.js",
     "./dist/modal/index.js",
     "./dist/message/message.js"
