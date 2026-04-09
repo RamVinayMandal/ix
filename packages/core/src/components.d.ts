@@ -1621,6 +1621,12 @@ export namespace Components {
          */
         "suppressOverflowBehavior": boolean;
         /**
+          * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressTriggerVisibilityCheck": boolean;
+        /**
           * Define an element that triggers the dropdown. A trigger can either be a string that will be interpreted as id attribute or a DOM element.
          */
         "trigger"?: ElementReference;
@@ -7997,6 +8003,12 @@ declare namespace LocalJSX {
          */
         "suppressOverflowBehavior"?: boolean;
         /**
+          * By default the dropdown gets closed if the trigger is not visible anymore (e.g. due to scrolling). Setting this property prevents that behavior.
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressTriggerVisibilityCheck"?: boolean;
+        /**
           * Define an element that triggers the dropdown. A trigger can either be a string that will be interpreted as id attribute or a DOM element.
          */
         "trigger"?: ElementReference;
@@ -11436,6 +11448,7 @@ declare namespace LocalJSX {
         "placement": AlignedPlacement;
         "positioningStrategy": 'absolute' | 'fixed';
         "header": string;
+        "suppressTriggerVisibilityCheck": boolean;
         "disableFocusHandling": boolean;
         "disableFocusTrap": boolean;
         "enableTopLayer": boolean;
