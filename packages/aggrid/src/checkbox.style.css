@@ -30,8 +30,43 @@
     var(--theme-checkbox-unchecked--border-color);
 }
 
-.ag-checked {
+.ag-checkbox-input-wrapper:not(.ag-checked):not(.ag-indeterminate):hover {
+  background-color: var(--theme-checkbox-unchecked--background--hover);
+  border: var(--theme-checkbox--border-thickness) solid
+    var(--theme-checkbox-unchecked--border-color--hover);
+}
+
+.ag-checkbox-input-wrapper:not(.ag-checked):not(.ag-indeterminate):active {
+  background-color: var(--theme-checkbox-unchecked--background--active);
+  border: var(--theme-checkbox--border-thickness) solid
+    var(--theme-checkbox-unchecked--border-color--active);
+}
+
+.ag-checkbox-input-wrapper.ag-checked,
+.ag-checkbox-input-wrapper.ag-indeterminate {
   position: relative;
+  background-color: var(--theme-checkbox-checked--color);
+  border: none;
+}
+
+.ag-checkbox-input-wrapper.ag-checked:hover,
+.ag-checkbox-input-wrapper.ag-indeterminate:hover {
+  background-color: var(--theme-checkbox-checked--color--hover);
+}
+
+.ag-checkbox-input-wrapper.ag-checked:hover::before,
+.ag-checkbox-input-wrapper.ag-indeterminate:hover::before {
+  background-color: var(--theme-checkbox-checked--background--hover);
+}
+
+.ag-checkbox-input-wrapper.ag-checked:active,
+.ag-checkbox-input-wrapper.ag-indeterminate:active {
+  background-color: var(--theme-checkbox-checked--color--active);
+}
+
+.ag-checkbox-input-wrapper.ag-checked:active::before,
+.ag-checkbox-input-wrapper.ag-indeterminate:active::before {
+  background-color: var(--theme-checkbox-checked--background--active);
 }
 
 .ag-checkbox-input-wrapper.ag-checked::before {
@@ -46,10 +81,6 @@
   mask-position: center;
   mask-size: contain;
   pointer-events: none;
-}
-
-.ag-indeterminate {
-  position: relative;
 }
 
 .ag-indeterminate::before {
