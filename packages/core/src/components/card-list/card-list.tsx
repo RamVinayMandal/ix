@@ -162,8 +162,8 @@ export class CardList {
     this.collapseChanged.emit(this.collapse);
   }
 
-  private onShowAllClick(event: MouseEvent) {
-    const { defaultPrevented } = this.showAllClick.emit({
+  private handleClick(emitter: EventEmitter, event: MouseEvent) {
+    const { defaultPrevented } = emitter.emit({
       nativeEvent: event,
     });
 
@@ -173,6 +173,10 @@ export class CardList {
 
     this.isShowingAll = true;
     this.changeVisibilityOfSlotChildren();
+  }
+
+  private onShowAllClick(event: MouseEvent) {
+    this.handleClick(this.showAllClick, event);
   }
 
   private getListChildren() {
@@ -339,7 +343,6 @@ export class CardList {
           >
             <slot
               onSlotchange={() => {
-                this.isShowingAll = false;
                 this.changeVisibilityOfSlotChildren();
               }}
             ></slot>
@@ -349,16 +352,7 @@ export class CardList {
                   Show__All__Card: true,
                 }}
                 onClick={(event) => {
-                  const { defaultPrevented } = this.showMoreCardClick.emit({
-                    nativeEvent: event,
-                  });
-
-                  if (defaultPrevented) {
-                    return;
-                  }
-
-                  this.isShowingAll = true;
-                  this.changeVisibilityOfSlotChildren();
+                  this.handleClick(this.showMoreCardClick, event);
                 }}
               >
                 <ix-card-content>
