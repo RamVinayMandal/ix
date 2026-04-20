@@ -8,11 +8,7 @@
  */
 
 import { Component } from '@angular/core';
-import {
-  IxTile,
-  IxIconButton,
-  IxButton,
-} from '@siemens/ix-angular/standalone';
+import { IxTile, IxIconButton, IxButton } from '@siemens/ix-angular/standalone';
 
 @Component({
   selector: 'app-example',
