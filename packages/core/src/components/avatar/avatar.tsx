@@ -244,16 +244,7 @@ export class Avatar
   }
 
   private resolveTooltipTrigger() {
-    return new Promise<HTMLElement>((resolve) => {
-      readTask(() => {
-        const button = this.hostElement.shadowRoot!.querySelector('button');
-        if (button) {
-          resolve(button);
-        } else {
-          resolve(this.hostElement);
-        }
-      });
-    });
+    return this.resolveAvatarTrigger().catch(() => this.hostElement);
   }
 
   private onDropdownClick(event: MouseEvent) {
