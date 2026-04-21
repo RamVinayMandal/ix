@@ -139,6 +139,9 @@ export class Tree {
         if (renderedTreeItem && refreshTreeOptions.force === false) {
           renderedTreeItem.hasChildren = item.hasChildren;
           renderedTreeItem.context = { ...context };
+          renderedTreeItem.disabled = Boolean(
+            item.disabled || context.isDisabled
+          );
           this.setPositionAriaAttributes(renderedTreeItem, item);
 
           let forceRerender = this.dirtyItems.has(item.id);

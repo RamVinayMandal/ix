@@ -4356,7 +4356,7 @@ export namespace Components {
         "context"?: TreeItemContext;
         /**
           * Disable tree item
-          * @since 4.4.0
+          * @since 5.0.0
           * @default false
          */
         "disabled": boolean;
@@ -10914,7 +10914,7 @@ declare namespace LocalJSX {
         "context"?: TreeItemContext;
         /**
           * Disable tree item
-          * @since 4.4.0
+          * @since 5.0.0
           * @default false
          */
         "disabled"?: boolean;

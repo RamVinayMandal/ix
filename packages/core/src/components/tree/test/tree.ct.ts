@@ -886,3 +886,34 @@ regressionTest(
     );
   }
 );
+
+regressionTest('accessibility', async ({ mount, page, makeAxeBuilder }) => {
+  const tree = await initializeTree(mount, page);
+
+  // Expand sample to expose children; mark one child as disabled for aria-disabled coverage
+  await tree.evaluate((element: HTMLIxTreeElement) => {
+    element.model = {
+      ...element.model,
+      'sample-child-1': { ...element.model['sample-child-1'], disabled: true },
+    };
+    element.context = {
+      root: { isExpanded: true, isSelected: false },
+      sample: { isExpanded: true, isSelected: false },
+      'sample-child-1': {
+        isExpanded: false,
+        isSelected: false,
+        isDisabled: true,
+      },
+      'sample-child-2': { isExpanded: false, isSelected: false },
+      'sample-child-3': { isExpanded: false, isSelected: false },
+      'sample-child-4': { isExpanded: false, isSelected: false },
+    };
+  });
+
+  await expect(
+    tree.locator('ix-tree-item', { hasText: 'Sample Child 1' })
+  ).toBeVisible();
+
+  const accessibilityScanResults = await makeAxeBuilder().analyze();
+  expect(accessibilityScanResults.violations).toEqual([]);
+});
