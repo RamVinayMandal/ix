@@ -4,9 +4,12 @@ import {
   showMessage as _showMessage,
 } from '@siemens/ix';
 import { defineCustomElement } from '@siemens/ix/components/ix-modal.js';
+import { defineCustomElement as defineCustomElementModalFooter } from '@siemens/ix/components/ix-modal-footer.js';
 
 // call defineCustomElement once at module level
 defineCustomElement();
+// required for production builds
+defineCustomElementModalFooter();
 
 export function showMessage<T>(config: MessageConfig<T>): Promise<
   TypedEvent<{
