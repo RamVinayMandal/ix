@@ -136,7 +136,7 @@
     }
   },
   "sideEffects": [
-    "*.css",
-    "*.scss"
+    "**/*.css",
+    "**/*.scss"
   ]
 }
