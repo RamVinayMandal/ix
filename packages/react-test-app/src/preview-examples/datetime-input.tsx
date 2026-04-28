@@ -10,7 +10,16 @@
 import { IxDatetimeInput } from '@siemens/ix-react';
 
 function DatetimeInput() {
-  return <IxDatetimeInput label="Date and time" value="2026/02/08 00:00:00"></IxDatetimeInput>;
+  return (
+    <IxDatetimeInput
+      label="13:00–17:30"
+      value="2026/04/28 14:00:00"
+      minDate="2026/04/20"
+      maxDate="2026/04/29"
+      minTime="13:10:00"
+      maxTime="17:30:00"
+    ></IxDatetimeInput>
+  );
 }
 
 export default DatetimeInput;
