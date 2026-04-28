@@ -1430,9 +1430,19 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Show AM/PM time reference control.
           * @default false
@@ -3660,11 +3670,6 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Placement of the dropdown
-          * @default 'bottom-start'
-         */
-        "placement": AlignedPlacement;
-        /**
           * Icon of the button on the right
          */
         "splitIcon"?: string;
@@ -3970,10 +3975,20 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -4097,11 +4112,21 @@ export namespace Components {
          */
         "i18nSecondColumnHeader": string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -7762,9 +7787,19 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Date change event. Emitted when the date changes in the embedded date picker.
          */
@@ -10183,11 +10218,6 @@ declare namespace LocalJSX {
          */
         "onButtonClick"?: (event: IxSplitButtonCustomEvent<MouseEvent>) => void;
         /**
-          * Placement of the dropdown
-          * @default 'bottom-start'
-         */
-        "placement"?: AlignedPlacement;
-        /**
           * Icon of the button on the right
          */
         "splitIcon"?: string;
@@ -10497,10 +10527,20 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -10634,11 +10674,21 @@ declare namespace LocalJSX {
          */
         "i18nSecondColumnHeader"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @since 3.2.0
           * @default MILLISECOND_INTERVAL_DEFAULT
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @since 3.2.0
@@ -11370,6 +11420,8 @@ declare namespace LocalJSX {
         "maxDate": string;
         "dateFormat": string;
         "timeFormat": string;
+        "minTime": string;
+        "maxTime": string;
         "from": string;
         "to": string;
         "time": string;
@@ -11909,7 +11961,6 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "disableButton": boolean;
         "disableDropdownButton": boolean;
-        "placement": AlignedPlacement;
         "enableTopLayer": boolean;
     }
     interface IxTabItemAttributes {
@@ -11961,6 +12012,8 @@ declare namespace LocalJSX {
         "placeholder": string;
         "value": string;
         "format": string;
+        "minTime": string;
+        "maxTime": string;
         "required": boolean;
         "helperText": string;
         "label": string;
@@ -11999,6 +12052,8 @@ declare namespace LocalJSX {
         "secondInterval": number;
         "millisecondInterval": number;
         "time": string;
+        "minTime": string;
+        "maxTime": string;
         "i18nConfirmTime": string;
         "i18nHeader": string;
         "i18nHourColumnHeader": string;
