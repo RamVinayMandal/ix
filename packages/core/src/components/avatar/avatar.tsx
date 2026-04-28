@@ -244,6 +244,7 @@ export class Avatar
   }
 
   private resolveTooltipTrigger() {
+    // fallback to host element if component is used outside of the application header, and thus has no button element as trigger
     return this.resolveAvatarTrigger().catch(() => this.hostElement);
   }
 
