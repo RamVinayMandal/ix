@@ -65,7 +65,7 @@ import ContentHeaderWithSlot from '../preview-examples/content-header-with-slot'
 import CustomField from '../preview-examples/custom-field';
 import CustomFieldValidation from '../preview-examples/custom-field-validation';
 import DateDropdown from '../preview-examples/date-dropdown';
-import DateDropdownUserRange from '../preview-examples/date-dropdown-user-range';
+import DateDropdownPresets from '../preview-examples/date-dropdown-presets';
 import DateRange from '../preview-examples/date-range';
 import DatetimeRange from '../preview-examples/datetime-range';
 import DateInput from '../preview-examples/date-input';
@@ -177,6 +177,9 @@ import ModalByInstanceContent from '../preview-examples/modal-by-instance-conten
 import ModalByTemplate from '../preview-examples/modal-by-template';
 import ModalClose from '../preview-examples/modal-close';
 import ModalFormIxButtonSubmit from '../preview-examples/modal-form-ix-button-submit';
+import ModalNonBlocking, {
+  ModalNonBlockingContent,
+} from '../preview-examples/modal-non-blocking';
 import ModalSizes from '../preview-examples/modal-sizes';
 import NumberInput from '../preview-examples/number-input';
 import NumberInputDisabled from '../preview-examples/number-input-disabled';
@@ -236,6 +239,7 @@ import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
+import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
 import Toast from '../preview-examples/toast';
 import ToastCustom from '../preview-examples/toast-custom';
 import ToastPosition from '../preview-examples/toast-position';
@@ -312,7 +316,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     CustomField,
     CustomFieldValidation,
     DateDropdown,
-    DateDropdownUserRange,
+    DateDropdownPresets,
     DateRange,
     DatetimeRange,
     DateInput,
@@ -414,6 +418,8 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     ModalByTemplate,
     ModalClose,
     ModalFormIxButtonSubmit,
+    ModalNonBlockingContent,
+    ModalNonBlocking,
     ModalSizes,
     PaginationAdvanced,
     Pagination,
@@ -468,6 +474,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     TimeInput,
     TimeRange,
     Timepicker,
+    TimepickerMinMaxTime,
     ToastCustom,
     ToastPosition,
     Toast,
