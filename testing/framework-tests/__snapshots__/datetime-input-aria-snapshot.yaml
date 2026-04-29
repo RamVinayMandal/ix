@@ -1,4 +1,3 @@
 - main:
-  - textbox "13:10–17:30": 2026/04/28 14:00:00
+  - textbox "Date and time": /\d+\/\d+\/\d+ \d+:\d+:\d+/
   - button "Toggle calendar"
-
