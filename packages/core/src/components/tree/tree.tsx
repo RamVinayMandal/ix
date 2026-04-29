@@ -104,15 +104,6 @@ export class Tree {
     element.style.paddingLeft = item.level + 'rem';
   }
 
-  private setPositionAriaAttributes(
-    element: HTMLElement,
-    item: TreeItemVisual<unknown>
-  ) {
-    element.setAttribute('aria-level', String(item.level + 1));
-    element.setAttribute('aria-setsize', String(item.setsize));
-    element.setAttribute('aria-posinset', String(item.posinset));
-  }
-
   private getVirtualizerOptions(
     refreshTreeOptions: RefreshTreeOptions
   ): VirtualListConfig {
@@ -142,7 +133,6 @@ export class Tree {
           renderedTreeItem.disabled = Boolean(
             item.disabled || context.isDisabled
           );
-          this.setPositionAriaAttributes(renderedTreeItem, item);
 
           let forceRerender = this.dirtyItems.has(item.id);
 
@@ -188,7 +178,6 @@ export class Tree {
 
         const el = innerElement;
         el.setAttribute('data-tree-node-id', item.id);
-        this.setPositionAriaAttributes(el, item);
         el.style.paddingRight = '1rem';
         this.updatePadding(el, item);
 
@@ -233,13 +222,13 @@ export class Tree {
     const itemList: TreeItemVisual<any>[] = [];
 
     if (root?.hasChildren) {
-      const setsize = root.children.length;
-      root.children.forEach((id: string, index: number) => {
+      const newLevel = level + 1;
+      root.children.forEach((id: string) => {
         const item = this.model[id];
         const context = this.getContext(id);
-        itemList.push({ ...item, level, posinset: index + 1, setsize });
+        itemList.push({ ...item, level });
         if (item.hasChildren && context.isExpanded) {
-          itemList.push(...this.buildTreeList(item, level + 1));
+          itemList.push(...this.buildTreeList(item, newLevel));
         }
       });
     }
@@ -444,7 +433,7 @@ export class Tree {
 
   render() {
     return (
-      <Host onClick={(event: Event) => this.onTreeItemClick(event)} role="tree">
+      <Host onClick={(event: Event) => this.onTreeItemClick(event)}>
         <slot></slot>
       </Host>
     );
