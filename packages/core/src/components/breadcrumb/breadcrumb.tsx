@@ -42,7 +42,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
   /**
    * Items will be accessible through a dropdown
    */
-  @Prop() nextItems: string[] = [];
+  @Prop() nextItems: { breadcrumbKey: string; label: string }[] = [];
   @Watch('nextItems')
   onNextItemsChange() {
     this.onChildMutation();
@@ -70,12 +70,15 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
   /**
    * Crumb item clicked event
    */
-  @Event() itemClick!: EventEmitter<string>;
+  @Event() itemClick!: EventEmitter<{ breadcrumbKey: string; label?: string }>;
 
   /**
    * Next item clicked event
    */
-  @Event() nextClick!: EventEmitter<{ event: UIEvent; item: string }>;
+  @Event() nextClick!: EventEmitter<{
+    event: UIEvent;
+    item: { breadcrumbKey: string; label?: string };
+  }>;
 
   @State() items: HTMLIxBreadcrumbItemElement[] = [];
   @State() isNextDropdownExpanded = false;
@@ -85,7 +88,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
   private mutationObserver?: MutationObserver;
   private inheritAriaAttributes: A11yAttributes = {};
 
-  private onItemClick(item: string) {
+  private onItemClick(item: { breadcrumbKey: string; label?: string }) {
     this.itemClick.emit(item);
   }
 
@@ -173,7 +176,10 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
                   <ix-dropdown-item
                     label={label}
                     onClick={() => {
-                      this.onItemClick(label);
+                      this.onItemClick({
+                        breadcrumbKey: item.breadcrumbKey,
+                        label,
+                      });
                     }}
                     onItemClick={(event) => event.stopPropagation()}
                   ></ix-dropdown-item>
@@ -201,7 +207,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
             ></ix-icon>
             {this.nextItems?.map((item) => (
               <ix-dropdown-item
-                label={item}
+                label={item.label}
                 onClick={(e) => {
                   this.nextClick.emit({
                     event: e,

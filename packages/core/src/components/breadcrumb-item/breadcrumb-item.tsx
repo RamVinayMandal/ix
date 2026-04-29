@@ -74,6 +74,13 @@ export class BreadcrumbItem
   @Prop() target?: AnchorTarget = '_self';
 
   /**
+   * Will be used as the key for the breadcrumb item, which will be emitted in the itemClick event when the breadcrumb item is clicked.
+   *
+   * @since 5.0.0
+   */
+  @Prop() breadcrumbKey!: string;
+
+  /**
    * Specifies the relationship between the current document and the linked document when href is provided.
    *
    * @since 4.0.0
@@ -96,7 +103,7 @@ export class BreadcrumbItem
   @Prop() isCurrentPage = false;
 
   /**@internal */
-  @Event() itemClick!: EventEmitter<string>;
+  @Event() itemClick!: EventEmitter<{ breadcrumbKey: string; label?: string }>;
 
   @State() inheritAriaAttributes: A11yAttributes = {};
 
@@ -180,7 +187,12 @@ export class BreadcrumbItem
         class={{
           'hide-chevron': this.hideChevron,
         }}
-        onClick={() => this.itemClick.emit(this.label)}
+        onClick={() =>
+          this.itemClick.emit({
+            breadcrumbKey: this.breadcrumbKey,
+            label: this.label ?? this.hostElement.innerText,
+          })
+        }
       >
         <BaseButton
           {...props}

@@ -257,8 +257,8 @@ export declare interface IxBlind extends Components.IxBlind {
 })
 export class IxBreadcrumb {
   protected el: HTMLIxBreadcrumbElement;
-  @Output() itemClick = new EventEmitter<CustomEvent<string>>();
-  @Output() nextClick = new EventEmitter<CustomEvent<{ event: UIEvent; item: string }>>();
+  @Output() itemClick = new EventEmitter<CustomEvent<{ breadcrumbKey: string; label?: string }>>();
+  @Output() nextClick = new EventEmitter<CustomEvent<{ event: UIEvent; item: { breadcrumbKey: string; label?: string }; }>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -270,24 +270,24 @@ export declare interface IxBreadcrumb extends Components.IxBreadcrumb {
   /**
    * Crumb item clicked event
    */
-  itemClick: EventEmitter<CustomEvent<string>>;
+  itemClick: EventEmitter<CustomEvent<{ breadcrumbKey: string; label?: string }>>;
   /**
    * Next item clicked event
    */
-  nextClick: EventEmitter<CustomEvent<{ event: UIEvent; item: string }>>;
+  nextClick: EventEmitter<CustomEvent<{ event: UIEvent; item: { breadcrumbKey: string; label?: string }; }>>;
 }
 
 
 @ProxyCmp({
   defineCustomElementFn: defineIxBreadcrumbItem,
-  inputs: ['ariaLabelButton', 'href', 'icon', 'label', 'rel', 'target']
+  inputs: ['ariaLabelButton', 'breadcrumbKey', 'href', 'icon', 'label', 'rel', 'target']
 })
 @Component({
   selector: 'ix-breadcrumb-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<ng-content></ng-content>',
   // eslint-disable-next-line @angular-eslint/no-inputs-metadata-property
-  inputs: ['ariaLabelButton', 'href', 'icon', 'label', 'rel', 'target'],
+  inputs: ['ariaLabelButton', { name: 'breadcrumbKey', required: true }, 'href', 'icon', 'label', 'rel', 'target'],
 })
 export class IxBreadcrumbItem {
   protected el: HTMLIxBreadcrumbItemElement;
