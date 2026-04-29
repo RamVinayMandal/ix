@@ -20,18 +20,22 @@ function firstLuxonTimeTokenIndex(format: string): number {
  */
 export function getLuxonDateOnlyFormatMask(
   format: string,
-  emptyPrefixFallback: string = LUXON_DEFAULT_DATE_ONLY_FORMAT
+  fallback: string = LUXON_DEFAULT_DATE_ONLY_FORMAT
 ): string {
   const timeTokenIndex = firstLuxonTimeTokenIndex(format);
+
   if (timeTokenIndex === -1) {
     return format;
   }
+
   let end = timeTokenIndex;
   while (end > 0 && " \t'T".includes(format[end - 1])) {
     end--;
   }
+
   const prefix = format.slice(0, end).trimEnd();
-  return prefix === '' ? emptyPrefixFallback : prefix;
+
+  return prefix === '' ? fallback : prefix;
 }
 
 /**
@@ -39,11 +43,13 @@ export function getLuxonDateOnlyFormatMask(
  */
 export function getLuxonTimeFormatMask(
   format: string,
-  noTimeTokensFallback: string = LUXON_DEFAULT_TIME_ONLY_FORMAT
+  fallback: string = LUXON_DEFAULT_TIME_ONLY_FORMAT
 ): string {
   const timeTokenIndex = firstLuxonTimeTokenIndex(format);
+
   if (timeTokenIndex === -1) {
-    return noTimeTokensFallback;
+    return fallback;
   }
+
   return format.slice(timeTokenIndex);
 }

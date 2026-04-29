@@ -261,17 +261,11 @@ export class DatetimeInput
     return this.format;
   }
 
-  /** Date portion of `format` for the nested `ix-datetime-picker` date column (`dateFormat` / `from`). */
   private get dateOnlyFormat(): string {
     return getLuxonDateOnlyFormatMask(this.format);
   }
 
-  /**
-   * Time-token suffix of `format`. Used to parse `minTime` / `maxTime` (time-only strings) and
-   * as `timeFormat` / `time` on the nested `ix-datetime-picker` so
-   * `ix-time-picker` constraints match; Luxon cannot parse "13:00:00" with a full datetime mask.
-   */
-  private get constraintTimeFormat(): string {
+  private get timeOnlyFormat(): string {
     return getLuxonTimeFormatMask(this.format);
   }
 
@@ -288,7 +282,7 @@ export class DatetimeInput
 
     if (dateTime.isValid) {
       this.from = dateTime.toFormat(this.dateOnlyFormat);
-      this.time = dateTime.toFormat(this.constraintTimeFormat);
+      this.time = dateTime.toFormat(this.timeOnlyFormat);
     } else {
       this.from = null;
       this.time = null;
@@ -323,7 +317,7 @@ export class DatetimeInput
 
     if (dateTime.isValid) {
       this.from = dateTime.toFormat(this.dateOnlyFormat);
-      this.time = dateTime.toFormat(this.constraintTimeFormat);
+      this.time = dateTime.toFormat(this.timeOnlyFormat);
     } else {
       this.from = null;
       this.time = null;
@@ -380,10 +374,9 @@ export class DatetimeInput
       dateTime.isValid &&
       dateTime > maxDateTime
     );
-    const isOutsideTimeWindow = !!(
+    const isOutsideTimeWindow =
       dateTime.isValid &&
-      !isWithinTimePickerConstraints(dateTime, minTime, maxTime)
-    );
+      !isWithinTimePickerConstraints(dateTime, minTime, maxTime);
 
     const isInvalid =
       isFormatInvalid || isBeforeMin || isAfterMax || isOutsideTimeWindow;
@@ -414,7 +407,7 @@ export class DatetimeInput
     const bounds = getTimePickerConstraintBounds(
       this.minTime,
       this.maxTime,
-      this.constraintTimeFormat,
+      this.timeOnlyFormat,
       dateTime.startOf('day')
     );
 
@@ -490,7 +483,7 @@ export class DatetimeInput
       const now = DateTime.now();
       if (now.isValid) {
         this.from = now.toFormat(this.dateOnlyFormat);
-        this.time = now.toFormat(this.constraintTimeFormat);
+        this.time = now.toFormat(this.timeOnlyFormat);
       }
     }
   }
@@ -675,7 +668,7 @@ export class DatetimeInput
     const dateOnly = DateTime.fromFormat(from, this.dateOnlyFormat, {
       locale: this.locale,
     });
-    const timeOnly = DateTime.fromFormat(time, this.constraintTimeFormat, {
+    const timeOnly = DateTime.fromFormat(time, this.timeOnlyFormat, {
       locale: this.locale,
     });
 
@@ -836,7 +829,7 @@ export class DatetimeInput
             showWeekNumbers={this.showWeekNumbers}
             singleSelection
             time={this.time ?? ''}
-            timeFormat={this.constraintTimeFormat}
+            timeFormat={this.timeOnlyFormat}
             weekStartIndex={this.weekStartIndex}
             onDateSelect={this.handleDateSelect}
           ></ix-datetime-picker>
