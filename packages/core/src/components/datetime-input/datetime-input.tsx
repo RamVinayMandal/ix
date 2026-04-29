@@ -245,7 +245,6 @@ export class DatetimeInput
   @Watch('value')
   watchValuePropHandler(newValue: string) {
     this.onInput(newValue);
-    this.syncPickerState();
   }
 
   @Watch('minTime')
@@ -301,6 +300,8 @@ export class DatetimeInput
     if (!value) {
       this.isInputInvalid = false;
       this.invalidReason = undefined;
+      this.from = null;
+      this.time = null;
       this.emitValidityStateChangeIfChanged();
       this.formInternals.setFormValue(null);
       this.valueChange.emit(value);
@@ -641,7 +642,6 @@ export class DatetimeInput
 
   componentWillLoad(): void {
     this.onInput(this.value);
-    this.syncPickerState();
 
     this.checkClassList();
     this.updateFormInternalValue(this.value);
