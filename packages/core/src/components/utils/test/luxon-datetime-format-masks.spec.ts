@@ -19,13 +19,19 @@ describe('getLuxonDateOnlyFormatMask', () => {
   });
 
   it('strips time suffix with space separator', () => {
-    expect(getLuxonDateOnlyFormatMask('yyyy/LL/dd HH:mm:ss')).toBe('yyyy/LL/dd');
-    expect(getLuxonDateOnlyFormatMask('dd-MM-yyyy HH:mm:ss')).toBe('dd-MM-yyyy');
+    expect(getLuxonDateOnlyFormatMask('yyyy/LL/dd HH:mm:ss')).toBe(
+      'yyyy/LL/dd'
+    );
+    expect(getLuxonDateOnlyFormatMask('dd-MM-yyyy HH:mm:ss')).toBe(
+      'dd-MM-yyyy'
+    );
     expect(getLuxonDateOnlyFormatMask('yyyy-MM-dd HH:mm')).toBe('yyyy-MM-dd');
   });
 
   it('strips T literal before time', () => {
-    expect(getLuxonDateOnlyFormatMask("yyyy-MM-dd'T'HH:mm:ss")).toBe('yyyy-MM-dd');
+    expect(getLuxonDateOnlyFormatMask("yyyy-MM-dd'T'HH:mm:ss")).toBe(
+      'yyyy-MM-dd'
+    );
   });
 
   it('uses fallback when prefix is empty', () => {
