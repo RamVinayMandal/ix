@@ -6728,10 +6728,12 @@ declare namespace LocalJSX {
         "nextItems"?: { breadcrumbKey: string; label: string }[];
         /**
           * Crumb item clicked event
+          * @since 5.0.0
          */
         "onItemClick"?: (event: IxBreadcrumbCustomEvent<{ breadcrumbKey: string; label?: string }>) => void;
         /**
           * Next item clicked event
+          * @since 5.0.0
          */
         "onNextClick"?: (event: IxBreadcrumbCustomEvent<{
     event: UIEvent;

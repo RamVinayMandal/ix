@@ -69,11 +69,15 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
 
   /**
    * Crumb item clicked event
+   *
+   * @since 5.0.0
    */
   @Event() itemClick!: EventEmitter<{ breadcrumbKey: string; label?: string }>;
 
   /**
    * Next item clicked event
+   *
+   * @since 5.0.0
    */
   @Event() nextClick!: EventEmitter<{
     event: UIEvent;

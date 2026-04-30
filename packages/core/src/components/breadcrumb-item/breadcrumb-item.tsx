@@ -18,6 +18,7 @@ import {
   Prop,
   State,
   Mixin,
+  Watch,
 } from '@stencil/core';
 import { animate } from 'animejs';
 import { BaseButton, BaseButtonProps } from '../button/base-button';
@@ -116,9 +117,20 @@ export class BreadcrumbItem
       'role',
       'aria-label',
     ]);
+    this.validateProps();
   }
 
   override componentDidRender(): void {}
+
+  @Watch('breadcrumbKey')
+  validateProps() {
+    if (!this.breadcrumbKey) {
+      console.warn(
+        '[IxBreadcrumbItem] The "breadcrumbKey" prop is required for breadcrumb items to function properly.',
+        this.hostElement
+      );
+    }
+  }
 
   animationFadeIn() {
     animate(this.hostElement, {

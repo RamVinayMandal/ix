@@ -166,11 +166,11 @@ export class IxBreadcrumb {
 
 export declare interface IxBreadcrumb extends Components.IxBreadcrumb {
   /**
-   * Crumb item clicked event
+   * Crumb item clicked event @since 5.0.0
    */
   itemClick: EventEmitter<CustomEvent<{ breadcrumbKey: string; label?: string }>>;
   /**
-   * Next item clicked event
+   * Next item clicked event @since 5.0.0
    */
   nextClick: EventEmitter<CustomEvent<{ event: UIEvent; item: { breadcrumbKey: string; label?: string }; }>>;
 }
