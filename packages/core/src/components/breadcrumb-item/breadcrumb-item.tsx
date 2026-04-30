@@ -28,6 +28,7 @@ import Animation from '../utils/animation';
 import { AnchorInterface, AnchorTarget } from '../button/button.interface';
 import { DefaultMixins } from '../utils/internal/component';
 import { requestAnimationFrameNoNgZone } from '../utils/requestAnimationFrame';
+import type { BreadcrumbClick } from '../breadcrumb/breadcrumb.types';
 
 @Component({
   tag: 'ix-breadcrumb-item',
@@ -104,7 +105,7 @@ export class BreadcrumbItem
   @Prop() isCurrentPage = false;
 
   /**@internal */
-  @Event() itemClick!: EventEmitter<{ breadcrumbKey: string; label?: string }>;
+  @Event() itemClick!: EventEmitter<BreadcrumbClick>;
 
   @State() inheritAriaAttributes: A11yAttributes = {};
 

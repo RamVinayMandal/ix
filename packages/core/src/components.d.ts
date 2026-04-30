@@ -4957,7 +4957,7 @@ declare global {
         new (): HTMLIxBreadcrumbElement;
     };
     interface HTMLIxBreadcrumbItemElementEventMap {
-        "itemClick": { breadcrumbKey: string; label?: string };
+        "itemClick": BreadcrumbClick;
     }
     interface HTMLIxBreadcrumbItemElement extends Components.IxBreadcrumbItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxBreadcrumbItemElementEventMap>(type: K, listener: (this: HTMLIxBreadcrumbItemElement, ev: IxBreadcrumbItemCustomEvent<HTMLIxBreadcrumbItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6795,7 +6795,7 @@ declare namespace LocalJSX {
           * Breadcrumb label
          */
         "label"?: string;
-        "onItemClick"?: (event: IxBreadcrumbItemCustomEvent<{ breadcrumbKey: string; label?: string }>) => void;
+        "onItemClick"?: (event: IxBreadcrumbItemCustomEvent<BreadcrumbClick>) => void;
         /**
           * Specifies the relationship between the current document and the linked document when href is provided.
           * @since 4.0.0
