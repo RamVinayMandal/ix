@@ -257,8 +257,8 @@ export declare interface IxBlind extends Components.IxBlind {
 })
 export class IxBreadcrumb {
   protected el: HTMLIxBreadcrumbElement;
-  @Output() itemClick = new EventEmitter<CustomEvent<{ breadcrumbKey: string; label?: string }>>();
-  @Output() nextClick = new EventEmitter<CustomEvent<{ event: UIEvent; item: { breadcrumbKey: string; label?: string }; }>>();
+  @Output() itemClick = new EventEmitter<CustomEvent<IIxBreadcrumbBreadcrumbClick>>();
+  @Output() nextClick = new EventEmitter<CustomEvent<{ event: UIEvent; item: IIxBreadcrumbBreadcrumbClick; }>>();
   constructor(c: ChangeDetectorRef, r: ElementRef, protected z: NgZone) {
     c.detach();
     this.el = r.nativeElement;
@@ -266,15 +266,17 @@ export class IxBreadcrumb {
 }
 
 
+import type { BreadcrumbClick as IIxBreadcrumbBreadcrumbClick } from '@siemens/ix/components';
+
 export declare interface IxBreadcrumb extends Components.IxBreadcrumb {
   /**
    * Crumb item clicked event @since 5.0.0
    */
-  itemClick: EventEmitter<CustomEvent<{ breadcrumbKey: string; label?: string }>>;
+  itemClick: EventEmitter<CustomEvent<IIxBreadcrumbBreadcrumbClick>>;
   /**
    * Next item clicked event @since 5.0.0
    */
-  nextClick: EventEmitter<CustomEvent<{ event: UIEvent; item: { breadcrumbKey: string; label?: string }; }>>;
+  nextClick: EventEmitter<CustomEvent<{ event: UIEvent; item: IIxBreadcrumbBreadcrumbClick; }>>;
 }
 
 

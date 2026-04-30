@@ -10,6 +10,7 @@ import { ThemeVariant } from "./components/utils/theme-switcher";
 import { Breakpoint } from "./components/utils/breakpoints";
 import { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 import { BlindVariant } from "./components/blind/blind.types";
+import { BreadcrumbClick } from "./components/breadcrumb/breadcrumb.types";
 import { AnchorTarget } from "./components/button/button.interface";
 import { ButtonVariant } from "./components/button/button";
 import { CardVariant } from "./components/card/card.types";
@@ -62,6 +63,7 @@ export { ThemeVariant } from "./components/utils/theme-switcher";
 export { Breakpoint } from "./components/utils/breakpoints";
 export { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 export { BlindVariant } from "./components/blind/blind.types";
+export { BreadcrumbClick } from "./components/breadcrumb/breadcrumb.types";
 export { AnchorTarget } from "./components/button/button.interface";
 export { ButtonVariant } from "./components/button/button";
 export { CardVariant } from "./components/card/card.types";
@@ -321,9 +323,10 @@ export namespace Components {
         "enableTopLayer": boolean;
         /**
           * Items will be accessible through a dropdown
+          * @since 5.0.0
           * @default []
          */
-        "nextItems": { breadcrumbKey: string; label: string }[];
+        "nextItems": BreadcrumbClick[];
         /**
           * Ghost breadcrumbs will not show solid backgrounds on individual crumbs unless there is a mouse event (e.g. hover)
           * @default false
@@ -4933,10 +4936,10 @@ declare global {
         new (): HTMLIxBlindElement;
     };
     interface HTMLIxBreadcrumbElementEventMap {
-        "itemClick": { breadcrumbKey: string; label?: string };
+        "itemClick": BreadcrumbClick;
         "nextClick": {
     event: UIEvent;
-    item: { breadcrumbKey: string; label?: string };
+    item: BreadcrumbClick;
   };
     }
     interface HTMLIxBreadcrumbElement extends Components.IxBreadcrumb, HTMLStencilElement {
@@ -6723,21 +6726,22 @@ declare namespace LocalJSX {
         "enableTopLayer"?: boolean;
         /**
           * Items will be accessible through a dropdown
+          * @since 5.0.0
           * @default []
          */
-        "nextItems"?: { breadcrumbKey: string; label: string }[];
+        "nextItems"?: BreadcrumbClick[];
         /**
           * Crumb item clicked event
           * @since 5.0.0
          */
-        "onItemClick"?: (event: IxBreadcrumbCustomEvent<{ breadcrumbKey: string; label?: string }>) => void;
+        "onItemClick"?: (event: IxBreadcrumbCustomEvent<BreadcrumbClick>) => void;
         /**
           * Next item clicked event
           * @since 5.0.0
          */
         "onNextClick"?: (event: IxBreadcrumbCustomEvent<{
     event: UIEvent;
-    item: { breadcrumbKey: string; label?: string };
+    item: BreadcrumbClick;
   }>) => void;
         /**
           * Ghost breadcrumbs will not show solid backgrounds on individual crumbs unless there is a mouse event (e.g. hover)

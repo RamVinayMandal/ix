@@ -23,6 +23,7 @@ import {
 import { A11yAttributes, a11yHostAttributes } from '../utils/a11y';
 import { DefaultMixins } from '../utils/internal/component';
 import { createMutationObserver } from '../utils/mutation-observer';
+import type { BreadcrumbClick } from './breadcrumb.types';
 
 @Component({
   tag: 'ix-breadcrumb',
@@ -41,8 +42,10 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
 
   /**
    * Items will be accessible through a dropdown
+   *
+   * @since 5.0.0
    */
-  @Prop() nextItems: { breadcrumbKey: string; label: string }[] = [];
+  @Prop() nextItems: BreadcrumbClick[] = [];
   @Watch('nextItems')
   onNextItemsChange() {
     this.onChildMutation();
@@ -72,7 +75,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
    *
    * @since 5.0.0
    */
-  @Event() itemClick!: EventEmitter<{ breadcrumbKey: string; label?: string }>;
+  @Event() itemClick!: EventEmitter<BreadcrumbClick>;
 
   /**
    * Next item clicked event
@@ -81,7 +84,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
    */
   @Event() nextClick!: EventEmitter<{
     event: UIEvent;
-    item: { breadcrumbKey: string; label?: string };
+    item: BreadcrumbClick;
   }>;
 
   @State() items: HTMLIxBreadcrumbItemElement[] = [];
@@ -92,7 +95,7 @@ export class Breadcrumb extends Mixin(...DefaultMixins) {
   private mutationObserver?: MutationObserver;
   private inheritAriaAttributes: A11yAttributes = {};
 
-  private onItemClick(item: { breadcrumbKey: string; label?: string }) {
+  private onItemClick(item: BreadcrumbClick) {
     this.itemClick.emit(item);
   }
 
