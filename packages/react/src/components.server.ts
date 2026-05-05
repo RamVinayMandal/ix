@@ -333,6 +333,7 @@ export const IxCardList: StencilReactComponent<IxCardListElement, IxCardListEven
         suppressOverflowHandling: 'suppress-overflow-handling',
         hideShowAll: 'hide-show-all',
         i18nShowAll: 'i18n-show-all',
+        i18nShowLess: 'i18n-show-less',
         i18nMoreCards: 'i18n-more-cards'
     },
     hydrateModule: import('@siemens/ix/hydrate') as Promise<HydrateModule>,
