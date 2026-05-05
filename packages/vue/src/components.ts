@@ -257,6 +257,7 @@ export const IxCardList: StencilVueComponent<JSX.IxCardList> = /*@__PURE__*/ def
   'suppressOverflowHandling',
   'hideShowAll',
   'i18nShowAll',
+  'i18nReduceList',
   'i18nMoreCards',
   'collapseChanged',
   'showAllClick',

@@ -3,6 +3,7 @@ import {
   Element,
   Event,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Listen,
@@ -21,6 +22,8 @@ function CardListTitle(props: {
   onShowAllClick: (e: MouseEvent) => void;
   showAllLabel: string;
   showAllCounter: number;
+  labelReduce: string;
+  showReduce: boolean;
   hideShowAll: boolean;
 }) {
   if (!props.label) {
@@ -49,10 +52,18 @@ function CardListTitle(props: {
           variant="tertiary"
           onClick={props.onShowAllClick}
         >
-          <span>{props.showAllLabel}</span>
-          <span>
-            {!isNaN(props.showAllCounter) ? ` (${props.showAllCounter})` : null}
-          </span>
+          {props.showReduce ? (
+            props.labelReduce
+          ) : (
+            <Fragment>
+              <span>{props.showAllLabel}</span>
+              <span>
+                {!isNaN(props.showAllCounter)
+                  ? ` (${props.showAllCounter})`
+                  : null}
+              </span>
+            </Fragment>
+          )}
         </ix-button>
       )}
     </div>
@@ -116,6 +127,11 @@ export class CardList {
   @Prop({ attribute: 'i18n-show-all' }) i18nShowAll = 'Show all';
 
   /**
+   * i18n reduce list button
+   */
+  @Prop({ attribute: 'i18n-reduce-list' }) i18nReduceList = 'Reduce';
+
+  /**
    * i18n More cards available
    */
   @Prop({ attribute: 'i18n-more-cards' }) i18nMoreCards =
@@ -171,7 +187,7 @@ export class CardList {
       return;
     }
 
-    this.isShowingAll = true;
+    this.isShowingAll = !this.isShowingAll;
     this.changeVisibilityOfSlotChildren();
   }
 
@@ -322,6 +338,8 @@ export class CardList {
               ? this.numberOfAllChildElements
               : this.showAllCount
           }
+          showReduce={this.isShowingAll}
+          labelReduce={this.i18nReduceList}
           onClick={() => this.onCardListVisibilityToggle()}
           onShowAllClick={(e) => this.onShowAllClick(e)}
           hideShowAll={this.hideShowAll}
