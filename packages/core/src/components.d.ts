@@ -1570,7 +1570,7 @@ export namespace Components {
         "discoverSubmenu": () => Promise<void>;
         /**
           * Enable Popover API rendering for top-layer positioning.
-          * @default false in v4.x, will default to true in v5.0.0
+          * @default false in v5.x, will default to true in v6.0.0
           * @since 4.3.0
          */
         "enableTopLayer": boolean;
@@ -8056,7 +8056,7 @@ declare namespace LocalJSX {
         "discoverAllSubmenus"?: boolean;
         /**
           * Enable Popover API rendering for top-layer positioning.
-          * @default false in v4.x, will default to true in v5.0.0
+          * @default false in v5.x, will default to true in v6.0.0
           * @since 4.3.0
          */
         "enableTopLayer"?: boolean;
