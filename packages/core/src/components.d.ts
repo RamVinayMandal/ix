@@ -4477,6 +4477,12 @@ export namespace Components {
          */
         "context"?: TreeItemContext;
         /**
+          * Disable tree item
+          * @since 5.0.0
+          * @default false
+         */
+        "disabled": boolean;
+        /**
           * Has tree item children
           * @default false
          */
@@ -11192,6 +11198,12 @@ declare namespace LocalJSX {
          */
         "context"?: TreeItemContext;
         /**
+          * Disable tree item
+          * @since 5.0.0
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Has tree item children
           * @default false
          */
@@ -12362,6 +12374,7 @@ declare namespace LocalJSX {
     interface IxTreeItemAttributes {
         "text": string;
         "hasChildren": boolean;
+        "disabled": boolean;
         "ariaLabelChevronIcon": string;
     }
     interface IxTypographyAttributes {
