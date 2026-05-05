@@ -1,7 +1,10 @@
 ---
 '@siemens/ix': major
+'@siemens/ix-angular': major
+'@siemens/ix-react': major
+'@siemens/ix-vue': major
 ---
 
-**ix-card-list** will display all hidden items when show all/more is clicked. To return to old behavior (event emission only) use _preventDefault_ on the triggered events.
+**`ix-card-list` breaking change:** selecting the show-all button or show-more card now reveals all hidden cards by default and toggles back to the reduced list state from the show-all button. To keep the previous event-only behavior, call `preventDefault()` on the cancelable `showAllClick` or `showMoreCardClick` event.
 
 Fixes #1367 and Fixes #2353

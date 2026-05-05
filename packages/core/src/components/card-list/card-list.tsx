@@ -128,6 +128,8 @@ export class CardList {
 
   /**
    * i18n reduce list button
+   *
+   * @since 5.0.0
    */
   @Prop({ attribute: 'i18n-reduce-list' }) i18nReduceList = 'Reduce';
 

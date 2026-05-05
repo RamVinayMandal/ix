@@ -515,6 +515,7 @@ export namespace Components {
         "i18nMoreCards": string;
         /**
           * i18n reduce list button
+          * @since 5.0.0
           * @default 'Reduce'
          */
         "i18nReduceList": string;
@@ -6938,6 +6939,7 @@ declare namespace LocalJSX {
         "i18nMoreCards"?: string;
         /**
           * i18n reduce list button
+          * @since 5.0.0
           * @default 'Reduce'
          */
         "i18nReduceList"?: string;
