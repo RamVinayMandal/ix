@@ -10,6 +10,7 @@ import { ThemeVariant } from "./components/utils/theme-switcher";
 import { Breakpoint } from "./components/utils/breakpoints";
 import { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 import { BlindVariant } from "./components/blind/blind.types";
+import { BreadcrumbClick } from "./components/breadcrumb/breadcrumb.types";
 import { AnchorTarget } from "./components/button/button.interface";
 import { ButtonVariant } from "./components/button/button";
 import { CardVariant } from "./components/card/card.types";
@@ -62,6 +63,7 @@ export { ThemeVariant } from "./components/utils/theme-switcher";
 export { Breakpoint } from "./components/utils/breakpoints";
 export { AppSwitchConfiguration } from "./components/utils/application-layout/context";
 export { BlindVariant } from "./components/blind/blind.types";
+export { BreadcrumbClick } from "./components/breadcrumb/breadcrumb.types";
 export { AnchorTarget } from "./components/button/button.interface";
 export { ButtonVariant } from "./components/button/button";
 export { CardVariant } from "./components/card/card.types";
@@ -321,9 +323,10 @@ export namespace Components {
         "enableTopLayer": boolean;
         /**
           * Items will be accessible through a dropdown
+          * @since 5.0.0
           * @default []
          */
-        "nextItems": string[];
+        "nextItems": BreadcrumbClick[];
         /**
           * Ghost breadcrumbs will not show solid backgrounds on individual crumbs unless there is a mouse event (e.g. hover)
           * @default false
@@ -342,6 +345,11 @@ export namespace Components {
           * @deprecated Use `aria-label` attribute directly on the component instead.
          */
         "ariaLabelButton"?: string;
+        /**
+          * Will be used as the key for the breadcrumb item, which will be emitted in the itemClick event when the breadcrumb item is clicked.
+          * @since 5.0.0
+         */
+        "breadcrumbKey": string;
         /**
           * @default false
          */
@@ -510,6 +518,12 @@ export namespace Components {
           * @default 'Show all'
          */
         "i18nShowAll": string;
+        /**
+          * i18n show less button
+          * @since 5.0.0
+          * @default 'Show less'
+         */
+        "i18nShowLess": string;
         /**
           * Name the card list
          */
@@ -1324,9 +1338,19 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (tokens matching the time portion of `format`). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (tokens matching the time portion of `format`). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -1430,9 +1454,19 @@ export namespace Components {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Show AM/PM time reference control.
           * @default false
@@ -1552,7 +1586,7 @@ export namespace Components {
         "discoverSubmenu": () => Promise<void>;
         /**
           * Enable Popover API rendering for top-layer positioning.
-          * @default false in v4.x, will default to true in v5.0.0
+          * @default false in v5.x, will default to true in v6.0.0
           * @since 4.3.0
          */
         "enableTopLayer": boolean;
@@ -2495,9 +2529,11 @@ export namespace Components {
     }
     interface IxMenuAbout {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-about-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-about-item integrations
+          * @since 5.0.0
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close About'
@@ -2512,18 +2548,37 @@ export namespace Components {
           * @default false
          */
         "show": boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-about-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs": boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface IxMenuAboutItem {
         /**
           * About Item label
          */
         "label"?: string;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMenuAboutNews {
         /**
           * Subtitle of the about news
          */
         "aboutItemLabel"?: string;
+        /**
+          * Defines which tab should be active, used when the about news is used in combination with ix-menu-about
+          * @since 5.0.0
+         */
+        "activeAboutTabKey"?: string;
         /**
           * @default false
          */
@@ -2704,9 +2759,11 @@ export namespace Components {
     }
     interface IxMenuSettings {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-settings-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-settings-item integrations
+          * @since 5.0.0
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close Settings'
@@ -2721,12 +2778,26 @@ export namespace Components {
           * @default false
          */
         "show": boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-settings-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs": boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface IxMenuSettingsItem {
         /**
           * Settings Item label
          */
         "label"?: string;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMessageBar {
         /**
@@ -3671,6 +3742,18 @@ export namespace Components {
     }
     interface IxTabItem {
         /**
+          * Aria label for the close button, important for accessibility
+          * @since 5.0.0
+          * @default 'Close tab'
+         */
+        "ariaLabelCloseButton": string;
+        /**
+          * If the tab can be closed
+          * @since 5.0.0
+          * @default false
+         */
+        "closable": boolean;
+        /**
           * Set counter value
          */
         "counter"?: number;
@@ -3680,22 +3763,28 @@ export namespace Components {
          */
         "disabled": boolean;
         /**
-          * Set icon only tab
+          * Set icon of the tab
+          * @since 5.0.0
+         */
+        "icon"?: string;
+        /**
           * @default false
          */
-        "icon": boolean;
+        "iconOnly": boolean;
         /**
-          * Set layout width style
+          * Tab label
+          * @since 5.0.0
+         */
+        "label"?: string;
+        /**
           * @default 'auto'
          */
         "layout": 'auto' | 'stretched';
         /**
-          * Set selected placement
           * @default 'bottom'
          */
         "placement": 'bottom' | 'top';
         /**
-          * Set rounded tab
           * @default false
          */
         "rounded": boolean;
@@ -3705,24 +3794,47 @@ export namespace Components {
          */
         "selected": boolean;
         /**
-          * Set small size tab
           * @default false
          */
         "small": boolean;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
+    }
+    /**
+     * @since 5.0.0
+     */
+    interface IxTabPanel {
+        /**
+          * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
+         */
+        "tabKey": string;
+    }
+    /**
+     * @since 5.0.0
+     */
+    interface IxTabPanels {
     }
     interface IxTabs {
         /**
-          * ARIA label for the chevron left icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs left'
+          * Active tab key.
+          * @since 5.0.0
          */
-        "ariaLabelChevronLeftIconButton": string;
+        "activeTabKey"?: string;
         /**
-          * ARIA label for the chevron right icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs right'
+          * Aria label for the overflow menu button.
+          * @since 5.0.0
+          * @default 'Show all tabs'
          */
-        "ariaLabelChevronRightIconButton": string;
+        "ariaLabelMoreTabs": string;
+        /**
+          * Keyboard interaction behavior: automatic:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * @since 5.0.0
+          * @default 'automatic'
+         */
+        "keyboardNavigation": 'automatic' | 'manual';
         /**
           * Set layout width style
           * @default 'auto'
@@ -3738,11 +3850,6 @@ export namespace Components {
           * @default false
          */
         "rounded": boolean;
-        /**
-          * Set default selected tab by index
-          * @default 0
-         */
-        "selected": number;
         /**
           * Set tab items to small size
           * @default false
@@ -3965,10 +4072,20 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval": number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -4092,7 +4209,7 @@ export namespace Components {
          */
         "i18nSecondColumnHeader": string;
         /**
-          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
           * @since 5.0.0
          */
         "maxTime"?: string;
@@ -4103,7 +4220,7 @@ export namespace Components {
          */
         "millisecondInterval": number;
         /**
-          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
           * @since 5.0.0
          */
         "minTime"?: string;
@@ -4359,6 +4476,12 @@ export namespace Components {
           * Context
          */
         "context"?: TreeItemContext;
+        /**
+          * Disable tree item
+          * @since 5.0.0
+          * @default false
+         */
+        "disabled": boolean;
         /**
           * Has tree item children
           * @default false
@@ -4835,8 +4958,11 @@ declare global {
         new (): HTMLIxBlindElement;
     };
     interface HTMLIxBreadcrumbElementEventMap {
-        "itemClick": string;
-        "nextClick": { event: UIEvent; item: string };
+        "itemClick": BreadcrumbClick;
+        "nextClick": {
+    event: UIEvent;
+    item: BreadcrumbClick;
+  };
     }
     interface HTMLIxBreadcrumbElement extends Components.IxBreadcrumb, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxBreadcrumbElementEventMap>(type: K, listener: (this: HTMLIxBreadcrumbElement, ev: IxBreadcrumbCustomEvent<HTMLIxBreadcrumbElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4853,7 +4979,7 @@ declare global {
         new (): HTMLIxBreadcrumbElement;
     };
     interface HTMLIxBreadcrumbItemElementEventMap {
-        "itemClick": string;
+        "itemClick": BreadcrumbClick;
     }
     interface HTMLIxBreadcrumbItemElement extends Components.IxBreadcrumbItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxBreadcrumbItemElementEventMap>(type: K, listener: (this: HTMLIxBreadcrumbItemElement, ev: IxBreadcrumbItemCustomEvent<HTMLIxBreadcrumbItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5546,6 +5672,9 @@ declare global {
     interface HTMLIxMenuAboutItemElementEventMap {
         "labelChange": CustomLabelChangeEvent;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface HTMLIxMenuAboutItemElement extends Components.IxMenuAboutItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxMenuAboutItemElementEventMap>(type: K, listener: (this: HTMLIxMenuAboutItemElement, ev: IxMenuAboutItemCustomEvent<HTMLIxMenuAboutItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5662,6 +5791,9 @@ declare global {
     interface HTMLIxMenuSettingsItemElementEventMap {
         "labelChange": CustomLabelChangeEvent;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface HTMLIxMenuSettingsItemElement extends Components.IxMenuSettingsItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxMenuSettingsItemElementEventMap>(type: K, listener: (this: HTMLIxMenuSettingsItemElement, ev: IxMenuSettingsItemCustomEvent<HTMLIxMenuSettingsItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5975,6 +6107,7 @@ declare global {
     };
     interface HTMLIxTabItemElementEventMap {
         "tabClick": TabClickDetail;
+        "tabClose": TabClickDetail;
     }
     interface HTMLIxTabItemElement extends Components.IxTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTabItemElementEventMap>(type: K, listener: (this: HTMLIxTabItemElement, ev: IxTabItemCustomEvent<HTMLIxTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5990,8 +6123,27 @@ declare global {
         prototype: HTMLIxTabItemElement;
         new (): HTMLIxTabItemElement;
     };
+    /**
+     * @since 5.0.0
+     */
+    interface HTMLIxTabPanelElement extends Components.IxTabPanel, HTMLStencilElement {
+    }
+    var HTMLIxTabPanelElement: {
+        prototype: HTMLIxTabPanelElement;
+        new (): HTMLIxTabPanelElement;
+    };
+    /**
+     * @since 5.0.0
+     */
+    interface HTMLIxTabPanelsElement extends Components.IxTabPanels, HTMLStencilElement {
+    }
+    var HTMLIxTabPanelsElement: {
+        prototype: HTMLIxTabPanelsElement;
+        new (): HTMLIxTabPanelsElement;
+    };
     interface HTMLIxTabsElementEventMap {
-        "selectedChange": number;
+        "tabChange": string | undefined;
+        "tabClose": string | undefined;
     }
     interface HTMLIxTabsElement extends Components.IxTabs, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIxTabsElementEventMap>(type: K, listener: (this: HTMLIxTabsElement, ev: IxTabsCustomEvent<HTMLIxTabsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6348,6 +6500,8 @@ declare global {
         "ix-spinner": HTMLIxSpinnerElement;
         "ix-split-button": HTMLIxSplitButtonElement;
         "ix-tab-item": HTMLIxTabItemElement;
+        "ix-tab-panel": HTMLIxTabPanelElement;
+        "ix-tab-panels": HTMLIxTabPanelsElement;
         "ix-tabs": HTMLIxTabsElement;
         "ix-textarea": HTMLIxTextareaElement;
         "ix-tile": HTMLIxTileElement;
@@ -6594,17 +6748,23 @@ declare namespace LocalJSX {
         "enableTopLayer"?: boolean;
         /**
           * Items will be accessible through a dropdown
+          * @since 5.0.0
           * @default []
          */
-        "nextItems"?: string[];
+        "nextItems"?: BreadcrumbClick[];
         /**
           * Crumb item clicked event
+          * @since 5.0.0
          */
-        "onItemClick"?: (event: IxBreadcrumbCustomEvent<string>) => void;
+        "onItemClick"?: (event: IxBreadcrumbCustomEvent<BreadcrumbClick>) => void;
         /**
           * Next item clicked event
+          * @since 5.0.0
          */
-        "onNextClick"?: (event: IxBreadcrumbCustomEvent<{ event: UIEvent; item: string }>) => void;
+        "onNextClick"?: (event: IxBreadcrumbCustomEvent<{
+    event: UIEvent;
+    item: BreadcrumbClick;
+  }>) => void;
         /**
           * Ghost breadcrumbs will not show solid backgrounds on individual crumbs unless there is a mouse event (e.g. hover)
           * @default false
@@ -6623,6 +6783,11 @@ declare namespace LocalJSX {
           * @deprecated Use `aria-label` attribute directly on the component instead.
          */
         "ariaLabelButton"?: string;
+        /**
+          * Will be used as the key for the breadcrumb item, which will be emitted in the itemClick event when the breadcrumb item is clicked.
+          * @since 5.0.0
+         */
+        "breadcrumbKey": string;
         /**
           * @default false
          */
@@ -6652,7 +6817,7 @@ declare namespace LocalJSX {
           * Breadcrumb label
          */
         "label"?: string;
-        "onItemClick"?: (event: IxBreadcrumbItemCustomEvent<string>) => void;
+        "onItemClick"?: (event: IxBreadcrumbItemCustomEvent<BreadcrumbClick>) => void;
         /**
           * Specifies the relationship between the current document and the linked document when href is provided.
           * @since 4.0.0
@@ -6793,6 +6958,12 @@ declare namespace LocalJSX {
           * @default 'Show all'
          */
         "i18nShowAll"?: string;
+        /**
+          * i18n show less button
+          * @since 5.0.0
+          * @default 'Show less'
+         */
+        "i18nShowLess"?: string;
         /**
           * Name the card list
          */
@@ -7643,9 +7814,19 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (tokens matching the time portion of `format`). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Minimum allowed date (matching format or date-only, e.g., "2026/01/20")
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (tokens matching the time portion of `format`). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Name of the form control for form submission
          */
@@ -7767,9 +7948,19 @@ declare namespace LocalJSX {
          */
         "maxDate"?: string;
         /**
+          * Latest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * The earliest date that can be selected. If not set there will be no restriction.
          */
         "minDate"?: string;
+        /**
+          * Earliest selectable time (`timeFormat` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Date change event. Emitted when the date changes in the embedded date picker.
          */
@@ -7903,7 +8094,7 @@ declare namespace LocalJSX {
         "discoverAllSubmenus"?: boolean;
         /**
           * Enable Popover API rendering for top-layer positioning.
-          * @default false in v4.x, will default to true in v5.0.0
+          * @default false in v5.x, will default to true in v6.0.0
           * @since 4.3.0
          */
         "enableTopLayer"?: boolean;
@@ -8907,9 +9098,11 @@ declare namespace LocalJSX {
     }
     interface IxMenuAbout {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-about-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-about-item integrations
+          * @since 5.0.0
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close About'
@@ -8933,7 +9126,16 @@ declare namespace LocalJSX {
           * @default false
          */
         "show"?: boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-about-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs"?: boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+     */
     interface IxMenuAboutItem {
         /**
           * About Item label
@@ -8943,12 +9145,22 @@ declare namespace LocalJSX {
           * Label changed
          */
         "onLabelChange"?: (event: IxMenuAboutItemCustomEvent<CustomLabelChangeEvent>) => void;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMenuAboutNews {
         /**
           * Subtitle of the about news
          */
         "aboutItemLabel"?: string;
+        /**
+          * Defines which tab should be active, used when the about news is used in combination with ix-menu-about
+          * @since 5.0.0
+         */
+        "activeAboutTabKey"?: string;
         /**
           * @default false
          */
@@ -9145,9 +9357,11 @@ declare namespace LocalJSX {
     }
     interface IxMenuSettings {
         /**
-          * Active tab
+          * Active tab used for legacy ix-menu-settings-item integrations
+          * @deprecated since 5.0.0, only used for legacy ix-menu-settings-item integrations
+          * @since 5.0.0
          */
-        "activeTabLabel"?: string;
+        "activeTabKey"?: string;
         /**
           * Aria label for close button
           * @default 'Close Settings'
@@ -9171,16 +9385,27 @@ declare namespace LocalJSX {
           * @default false
          */
         "show"?: boolean;
+        /**
+          * Whether to suppress legacy tabs (ix-menu-settings-item) and use slotted tabs (ix-tab-item) instead
+          * @since 5.0.0
+          * @default false
+         */
+        "suppressLegacyTabs"?: boolean;
     }
+    /**
+     * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+     */
     interface IxMenuSettingsItem {
         /**
           * Settings Item label
          */
         "label"?: string;
-        /**
-          * Label changed
-         */
         "onLabelChange"?: (event: IxMenuSettingsItemCustomEvent<CustomLabelChangeEvent>) => void;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
     }
     interface IxMessageBar {
         /**
@@ -10199,6 +10424,18 @@ declare namespace LocalJSX {
     }
     interface IxTabItem {
         /**
+          * Aria label for the close button, important for accessibility
+          * @since 5.0.0
+          * @default 'Close tab'
+         */
+        "ariaLabelCloseButton"?: string;
+        /**
+          * If the tab can be closed
+          * @since 5.0.0
+          * @default false
+         */
+        "closable"?: boolean;
+        /**
           * Set counter value
          */
         "counter"?: number;
@@ -10208,12 +10445,20 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
-          * Set icon only tab
+          * Set icon of the tab
+          * @since 5.0.0
+         */
+        "icon"?: string;
+        /**
           * @default false
          */
-        "icon"?: boolean;
+        "iconOnly"?: boolean;
         /**
-          * Set layout width style
+          * Tab label
+          * @since 5.0.0
+         */
+        "label"?: string;
+        /**
           * @default 'auto'
          */
         "layout"?: 'auto' | 'stretched';
@@ -10222,12 +10467,14 @@ declare namespace LocalJSX {
          */
         "onTabClick"?: (event: IxTabItemCustomEvent<TabClickDetail>) => void;
         /**
-          * Set selected placement
+          * Emitted when the tab's close button is clicked.
+         */
+        "onTabClose"?: (event: IxTabItemCustomEvent<TabClickDetail>) => void;
+        /**
           * @default 'bottom'
          */
         "placement"?: 'bottom' | 'top';
         /**
-          * Set rounded tab
           * @default false
          */
         "rounded"?: boolean;
@@ -10237,33 +10484,62 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Set small size tab
           * @default false
          */
         "small"?: boolean;
+        /**
+          * Key of the tab, used for identifying the tab in events
+          * @since 5.0.0
+         */
+        "tabKey": string;
+    }
+    /**
+     * @since 5.0.0
+     */
+    interface IxTabPanel {
+        /**
+          * Key of the tab panel, has to be the same as the tabKey of the corresponding ix-tab-item
+         */
+        "tabKey": string;
+    }
+    /**
+     * @since 5.0.0
+     */
+    interface IxTabPanels {
     }
     interface IxTabs {
         /**
-          * ARIA label for the chevron left icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs left'
+          * Active tab key.
+          * @since 5.0.0
          */
-        "ariaLabelChevronLeftIconButton"?: string;
+        "activeTabKey"?: string;
         /**
-          * ARIA label for the chevron right icon button
-          * @since 3.2.0
-          * @default 'Scroll tabs right'
+          * Aria label for the overflow menu button.
+          * @since 5.0.0
+          * @default 'Show all tabs'
          */
-        "ariaLabelChevronRightIconButton"?: string;
+        "ariaLabelMoreTabs"?: string;
+        /**
+          * Keyboard interaction behavior: automatic:  A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus. manual: A tabs widget where users activate a tab and display its panel by pressing Space or Enter.
+          * @since 5.0.0
+          * @default 'automatic'
+         */
+        "keyboardNavigation"?: 'automatic' | 'manual';
         /**
           * Set layout width style
           * @default 'auto'
          */
         "layout"?: 'auto' | 'stretched';
         /**
-          * Tab selection event. Event detail is the zero-based tab index. Fires when the user selects a tab, or when the tab list changes and the selected index is adjusted. Not emitted when `selected` is set from outside.
+          * Tab selection event. Event detail contains the new active tab key.
+          * @since 5.0.0
          */
-        "onSelectedChange"?: (event: IxTabsCustomEvent<number>) => void;
+        "onTabChange"?: (event: IxTabsCustomEvent<string | undefined>) => void;
+        /**
+          * Tab close event. Event detail contains the closed tab key.
+          * @since 5.0.0
+         */
+        "onTabClose"?: (event: IxTabsCustomEvent<string | undefined>) => void;
         /**
           * Set placement style
           * @default 'bottom'
@@ -10274,11 +10550,6 @@ declare namespace LocalJSX {
           * @default false
          */
         "rounded"?: boolean;
-        /**
-          * Set default selected tab by index
-          * @default 0
-         */
-        "selected"?: number;
         /**
           * Set tab items to small size
           * @default false
@@ -10497,10 +10768,20 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "maxTime"?: string;
+        /**
           * Interval for millisecond selection.
           * @default 100
          */
         "millisecondInterval"?: number;
+        /**
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
+          * @since 5.0.0
+         */
+        "minTime"?: string;
         /**
           * Interval for minute selection.
           * @default 1
@@ -10634,7 +10915,7 @@ declare namespace LocalJSX {
          */
         "i18nSecondColumnHeader"?: string;
         /**
-          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * Latest selectable time (`format` tokens). Invalid non-empty values are ignored.
           * @since 5.0.0
          */
         "maxTime"?: string;
@@ -10645,7 +10926,7 @@ declare namespace LocalJSX {
          */
         "millisecondInterval"?: number;
         /**
-          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored (`console.warn`).
+          * Earliest selectable time (`format` tokens). Invalid non-empty values are ignored.
           * @since 5.0.0
          */
         "minTime"?: string;
@@ -10917,6 +11198,12 @@ declare namespace LocalJSX {
          */
         "context"?: TreeItemContext;
         /**
+          * Disable tree item
+          * @since 5.0.0
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Has tree item children
           * @default false
          */
@@ -11147,6 +11434,7 @@ declare namespace LocalJSX {
         "icon": string;
         "href": string;
         "target": AnchorTarget;
+        "breadcrumbKey": string;
         "rel": string;
         "subtle": boolean;
         "invisible": boolean;
@@ -11188,6 +11476,7 @@ declare namespace LocalJSX {
         "suppressOverflowHandling": boolean;
         "hideShowAll": boolean;
         "i18nShowAll": string;
+        "i18nShowLess": string;
         "i18nMoreCards": string;
     }
     interface IxCategoryFilterAttributes {
@@ -11355,6 +11644,8 @@ declare namespace LocalJSX {
         "readonly": boolean;
         "minDate": string;
         "maxDate": string;
+        "minTime": string;
+        "maxTime": string;
         "label": string;
         "helperText": string;
         "invalidText": string;
@@ -11380,6 +11671,8 @@ declare namespace LocalJSX {
         "maxDate": string;
         "dateFormat": string;
         "timeFormat": string;
+        "minTime": string;
+        "maxTime": string;
         "from": string;
         "to": string;
         "time": string;
@@ -11631,12 +11924,14 @@ declare namespace LocalJSX {
         "i18nCollapse": string;
     }
     interface IxMenuAboutAttributes {
-        "activeTabLabel": string;
+        "suppressLegacyTabs": boolean;
+        "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
         "show": boolean;
     }
     interface IxMenuAboutItemAttributes {
+        "tabKey": string;
         "label": string;
     }
     interface IxMenuAboutNewsAttributes {
@@ -11644,6 +11939,7 @@ declare namespace LocalJSX {
         "label": string;
         "i18nShowMore": string;
         "aboutItemLabel": string;
+        "activeAboutTabKey": string;
         "expanded": boolean;
     }
     interface IxMenuAvatarAttributes {
@@ -11689,12 +11985,14 @@ declare namespace LocalJSX {
         "isCategory": boolean;
     }
     interface IxMenuSettingsAttributes {
-        "activeTabLabel": string;
+        "suppressLegacyTabs": boolean;
+        "activeTabKey": string;
         "label": string;
         "ariaLabelCloseButton": string;
         "show": boolean;
     }
     interface IxMenuSettingsItemAttributes {
+        "tabKey": string;
         "label": string;
     }
     interface IxMessageBarAttributes {
@@ -11922,23 +12220,31 @@ declare namespace LocalJSX {
         "enableTopLayer": boolean;
     }
     interface IxTabItemAttributes {
+        "tabKey": string;
         "selected": boolean;
         "disabled": boolean;
-        "small": boolean;
-        "icon": boolean;
-        "rounded": boolean;
+        "icon": string;
         "counter": number;
-        "layout": 'auto' | 'stretched';
+        "closable": boolean;
+        "label": string;
+        "ariaLabelCloseButton": string;
         "placement": 'bottom' | 'top';
+        "rounded": boolean;
+        "small": boolean;
+        "layout": 'auto' | 'stretched';
+        "iconOnly": boolean;
+    }
+    interface IxTabPanelAttributes {
+        "tabKey": string;
     }
     interface IxTabsAttributes {
         "small": boolean;
         "rounded": boolean;
-        "selected": number;
         "layout": 'auto' | 'stretched';
         "placement": 'bottom' | 'top';
-        "ariaLabelChevronLeftIconButton": string;
-        "ariaLabelChevronRightIconButton": string;
+        "ariaLabelMoreTabs": string;
+        "activeTabKey": string;
+        "keyboardNavigation": 'automatic' | 'manual';
     }
     interface IxTextareaAttributes {
         "name": string;
@@ -11970,6 +12276,8 @@ declare namespace LocalJSX {
         "placeholder": string;
         "value": string;
         "format": string;
+        "minTime": string;
+        "maxTime": string;
         "required": boolean;
         "helperText": string;
         "label": string;
@@ -12066,6 +12374,7 @@ declare namespace LocalJSX {
     interface IxTreeItemAttributes {
         "text": string;
         "hasChildren": boolean;
+        "disabled": boolean;
         "ariaLabelChevronIcon": string;
     }
     interface IxTypographyAttributes {
@@ -12115,7 +12424,7 @@ declare namespace LocalJSX {
         "ix-avatar": Omit<IxAvatar, keyof IxAvatarAttributes> & { [K in keyof IxAvatar & keyof IxAvatarAttributes]?: IxAvatar[K] } & { [K in keyof IxAvatar & keyof IxAvatarAttributes as `attr:${K}`]?: IxAvatarAttributes[K] } & { [K in keyof IxAvatar & keyof IxAvatarAttributes as `prop:${K}`]?: IxAvatar[K] };
         "ix-blind": Omit<IxBlind, keyof IxBlindAttributes> & { [K in keyof IxBlind & keyof IxBlindAttributes]?: IxBlind[K] } & { [K in keyof IxBlind & keyof IxBlindAttributes as `attr:${K}`]?: IxBlindAttributes[K] } & { [K in keyof IxBlind & keyof IxBlindAttributes as `prop:${K}`]?: IxBlind[K] };
         "ix-breadcrumb": Omit<IxBreadcrumb, keyof IxBreadcrumbAttributes> & { [K in keyof IxBreadcrumb & keyof IxBreadcrumbAttributes]?: IxBreadcrumb[K] } & { [K in keyof IxBreadcrumb & keyof IxBreadcrumbAttributes as `attr:${K}`]?: IxBreadcrumbAttributes[K] } & { [K in keyof IxBreadcrumb & keyof IxBreadcrumbAttributes as `prop:${K}`]?: IxBreadcrumb[K] };
-        "ix-breadcrumb-item": Omit<IxBreadcrumbItem, keyof IxBreadcrumbItemAttributes> & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes]?: IxBreadcrumbItem[K] } & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes as `attr:${K}`]?: IxBreadcrumbItemAttributes[K] } & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes as `prop:${K}`]?: IxBreadcrumbItem[K] };
+        "ix-breadcrumb-item": Omit<IxBreadcrumbItem, keyof IxBreadcrumbItemAttributes> & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes]?: IxBreadcrumbItem[K] } & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes as `attr:${K}`]?: IxBreadcrumbItemAttributes[K] } & { [K in keyof IxBreadcrumbItem & keyof IxBreadcrumbItemAttributes as `prop:${K}`]?: IxBreadcrumbItem[K] } & OneOf<"breadcrumbKey", IxBreadcrumbItem["breadcrumbKey"], IxBreadcrumbItemAttributes["breadcrumbKey"]>;
         "ix-button": Omit<IxButton, keyof IxButtonAttributes> & { [K in keyof IxButton & keyof IxButtonAttributes]?: IxButton[K] } & { [K in keyof IxButton & keyof IxButtonAttributes as `attr:${K}`]?: IxButtonAttributes[K] } & { [K in keyof IxButton & keyof IxButtonAttributes as `prop:${K}`]?: IxButton[K] };
         "ix-card": Omit<IxCard, keyof IxCardAttributes> & { [K in keyof IxCard & keyof IxCardAttributes]?: IxCard[K] } & { [K in keyof IxCard & keyof IxCardAttributes as `attr:${K}`]?: IxCardAttributes[K] } & { [K in keyof IxCard & keyof IxCardAttributes as `prop:${K}`]?: IxCard[K] };
         "ix-card-accordion": Omit<IxCardAccordion, keyof IxCardAccordionAttributes> & { [K in keyof IxCardAccordion & keyof IxCardAccordionAttributes]?: IxCardAccordion[K] } & { [K in keyof IxCardAccordion & keyof IxCardAccordionAttributes as `attr:${K}`]?: IxCardAccordionAttributes[K] } & { [K in keyof IxCardAccordion & keyof IxCardAccordionAttributes as `prop:${K}`]?: IxCardAccordion[K] };
@@ -12170,7 +12479,7 @@ declare namespace LocalJSX {
         "ix-link-button": Omit<IxLinkButton, keyof IxLinkButtonAttributes> & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes]?: IxLinkButton[K] } & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes as `attr:${K}`]?: IxLinkButtonAttributes[K] } & { [K in keyof IxLinkButton & keyof IxLinkButtonAttributes as `prop:${K}`]?: IxLinkButton[K] };
         "ix-menu": Omit<IxMenu, keyof IxMenuAttributes> & { [K in keyof IxMenu & keyof IxMenuAttributes]?: IxMenu[K] } & { [K in keyof IxMenu & keyof IxMenuAttributes as `attr:${K}`]?: IxMenuAttributes[K] } & { [K in keyof IxMenu & keyof IxMenuAttributes as `prop:${K}`]?: IxMenu[K] };
         "ix-menu-about": Omit<IxMenuAbout, keyof IxMenuAboutAttributes> & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes]?: IxMenuAbout[K] } & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes as `attr:${K}`]?: IxMenuAboutAttributes[K] } & { [K in keyof IxMenuAbout & keyof IxMenuAboutAttributes as `prop:${K}`]?: IxMenuAbout[K] };
-        "ix-menu-about-item": Omit<IxMenuAboutItem, keyof IxMenuAboutItemAttributes> & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes]?: IxMenuAboutItem[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `attr:${K}`]?: IxMenuAboutItemAttributes[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `prop:${K}`]?: IxMenuAboutItem[K] };
+        "ix-menu-about-item": Omit<IxMenuAboutItem, keyof IxMenuAboutItemAttributes> & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes]?: IxMenuAboutItem[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `attr:${K}`]?: IxMenuAboutItemAttributes[K] } & { [K in keyof IxMenuAboutItem & keyof IxMenuAboutItemAttributes as `prop:${K}`]?: IxMenuAboutItem[K] } & OneOf<"tabKey", IxMenuAboutItem["tabKey"], IxMenuAboutItemAttributes["tabKey"]>;
         "ix-menu-about-news": Omit<IxMenuAboutNews, keyof IxMenuAboutNewsAttributes> & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes]?: IxMenuAboutNews[K] } & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes as `attr:${K}`]?: IxMenuAboutNewsAttributes[K] } & { [K in keyof IxMenuAboutNews & keyof IxMenuAboutNewsAttributes as `prop:${K}`]?: IxMenuAboutNews[K] };
         "ix-menu-avatar": Omit<IxMenuAvatar, keyof IxMenuAvatarAttributes> & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes]?: IxMenuAvatar[K] } & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes as `attr:${K}`]?: IxMenuAvatarAttributes[K] } & { [K in keyof IxMenuAvatar & keyof IxMenuAvatarAttributes as `prop:${K}`]?: IxMenuAvatar[K] };
         "ix-menu-avatar-item": Omit<IxMenuAvatarItem, keyof IxMenuAvatarItemAttributes> & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes]?: IxMenuAvatarItem[K] } & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes as `attr:${K}`]?: IxMenuAvatarItemAttributes[K] } & { [K in keyof IxMenuAvatarItem & keyof IxMenuAvatarItemAttributes as `prop:${K}`]?: IxMenuAvatarItem[K] };
@@ -12178,7 +12487,7 @@ declare namespace LocalJSX {
         "ix-menu-expand-icon": Omit<IxMenuExpandIcon, keyof IxMenuExpandIconAttributes> & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes]?: IxMenuExpandIcon[K] } & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes as `attr:${K}`]?: IxMenuExpandIconAttributes[K] } & { [K in keyof IxMenuExpandIcon & keyof IxMenuExpandIconAttributes as `prop:${K}`]?: IxMenuExpandIcon[K] };
         "ix-menu-item": Omit<IxMenuItem, keyof IxMenuItemAttributes> & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes]?: IxMenuItem[K] } & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes as `attr:${K}`]?: IxMenuItemAttributes[K] } & { [K in keyof IxMenuItem & keyof IxMenuItemAttributes as `prop:${K}`]?: IxMenuItem[K] };
         "ix-menu-settings": Omit<IxMenuSettings, keyof IxMenuSettingsAttributes> & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes]?: IxMenuSettings[K] } & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes as `attr:${K}`]?: IxMenuSettingsAttributes[K] } & { [K in keyof IxMenuSettings & keyof IxMenuSettingsAttributes as `prop:${K}`]?: IxMenuSettings[K] };
-        "ix-menu-settings-item": Omit<IxMenuSettingsItem, keyof IxMenuSettingsItemAttributes> & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes]?: IxMenuSettingsItem[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `attr:${K}`]?: IxMenuSettingsItemAttributes[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `prop:${K}`]?: IxMenuSettingsItem[K] };
+        "ix-menu-settings-item": Omit<IxMenuSettingsItem, keyof IxMenuSettingsItemAttributes> & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes]?: IxMenuSettingsItem[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `attr:${K}`]?: IxMenuSettingsItemAttributes[K] } & { [K in keyof IxMenuSettingsItem & keyof IxMenuSettingsItemAttributes as `prop:${K}`]?: IxMenuSettingsItem[K] } & OneOf<"tabKey", IxMenuSettingsItem["tabKey"], IxMenuSettingsItemAttributes["tabKey"]>;
         "ix-message-bar": Omit<IxMessageBar, keyof IxMessageBarAttributes> & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes]?: IxMessageBar[K] } & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes as `attr:${K}`]?: IxMessageBarAttributes[K] } & { [K in keyof IxMessageBar & keyof IxMessageBarAttributes as `prop:${K}`]?: IxMessageBar[K] };
         "ix-modal": Omit<IxModal, keyof IxModalAttributes> & { [K in keyof IxModal & keyof IxModalAttributes]?: IxModal[K] } & { [K in keyof IxModal & keyof IxModalAttributes as `attr:${K}`]?: IxModalAttributes[K] } & { [K in keyof IxModal & keyof IxModalAttributes as `prop:${K}`]?: IxModal[K] };
         "ix-modal-content": IxModalContent;
@@ -12201,7 +12510,9 @@ declare namespace LocalJSX {
         "ix-slider": Omit<IxSlider, keyof IxSliderAttributes> & { [K in keyof IxSlider & keyof IxSliderAttributes]?: IxSlider[K] } & { [K in keyof IxSlider & keyof IxSliderAttributes as `attr:${K}`]?: IxSliderAttributes[K] } & { [K in keyof IxSlider & keyof IxSliderAttributes as `prop:${K}`]?: IxSlider[K] };
         "ix-spinner": Omit<IxSpinner, keyof IxSpinnerAttributes> & { [K in keyof IxSpinner & keyof IxSpinnerAttributes]?: IxSpinner[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `attr:${K}`]?: IxSpinnerAttributes[K] } & { [K in keyof IxSpinner & keyof IxSpinnerAttributes as `prop:${K}`]?: IxSpinner[K] };
         "ix-split-button": Omit<IxSplitButton, keyof IxSplitButtonAttributes> & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes]?: IxSplitButton[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `attr:${K}`]?: IxSplitButtonAttributes[K] } & { [K in keyof IxSplitButton & keyof IxSplitButtonAttributes as `prop:${K}`]?: IxSplitButton[K] };
-        "ix-tab-item": Omit<IxTabItem, keyof IxTabItemAttributes> & { [K in keyof IxTabItem & keyof IxTabItemAttributes]?: IxTabItem[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `attr:${K}`]?: IxTabItemAttributes[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `prop:${K}`]?: IxTabItem[K] };
+        "ix-tab-item": Omit<IxTabItem, keyof IxTabItemAttributes> & { [K in keyof IxTabItem & keyof IxTabItemAttributes]?: IxTabItem[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `attr:${K}`]?: IxTabItemAttributes[K] } & { [K in keyof IxTabItem & keyof IxTabItemAttributes as `prop:${K}`]?: IxTabItem[K] } & OneOf<"tabKey", IxTabItem["tabKey"], IxTabItemAttributes["tabKey"]>;
+        "ix-tab-panel": Omit<IxTabPanel, keyof IxTabPanelAttributes> & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes]?: IxTabPanel[K] } & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes as `attr:${K}`]?: IxTabPanelAttributes[K] } & { [K in keyof IxTabPanel & keyof IxTabPanelAttributes as `prop:${K}`]?: IxTabPanel[K] } & OneOf<"tabKey", IxTabPanel["tabKey"], IxTabPanelAttributes["tabKey"]>;
+        "ix-tab-panels": IxTabPanels;
         "ix-tabs": Omit<IxTabs, keyof IxTabsAttributes> & { [K in keyof IxTabs & keyof IxTabsAttributes]?: IxTabs[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `attr:${K}`]?: IxTabsAttributes[K] } & { [K in keyof IxTabs & keyof IxTabsAttributes as `prop:${K}`]?: IxTabs[K] };
         "ix-textarea": Omit<IxTextarea, keyof IxTextareaAttributes> & { [K in keyof IxTextarea & keyof IxTextareaAttributes]?: IxTextarea[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `attr:${K}`]?: IxTextareaAttributes[K] } & { [K in keyof IxTextarea & keyof IxTextareaAttributes as `prop:${K}`]?: IxTextarea[K] };
         "ix-tile": Omit<IxTile, keyof IxTileAttributes> & { [K in keyof IxTile & keyof IxTileAttributes]?: IxTile[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `attr:${K}`]?: IxTileAttributes[K] } & { [K in keyof IxTile & keyof IxTileAttributes as `prop:${K}`]?: IxTile[K] };
@@ -12312,6 +12623,9 @@ declare module "@stencil/core" {
             "ix-link-button": LocalJSX.IntrinsicElements["ix-link-button"] & JSXBase.HTMLAttributes<HTMLIxLinkButtonElement>;
             "ix-menu": LocalJSX.IntrinsicElements["ix-menu"] & JSXBase.HTMLAttributes<HTMLIxMenuElement>;
             "ix-menu-about": LocalJSX.IntrinsicElements["ix-menu-about"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutElement>;
+            /**
+             * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-about-item
+             */
             "ix-menu-about-item": LocalJSX.IntrinsicElements["ix-menu-about-item"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutItemElement>;
             "ix-menu-about-news": LocalJSX.IntrinsicElements["ix-menu-about-news"] & JSXBase.HTMLAttributes<HTMLIxMenuAboutNewsElement>;
             "ix-menu-avatar": LocalJSX.IntrinsicElements["ix-menu-avatar"] & JSXBase.HTMLAttributes<HTMLIxMenuAvatarElement>;
@@ -12320,6 +12634,9 @@ declare module "@stencil/core" {
             "ix-menu-expand-icon": LocalJSX.IntrinsicElements["ix-menu-expand-icon"] & JSXBase.HTMLAttributes<HTMLIxMenuExpandIconElement>;
             "ix-menu-item": LocalJSX.IntrinsicElements["ix-menu-item"] & JSXBase.HTMLAttributes<HTMLIxMenuItemElement>;
             "ix-menu-settings": LocalJSX.IntrinsicElements["ix-menu-settings"] & JSXBase.HTMLAttributes<HTMLIxMenuSettingsElement>;
+            /**
+             * @deprecated since 5.0.0, use ix-tab-item instead of ix-menu-settings-item
+             */
             "ix-menu-settings-item": LocalJSX.IntrinsicElements["ix-menu-settings-item"] & JSXBase.HTMLAttributes<HTMLIxMenuSettingsItemElement>;
             "ix-message-bar": LocalJSX.IntrinsicElements["ix-message-bar"] & JSXBase.HTMLAttributes<HTMLIxMessageBarElement>;
             "ix-modal": LocalJSX.IntrinsicElements["ix-modal"] & JSXBase.HTMLAttributes<HTMLIxModalElement>;
@@ -12362,6 +12679,14 @@ declare module "@stencil/core" {
             "ix-spinner": LocalJSX.IntrinsicElements["ix-spinner"] & JSXBase.HTMLAttributes<HTMLIxSpinnerElement>;
             "ix-split-button": LocalJSX.IntrinsicElements["ix-split-button"] & JSXBase.HTMLAttributes<HTMLIxSplitButtonElement>;
             "ix-tab-item": LocalJSX.IntrinsicElements["ix-tab-item"] & JSXBase.HTMLAttributes<HTMLIxTabItemElement>;
+            /**
+             * @since 5.0.0
+             */
+            "ix-tab-panel": LocalJSX.IntrinsicElements["ix-tab-panel"] & JSXBase.HTMLAttributes<HTMLIxTabPanelElement>;
+            /**
+             * @since 5.0.0
+             */
+            "ix-tab-panels": LocalJSX.IntrinsicElements["ix-tab-panels"] & JSXBase.HTMLAttributes<HTMLIxTabPanelsElement>;
             "ix-tabs": LocalJSX.IntrinsicElements["ix-tabs"] & JSXBase.HTMLAttributes<HTMLIxTabsElement>;
             /**
              * @form-ready 
