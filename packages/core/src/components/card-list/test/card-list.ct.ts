@@ -74,6 +74,40 @@ regressionTest(
 );
 
 regressionTest(
+  'show all button switches to show less button and hides overflowing cards again',
+  async ({ mount, page }) => {
+    await mount(`
+      <ix-card-list
+        label="Test"
+        list-style="stack"
+        max-visible-cards="3"
+        i18n-show-less="Show less"
+      >
+        ${CARDS_HTML}
+      </ix-card-list>
+    `);
+
+    const cardList = page.locator('ix-card-list');
+    await expect(cardList).toHaveClass(/hydrated/);
+
+    const cards = cardList.locator('ix-card');
+    const showAllButton = cardList.getByRole('button', { name: /show all/i });
+    await showAllButton.click();
+
+    const showLessButton = cardList.getByRole('button', {
+      name: /show less/i,
+    });
+    await expect(showLessButton).toBeVisible();
+
+    await showLessButton.click();
+
+    await expect(cards.nth(3)).toHaveClass(/display-none/);
+    await expect(cards.nth(4)).toHaveClass(/display-none/);
+    await expect(showAllButton).toBeVisible();
+  }
+);
+
+regressionTest(
   'show all button: preventDefault prevents cards from being revealed',
   async ({ mount, page }) => {
     await mount(`

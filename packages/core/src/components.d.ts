@@ -514,16 +514,16 @@ export namespace Components {
          */
         "i18nMoreCards": string;
         /**
-          * i18n reduce list button
-          * @since 5.0.0
-          * @default 'Reduce'
-         */
-        "i18nReduceList": string;
-        /**
           * i18n Show all button
           * @default 'Show all'
          */
         "i18nShowAll": string;
+        /**
+          * i18n show less button
+          * @since 5.0.0
+          * @default 'Show less'
+         */
+        "i18nShowLess": string;
         /**
           * Name the card list
          */
@@ -6938,16 +6938,16 @@ declare namespace LocalJSX {
          */
         "i18nMoreCards"?: string;
         /**
-          * i18n reduce list button
-          * @since 5.0.0
-          * @default 'Reduce'
-         */
-        "i18nReduceList"?: string;
-        /**
           * i18n Show all button
           * @default 'Show all'
          */
         "i18nShowAll"?: string;
+        /**
+          * i18n show less button
+          * @since 5.0.0
+          * @default 'Show less'
+         */
+        "i18nShowLess"?: string;
         /**
           * Name the card list
          */
@@ -11444,7 +11444,7 @@ declare namespace LocalJSX {
         "suppressOverflowHandling": boolean;
         "hideShowAll": boolean;
         "i18nShowAll": string;
-        "i18nReduceList": string;
+        "i18nShowLess": string;
         "i18nMoreCards": string;
     }
     interface IxCategoryFilterAttributes {
