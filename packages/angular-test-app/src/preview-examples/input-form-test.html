@@ -1,0 +1,179 @@
+<!--
+SPDX-FileCopyrightText: 2025 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<div style="padding: 1rem; font-size: 0.9rem">
+  <h2 style="margin-bottom: 0.5rem">Text Input Validation Tests</h2>
+  <div style="margin-bottom: 1rem; padding: 0.75rem; border-radius: 4px">
+    <strong>Testing:</strong> Required field validation (red border) after blur.
+  </div>
+
+  <button
+    (click)="clearLogs()"
+    style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; color: white; background-color: #757575; margin-bottom: 1rem">
+    🧹 Clear Log
+  </button>
+
+  <!-- Grid Layout for Examples -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem">
+
+    <!-- 1. Required Standalone -->
+    <div style="border: 1px solid #f44336; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #c62828">1️⃣ Required (Standalone)</h4>
+      <ix-input
+        #requiredRef
+        name="req1"
+        label="Required Text"
+        placeholder="Enter text"
+        [required]="true"
+        [value]="requiredValue"
+        (valueChange)="onValueChange($event, '1️⃣')"
+        (focus)="onFocus('1️⃣', requiredRef)"
+        (blur)="onBlur('1️⃣', requiredRef)"
+      ></ix-input>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+        <button (click)="setValue(requiredRef, '', '1️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+        <button (click)="setValue(requiredRef, 'Hello World', '1️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+        <button (click)="triggerNativeBlur(requiredRef); debugValidationState(requiredRef, '1️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+        <button (click)="clearInput(requiredRef, '1️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+      </div>
+    </div>
+
+    <!-- 2. Optional Standalone -->
+    <div style="border: 1px solid #4caf50; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #2e7d32">2️⃣ Optional (Standalone)</h4>
+      <ix-input
+        #optionalRef
+        name="opt1"
+        label="Optional Text"
+        placeholder="Enter text"
+        [value]="optionalValue"
+        (valueChange)="onValueChange($event, '2️⃣')"
+        (focus)="onFocus('2️⃣', optionalRef)"
+        (blur)="onBlur('2️⃣', optionalRef)"
+      ></ix-input>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+        <button (click)="setValue(optionalRef, '', '2️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+        <button (click)="setValue(optionalRef, 'Hello World', '2️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+        <button (click)="triggerNativeBlur(optionalRef); debugValidationState(optionalRef, '2️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+        <button (click)="clearInput(optionalRef, '2️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+      </div>
+    </div>
+
+    <!-- 3. Form Required -->
+    <div style="border: 1px solid #2196F3; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #1565c0">3️⃣ Required (In Form)</h4>
+      <form ngNativeValidate (ngSubmit)="onSubmit('3️⃣')">
+        <ix-input
+          #formRequiredRef
+          name="formReq"
+          label="Required Text"
+          placeholder="Enter text"
+          [required]="true"
+          [value]="formRequiredValue"
+          (valueChange)="onValueChange($event, '3️⃣')"
+          (focus)="onFocus('3️⃣', formRequiredRef)"
+          (blur)="onBlur('3️⃣', formRequiredRef)"
+        ></ix-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="setValue(formRequiredRef, '', '3️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="setValue(formRequiredRef, 'Hello World', '3️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="triggerNativeBlur(formRequiredRef); debugValidationState(formRequiredRef, '3️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearInput(formRequiredRef, '3️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 4. Form Optional -->
+    <div style="border: 1px solid #009688; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #00695c">4️⃣ Optional (In Form)</h4>
+      <form ngNativeValidate (ngSubmit)="onSubmit('4️⃣')">
+        <ix-input
+          #formOptionalRef
+          name="formOpt"
+          label="Optional Text"
+          placeholder="Enter text"
+          [value]="formOptionalValue"
+          (valueChange)="onValueChange($event, '4️⃣')"
+          (focus)="onFocus('4️⃣', formOptionalRef)"
+          (blur)="onBlur('4️⃣', formOptionalRef)"
+        ></ix-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="setValue(formOptionalRef, '', '4️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="setValue(formOptionalRef, 'Hello World', '4️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="triggerNativeBlur(formOptionalRef); debugValidationState(formOptionalRef, '4️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearInput(formOptionalRef, '4️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 5. NoValidate Required -->
+    <div style="border: 1px solid #ff9800; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #e65100">5️⃣ Required (NoValidate Form)</h4>
+      <form novalidate (ngSubmit)="onSubmit('5️⃣')">
+        <ix-input
+          #noValidateRequiredRef
+          name="noValReq"
+          label="Required Text"
+          placeholder="Enter text"
+          [required]="true"
+          [value]="noValidateRequiredValue"
+          (valueChange)="onValueChange($event, '5️⃣')"
+          (focus)="onFocus('5️⃣', noValidateRequiredRef)"
+          (blur)="onBlur('5️⃣', noValidateRequiredRef)"
+        ></ix-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="setValue(noValidateRequiredRef, '', '5️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="setValue(noValidateRequiredRef, 'Hello World', '5️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="triggerNativeBlur(noValidateRequiredRef); debugValidationState(noValidateRequiredRef, '5️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearInput(noValidateRequiredRef, '5️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 6. NoValidate Optional -->
+    <div style="border: 1px solid #9c27b0; padding: 1rem; border-radius: 4px">
+      <h4 style="margin: 0 0 0.5rem 0; color: #6a1b9a">6️⃣ Optional (NoValidate Form)</h4>
+      <form novalidate (ngSubmit)="onSubmit('6️⃣')">
+        <ix-input
+          #noValidateOptionalRef
+          name="noValOpt"
+          label="Optional Text"
+          placeholder="Enter text"
+          [value]="noValidateOptionalValue"
+          (valueChange)="onValueChange($event, '6️⃣')"
+          (focus)="onFocus('6️⃣', noValidateOptionalRef)"
+          (blur)="onBlur('6️⃣', noValidateOptionalRef)"
+        ></ix-input>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="submit" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #2196F3; color: white">Submit</button>
+          <button type="button" (click)="setValue(noValidateOptionalRef, '', '6️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #757575; color: white">Empty</button>
+          <button type="button" (click)="setValue(noValidateOptionalRef, 'Hello World', '6️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+          <button type="button" (click)="triggerNativeBlur(noValidateOptionalRef); debugValidationState(noValidateOptionalRef, '6️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
+          <button type="button" (click)="clearInput(noValidateOptionalRef, '6️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        </div>
+      </form>
+    </div>
+
+  </div> <!-- End of grid -->
+
+  <!-- Event Log -->
+  <div style="margin-top: 1rem">
+    <h3 style="margin: 0 0 0.5rem 0">🪵 Event Log</h3>
+    <div style="border: 1px solid #ccc; border-radius: 4px; padding: 0.75rem; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.8rem">
+      <div *ngIf="logs.length === 0" style="color: #666; font-style: italic">No events yet... Interact with fields above</div>
+      <div *ngFor="let log of logs"
+           [ngStyle]="{'color': log.message.includes('❌') ? '#d32f2f' : (log.message.includes('BLUR') || log.message.includes('FOCUS') || log.message.includes('MANUAL')) ? '#1976d2' : (log.message.includes('✅') ? '#388e3c' : 'inherit')}">
+        {{ log.message }}
+      </div>
+    </div>
+  </div>
+</div>

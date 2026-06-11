@@ -1,0 +1,170 @@
+<!--
+SPDX-FileCopyrightText: 2025 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<div style="padding: 1rem; font-size: 0.875rem; max-width: 1100px">
+  <h2 style="margin-bottom: 0.25rem">Date Input - Validation Scenarios (WCAG 3.3.1)</h2>
+  <p style="margin: 0 0 0.5rem 0; color: #555">
+    Format: <code>yyyy/MM/dd</code> | Valid example: <code>2024/12/25</code> |
+    Invalid example: <code>bad-date</code>
+  </p>
+  <p
+    style="
+      margin: 0 0 1rem 0;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    "
+  >
+    <strong>Expected:</strong> No red on initial load or programmatic set. Red appears only after blur,
+    form submit, or <code>reportValidity()</code>.
+  </p>
+
+  <button [ngStyle]="buttonStyleWithMargin('#455a64')" (click)="clearLogs()">
+    Clear Log
+  </button>
+
+  <!-- Grid Layout for Examples -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem">
+
+    <div [ngStyle]="sectionStyle('#f44336')">
+      <strong>1. Required - Standalone (AJAX save)</strong>
+      <div>
+        <ix-date-input #requiredRef label="Required Date" [required]="true" [value]="values.s1" (valueChange)="onValueChange('s1', $event)" (blur)="inspect('s1', '1')"></ix-date-input>
+      </div>
+      <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+        <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s1', '', '1', 'Empty')">Empty</button>
+        <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s1', '2024/12/25', '1', 'Valid')">Valid</button>
+        <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s1', 'bad-date', '1', 'Invalid')">Invalid</button>
+        <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s1', '1')">Manual Blur</button>
+        <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s1', '1')">clear()</button>
+        <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s1', '1')">reportValidity()</button>
+      </div>
+    </div>
+
+    <div [ngStyle]="sectionStyle('#4caf50')">
+      <strong>2. Optional - Standalone</strong>
+      <div>
+        <ix-date-input #optionalRef label="Optional Date" [value]="values.s2" (valueChange)="onValueChange('s2', $event)" (blur)="inspect('s2', '2')"></ix-date-input>
+      </div>
+      <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+        <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s2', '', '2', 'Empty')">Empty</button>
+        <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s2', '2024/12/25', '2', 'Valid')">Valid</button>
+        <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s2', 'bad-date', '2', 'Invalid')">Invalid</button>
+        <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s2', '2')">Manual Blur</button>
+        <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s2', '2')">clear()</button>
+        <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s2', '2')">reportValidity()</button>
+      </div>
+    </div>
+
+    <div [ngStyle]="sectionStyle('#1976d2')">
+      <strong>3. Required - In Form</strong>
+      <form ngNoForm (submit)="submitStandardForm($event, '3')">
+        <ix-date-input #formRequiredRef label="Required Date" [required]="true" [value]="values.s3" (valueChange)="onValueChange('s3', $event)" (blur)="inspect('s3', '3')"></ix-date-input>
+        <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s3', '', '3', 'Empty')">Empty</button>
+          <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s3', '2024/12/25', '3', 'Valid')">Valid</button>
+          <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s3', 'bad-date', '3', 'Invalid')">Invalid</button>
+          <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s3', '3')">Manual Blur</button>
+          <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s3', '3')">clear()</button>
+          <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s3', '3')">reportValidity()</button>
+          <button type="submit" [ngStyle]="buttonStyle('#00897b')">Submit Form</button>
+        </div>
+      </form>
+    </div>
+
+    <div [ngStyle]="sectionStyle('#00897b')">
+      <strong>4. Optional - In Form</strong>
+      <form ngNoForm (submit)="submitStandardForm($event, '4')">
+        <ix-date-input #formOptionalRef label="Optional Date" [value]="values.s4" (valueChange)="onValueChange('s4', $event)" (blur)="inspect('s4', '4')"></ix-date-input>
+        <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s4', '', '4', 'Empty')">Empty</button>
+          <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s4', '2024/12/25', '4', 'Valid')">Valid</button>
+          <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s4', 'bad-date', '4', 'Invalid')">Invalid</button>
+          <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s4', '4')">Manual Blur</button>
+          <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s4', '4')">clear()</button>
+          <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s4', '4')">reportValidity()</button>
+          <button type="submit" [ngStyle]="buttonStyle('#00897b')">Submit Form</button>
+        </div>
+      </form>
+    </div>
+
+    <div [ngStyle]="sectionStyle('#ff9800')">
+      <strong>5. Required - novalidate Form</strong>
+      <p style="margin: 0 0 0.4rem 0; font-size: 0.75rem; color: #555">
+        Visual errors are suppressed after blur and submit. Explicit <code>reportValidity()</code> still surfaces them.
+      </p>
+      <form novalidate (submit)="submitNoValidateForm('5'); $event.preventDefault()">
+        <ix-date-input #noValidateRequiredRef label="Required Date" [required]="true" [value]="values.s5" (valueChange)="onValueChange('s5', $event)" (blur)="inspect('s5', '5')"></ix-date-input>
+        <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s5', '', '5', 'Empty')">Empty</button>
+          <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s5', '2024/12/25', '5', 'Valid')">Valid</button>
+          <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s5', 'bad-date', '5', 'Invalid')">Invalid</button>
+          <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s5', '5')">Manual Blur</button>
+          <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s5', '5')">clear()</button>
+          <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s5', '5')">reportValidity()</button>
+          <button type="submit" [ngStyle]="buttonStyle('#00897b')">Submit Form</button>
+        </div>
+      </form>
+    </div>
+
+    <div [ngStyle]="sectionStyle('#9c27b0')">
+      <strong>6. Optional - novalidate Form</strong>
+      <p style="margin: 0 0 0.4rem 0; font-size: 0.75rem; color: #555">
+        Visual errors are suppressed after blur and submit. Explicit <code>reportValidity()</code> still surfaces them.
+      </p>
+      <form novalidate (submit)="submitNoValidateForm('6'); $event.preventDefault()">
+        <ix-date-input #noValidateOptionalRef label="Optional Date" [value]="values.s6" (valueChange)="onValueChange('s6', $event)" (blur)="inspect('s6', '6')"></ix-date-input>
+        <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+          <button type="button" [ngStyle]="buttonStyle('#607d8b')" (click)="setScenarioValue('s6', '', '6', 'Empty')">Empty</button>
+          <button type="button" [ngStyle]="buttonStyle('#4caf50')" (click)="setScenarioValue('s6', '2024/12/25', '6', 'Valid')">Valid</button>
+          <button type="button" [ngStyle]="buttonStyle('#f44336')" (click)="setScenarioValue('s6', 'bad-date', '6', 'Invalid')">Invalid</button>
+          <button type="button" [ngStyle]="buttonStyle('#ff9800')" (click)="manualBlur('s6', '6')">Manual Blur</button>
+          <button type="button" [ngStyle]="buttonStyle('#9c27b0')" (click)="clearField('s6', '6')">clear()</button>
+          <button type="button" [ngStyle]="buttonStyle('#1976d2')" (click)="callReportValidity('s6', '6')">reportValidity()</button>
+          <button type="submit" [ngStyle]="buttonStyle('#00897b')">Submit Form</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div [ngStyle]="sectionStyleWithMargin('#607d8b')">
+    <strong>7. Initial invalid default value - must NOT show red on load (WCAG 3.3.1)</strong>
+    <p style="margin: 0.25rem 0 0.5rem 0; font-size: 0.75rem; color: #555">
+      Field loads with <code>value="bad-date"</code>. Inspect it immediately - no red border should appear until after blur.
+    </p>
+    <ix-date-input #initialInvalidRef id="s7-input" label="Date with invalid default" value="bad-date" (blur)="inspectInitialInvalid()"></ix-date-input>
+    <p style="margin: 0.4rem 0 0; font-size: 0.75rem; color: #888">
+      Expected on load: no <code>is-invalid</code> class on the inner input.<br />
+      Expected after blur: <code>is-invalid</code> appears.
+    </p>
+  </div>
+
+  <div>
+    <h3 style="margin: 0 0 0.4rem 0">Event Log</h3>
+    <div
+      style="
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0.75rem;
+        max-height: 280px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 0.78rem;
+        background: #fafafa;
+      "
+    >
+      <span *ngIf="logs.length === 0" style="color: #999; font-style: italic">
+        Interact with fields above to see state changes here.
+      </span>
+      <div *ngFor="let entry of logs" [ngStyle]="{ color: logColor(entry.message), lineHeight: '1.6' }">
+        {{ entry.message }}
+      </div>
+    </div>
+  </div>
+</div>

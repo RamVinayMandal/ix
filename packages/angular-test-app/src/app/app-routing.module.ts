@@ -64,6 +64,8 @@ import DateInput from '../preview-examples/date-input';
 import DateInputDisabled from '../preview-examples/date-input-disabled';
 import DateInputLabel from '../preview-examples/date-input-label';
 import DateInputReadonly from '../preview-examples/date-input-readonly';
+import DateInputFormTest from '../preview-examples/date-input-form-test';
+import DatetimeInputFormTest from '../preview-examples/datetime-input-form-test';
 import DateInputValidation from '../preview-examples/date-input-validation';
 import DateInputWithSlots from '../preview-examples/date-input-with-slots';
 import Datepicker from '../preview-examples/datepicker';
@@ -141,6 +143,7 @@ import InputLegacyReadonly from '../preview-examples/input-legacy-readonly';
 import InputPattern from '../preview-examples/input-pattern';
 import InputReadonly from '../preview-examples/input-readonly';
 import InputTypes from '../preview-examples/input-types';
+import InputFormTest from '../preview-examples/input-form-test';
 import InputValidation from '../preview-examples/input-validation';
 import InputWithSlots from '../preview-examples/input-with-slots';
 import KeyValue from '../preview-examples/key-value';
@@ -227,6 +230,7 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeService from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
+import TimeInputFormTest from '../preview-examples/time-input-form-test';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
 import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
@@ -480,6 +484,14 @@ const routes: Routes = [
       {
         path: 'date-input-readonly',
         component: DateInputReadonly,
+      },
+      {
+        path: 'date-input-form-test',
+        component: DateInputFormTest,
+      },
+      {
+        path: 'datetime-input-form-test',
+        component: DatetimeInputFormTest,
       },
       {
         path: 'date-input-validation',
@@ -859,11 +871,13 @@ const routes: Routes = [
       { path: 'input-pattern', component: InputPattern },
       { path: 'input-readonly', component: InputReadonly },
       { path: 'input-types', component: InputTypes },
+      { path: 'input-form-test', component: InputFormTest },
       { path: 'input-validation', component: InputValidation },
       { path: 'input-with-slots', component: InputWithSlots },
       { path: 'theme-switcher', component: ThemeService },
       { path: 'tile', component: Tile },
       { path: 'time-input', component: TimeInput },
+      { path: 'time-input-form-test', component: TimeInputFormTest },
       { path: 'time-range', component: TimeRange },
       { path: 'timepicker', component: Timepicker },
       { path: 'timepicker-min-max-time', component: TimepickerMinMaxTime },

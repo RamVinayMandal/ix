@@ -1,0 +1,402 @@
+<!--
+SPDX-FileCopyrightText: 2024 Siemens AG
+
+SPDX-License-Identifier: MIT
+
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+-->
+
+<!DOCTYPE html>
+<html lang="en" data-ix-theme="classic" data-ix-color-schema="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Input Form Test</title>
+  </head>
+  <body>
+    <div style="font-size: 0.875rem; max-width: 1100px">
+      <h2 style="margin-bottom: 0.25rem">Date Input - Validation Scenarios (WCAG 3.3.1)</h2>
+      <p style="margin: 0 0 0.5rem 0; color: #555">
+        Format: <code>yyyy/MM/dd</code> | Valid example: <code>2024/12/25</code> |
+        Invalid example: <code>bad-date</code>
+      </p>
+      <p
+        style="
+          margin: 0 0 1rem 0;
+          padding: 0.5rem 0.75rem;
+          border-radius: 4px;
+          font-size: 0.8rem;
+        "
+      >
+        <strong>Expected:</strong> No red on initial load or programmatic set. Red appears only after blur,
+        form submit, or <code>reportValidity()</code>.
+      </p>
+
+      <button
+        id="clearLogsBtn"
+        style="
+          padding: 0.35rem 0.7rem;
+          font-size: 0.8rem;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          background-color: #455a64;
+          color: white;
+          margin-bottom: 1rem;
+        "
+      >
+        Clear Log
+      </button>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem">
+        <div style="border: 1px solid #f44336; padding: 1rem; border-radius: 4px">
+          <strong>1. Required - Standalone (AJAX save)</strong>
+          <div>
+            <ix-date-input id="requiredInput" label="Required Date" required></ix-date-input>
+          </div>
+          <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+            <button data-action="empty" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+            <button data-action="valid" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+            <button data-action="invalid" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+            <button data-action="blur" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+            <button data-action="clear" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+            <button data-action="report" data-target="requiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+          </div>
+        </div>
+
+        <div style="border: 1px solid #4caf50; padding: 1rem; border-radius: 4px">
+          <strong>2. Optional - Standalone</strong>
+          <div>
+            <ix-date-input id="optionalInput" label="Optional Date"></ix-date-input>
+          </div>
+          <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+            <button data-action="empty" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+            <button data-action="valid" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+            <button data-action="invalid" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+            <button data-action="blur" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+            <button data-action="clear" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+            <button data-action="report" data-target="optionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+          </div>
+        </div>
+
+        <div style="border: 1px solid #1976d2; padding: 1rem; border-radius: 4px">
+          <strong>3. Required - In Form</strong>
+          <form id="formRequired">
+            <ix-date-input id="formRequiredInput" label="Required Date" required></ix-date-input>
+            <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+              <button type="button" data-action="empty" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+              <button type="button" data-action="valid" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+              <button type="button" data-action="invalid" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+              <button type="button" data-action="blur" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+              <button type="button" data-action="clear" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+              <button type="button" data-action="report" data-target="formRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+              <button type="submit" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #00897b; color: white">Submit Form</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="border: 1px solid #00897b; padding: 1rem; border-radius: 4px">
+          <strong>4. Optional - In Form</strong>
+          <form id="formOptional">
+            <ix-date-input id="formOptionalInput" label="Optional Date"></ix-date-input>
+            <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+              <button type="button" data-action="empty" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+              <button type="button" data-action="valid" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+              <button type="button" data-action="invalid" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+              <button type="button" data-action="blur" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+              <button type="button" data-action="clear" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+              <button type="button" data-action="report" data-target="formOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+              <button type="submit" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #00897b; color: white">Submit Form</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="border: 1px solid #ff9800; padding: 1rem; border-radius: 4px">
+          <strong>5. Required - novalidate Form</strong>
+          <p style="margin: 0 0 0.4rem 0; font-size: 0.75rem; color: #555">
+            Visual errors are suppressed after blur and submit. Explicit <code>reportValidity()</code> still surfaces them.
+          </p>
+          <form id="formNoValidateRequired" novalidate>
+            <ix-date-input id="noValidateRequiredInput" label="Required Date" required></ix-date-input>
+            <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+              <button type="button" data-action="empty" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+              <button type="button" data-action="valid" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+              <button type="button" data-action="invalid" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+              <button type="button" data-action="blur" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+              <button type="button" data-action="clear" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+              <button type="button" data-action="report" data-target="noValidateRequiredInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+              <button type="submit" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #00897b; color: white">Submit Form</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="border: 1px solid #9c27b0; padding: 1rem; border-radius: 4px">
+          <strong>6. Optional - novalidate Form</strong>
+          <p style="margin: 0 0 0.4rem 0; font-size: 0.75rem; color: #555">
+            Visual errors are suppressed after blur and submit. Explicit <code>reportValidity()</code> still surfaces them.
+          </p>
+          <form id="formNoValidateOptional" novalidate>
+            <ix-date-input id="noValidateOptionalInput" label="Optional Date"></ix-date-input>
+            <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap">
+              <button type="button" data-action="empty" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #607d8b; color: white">Empty</button>
+              <button type="button" data-action="valid" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #4caf50; color: white">Valid</button>
+              <button type="button" data-action="invalid" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #f44336; color: white">Invalid</button>
+              <button type="button" data-action="blur" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Manual Blur</button>
+              <button type="button" data-action="clear" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">clear()</button>
+              <button type="button" data-action="report" data-target="noValidateOptionalInput" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
+              <button type="submit" style="padding: 0.35rem 0.7rem; font-size: 0.8rem; border: none; border-radius: 4px; cursor: pointer; background-color: #00897b; color: white">Submit Form</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div style="border: 1px solid #607d8b; padding: 1rem; border-radius: 4px; margin-bottom: 1rem">
+        <strong>7. Initial invalid default value - must NOT show red on load (WCAG 3.3.1)</strong>
+        <p style="margin: 0.25rem 0 0.5rem 0; font-size: 0.75rem; color: #555">
+          Field loads with <code>value="bad-date"</code>. Inspect it immediately - no red border should appear until after blur.
+        </p>
+        <ix-date-input id="initialInvalidInput" label="Date with invalid default" value="bad-date"></ix-date-input>
+        <p style="margin: 0.4rem 0 0; font-size: 0.75rem; color: #888">
+          Expected on load: no <code>is-invalid</code> class on the inner input.<br />
+          Expected after blur: <code>is-invalid</code> appears.
+        </p>
+      </div>
+
+      <div>
+        <h3 style="margin: 0 0 0.4rem 0">Event Log</h3>
+        <div
+          id="eventLog"
+          style="
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0.75rem;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.78rem;
+            background: #fafafa;
+          "
+        >
+          <span style="color: #999; font-style: italic">
+            Interact with fields above to see state changes here.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./init.js"></script>
+    <script>
+      let logCounter = 0;
+      const logs = [];
+
+      const scenarioLabels = {
+        requiredInput: '1',
+        optionalInput: '2',
+        formRequiredInput: '3',
+        formOptionalInput: '4',
+        noValidateRequiredInput: '5',
+        noValidateOptionalInput: '6',
+      };
+
+      function log(message) {
+        logCounter += 1;
+        logs.push({
+          id: `${Date.now()}-${logCounter}`,
+          message: `[${new Date().toLocaleTimeString()}] ${message}`,
+        });
+        renderLogs();
+      }
+
+      function renderLogs() {
+        const logContainer = document.getElementById('eventLog');
+        if (logs.length === 0) {
+          logContainer.innerHTML = '<span style="color: #999; font-style: italic">Interact with fields above to see state changes here.</span>';
+          return;
+        }
+
+        logContainer.innerHTML = logs
+          .map((entry) => {
+            let color = 'inherit';
+            if (entry.message.includes('❌')) {
+              color = '#c62828';
+            } else if (entry.message.includes('✅')) {
+              color = '#2e7d32';
+            }
+
+            return `<div style="color: ${color}; line-height: 1.6">${entry.message}</div>`;
+          })
+          .join('');
+      }
+
+      function delay(milliseconds) {
+        return new Promise((resolve) => setTimeout(resolve, milliseconds));
+      }
+
+      async function inspect(element, label) {
+        if (!element) {
+          return;
+        }
+
+        const hostClasses = Array.from(element.classList).filter((className) =>
+          className.startsWith('ix-invalid')
+        );
+        const nativeInput = await element.getNativeInputElement();
+        const inputClasses = Array.from(nativeInput.classList).filter((className) =>
+          className.startsWith('is-invalid')
+        );
+
+        let touched = undefined;
+        try {
+          touched = await element.isTouched?.();
+        } catch {
+          touched = 'error';
+        }
+
+        log(
+          `${label} | value="${element.value}" required=${element.required} touched=${touched} ` +
+            `host=[${hostClasses.join(',')}] input=[${inputClasses.join(',')}]`
+        );
+      }
+
+      async function manualBlur(element, label) {
+        if (!element) {
+          return;
+        }
+
+        const nativeInput = await element.getNativeInputElement();
+        nativeInput.focus();
+        await delay(30);
+        nativeInput.blur();
+        await delay(50);
+        await inspect(element, `${label} after blur`);
+      }
+
+      async function clearField(element, label) {
+        if (!element) {
+          return;
+        }
+
+        await element.clear();
+        log(`${label} clear() called`);
+        await inspect(element, `${label} after clear`);
+      }
+
+      async function callReportValidity(element, label) {
+        if (!element) {
+          return;
+        }
+
+        const valid = await element.reportValidity();
+        log(`${label} reportValidity() -> ${valid ? '✅ valid' : '❌ invalid'}`);
+        await inspect(element, `${label} after reportValidity`);
+      }
+
+      async function inspectInitialInvalid() {
+        const element = document.getElementById('initialInvalidInput');
+        if (!element) {
+          return;
+        }
+
+        const nativeInput = await element.getNativeInputElement();
+        log(`7 after blur | input classes: [${Array.from(nativeInput.classList).join(', ')}]`);
+      }
+
+      function setScenarioValue(element, label, value, actionLabel) {
+        element.value = value;
+        log(`${label} -> ${actionLabel}`);
+      }
+
+      async function wireScenario(elementId) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+          return;
+        }
+
+        await element.componentOnReady?.();
+
+        const label = scenarioLabels[elementId];
+        element.addEventListener('blur', () => {
+          inspect(element, label);
+        });
+      }
+
+      customElements.whenDefined('ix-date-input').then(async () => {
+        const scenarioIds = Object.keys(scenarioLabels);
+        await Promise.all(scenarioIds.map(wireScenario));
+
+        const initialInvalidInput = document.getElementById('initialInvalidInput');
+        await initialInvalidInput?.componentOnReady?.();
+        initialInvalidInput?.addEventListener('blur', inspectInitialInvalid);
+
+        document.querySelectorAll('button[data-action]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const action = button.getAttribute('data-action');
+            const targetId = button.getAttribute('data-target');
+            const element = document.getElementById(targetId);
+            const label = scenarioLabels[targetId];
+            if (!element || !label) {
+              return;
+            }
+
+            switch (action) {
+              case 'empty':
+                setScenarioValue(element, label, '', 'Empty');
+                break;
+              case 'valid':
+                setScenarioValue(element, label, '2024/12/25', 'Valid');
+                break;
+              case 'invalid':
+                setScenarioValue(element, label, 'bad-date', 'Invalid');
+                break;
+              case 'blur':
+                await manualBlur(element, label);
+                break;
+              case 'clear':
+                await clearField(element, label);
+                break;
+              case 'report':
+                await callReportValidity(element, label);
+                break;
+            }
+          });
+        });
+
+        document.getElementById('clearLogsBtn').addEventListener('click', () => {
+          logs.length = 0;
+          renderLogs();
+        });
+
+        document.getElementById('formRequired').addEventListener('submit', (event) => {
+          event.preventDefault();
+          const form = event.currentTarget;
+          if (!form.reportValidity()) {
+            log('3 form submit blocked — invalid fields');
+            return;
+          }
+          log('3 form submitted ✅');
+        });
+
+        document.getElementById('formOptional').addEventListener('submit', (event) => {
+          event.preventDefault();
+          const form = event.currentTarget;
+          if (!form.reportValidity()) {
+            log('4 form submit blocked — invalid fields');
+            return;
+          }
+          log('4 form submitted ✅');
+        });
+
+        document.getElementById('formNoValidateRequired').addEventListener('submit', (event) => {
+          event.preventDefault();
+          log('5 novalidate form submitted ✅ (submit bypassed validation due to noValidate)');
+        });
+
+        document.getElementById('formNoValidateOptional').addEventListener('submit', (event) => {
+          event.preventDefault();
+          log('6 novalidate form submitted ✅ (submit bypassed validation due to noValidate)');
+        });
+      });
+    </script>
+  </body>
+</html>

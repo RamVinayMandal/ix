@@ -64,6 +64,8 @@ import DateDropdown from './preview-examples/date-dropdown.vue';
 import DateRange from './preview-examples/date-range.vue';
 import DatetimeRange from './preview-examples/datetime-range.vue';
 import DateInputWithSlots from './preview-examples/date-input-with-slots.vue';
+import DateInputFormTest from './preview-examples/date-input-form-test.vue';
+import DatetimeInputFormTest from './preview-examples/datetime-input-form-test.vue';
 import DateInput from './preview-examples/date-input.vue';
 import DatepickerLocale from './preview-examples/datepicker-locale.vue';
 import DatetimeInput from './preview-examples/datetime-input.vue';
@@ -72,6 +74,7 @@ import DatetimeInputLabel from './preview-examples/datetime-input-label.vue';
 import DatetimeInputMinMaxDate from './preview-examples/datetime-input-min-max-date.vue';
 import DatetimeInputReadonly from './preview-examples/datetime-input-readonly.vue';
 import DatetimeInputValidation from './preview-examples/datetime-input-validation.vue';
+import TimeInputFormTest from './preview-examples/time-input-form-test.vue';
 import DatetimeInputWithSlots from './preview-examples/datetime-input-with-slots.vue';
 import DatepickerRange from './preview-examples/datepicker-range.vue';
 import Datepicker from './preview-examples/datepicker.vue';
@@ -138,6 +141,7 @@ import InputLegacy from './preview-examples/input-legacy.vue';
 import InputPattern from './preview-examples/input-pattern.vue';
 import InputReadonly from './preview-examples/input-readonly.vue';
 import InputTypes from './preview-examples/input-types.vue';
+import InputFormTest from './preview-examples/input-form-test.vue';
 import InputValidation from './preview-examples/input-validation.vue';
 import InputWithSlots from './preview-examples/input-with-slots.vue';
 import Input from './preview-examples/input.vue';
@@ -398,6 +402,7 @@ const routes: IxPreviewRoutes = {
   '/preview/input-pattern': InputPattern,
   '/preview/input-readonly': InputReadonly,
   '/preview/input-types': InputTypes,
+  '/preview/input-form-test': InputFormTest,
   '/preview/input-validation': InputValidation,
   '/preview/input-with-slots': InputWithSlots,
   '/preview/tile': Tile,
@@ -427,12 +432,15 @@ const routes: IxPreviewRoutes = {
   '/preview/number-input-with-slots': NumberInputWithSlots,
   '/preview/date-input': DateInput,
   '/preview/date-input-with-slots': DateInputWithSlots,
+  '/preview/date-input-form-test': DateInputFormTest,
+  '/preview/datetime-input-form-test': DatetimeInputFormTest,
   '/preview/datetime-input': DatetimeInput,
   '/preview/datetime-input-disabled': DatetimeInputDisabled,
   '/preview/datetime-input-label': DatetimeInputLabel,
   '/preview/datetime-input-min-max-date': DatetimeInputMinMaxDate,
   '/preview/datetime-input-readonly': DatetimeInputReadonly,
   '/preview/datetime-input-validation': DatetimeInputValidation,
+  '/preview/time-input-form-test': TimeInputFormTest,
   '/preview/datetime-input-with-slots': DatetimeInputWithSlots,
   '/preview/workflow': Workflow,
   '/preview/workflow-vertical': WorkflowVertical,

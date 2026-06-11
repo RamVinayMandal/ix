@@ -71,6 +71,8 @@ import dateInputLabel from './preview-examples/date-input-label.tsx';
 import dateInputMinMaxDate from './preview-examples/date-input-min-max-date.tsx';
 import dateInputReadonly from './preview-examples/date-input-readonly.tsx';
 import dateInputValidation from './preview-examples/date-input-validation.tsx';
+import dateInputFormTest from './preview-examples/date-input-form-test.tsx';
+import datetimeInputFormTest from './preview-examples/datetime-input-form-test.tsx';
 import DateInputWithSlots from './preview-examples/date-input-with-slots';
 import Datepicker from './preview-examples/datepicker';
 import DatetimeInput from './preview-examples/datetime-input';
@@ -146,6 +148,7 @@ import InputLegacyReadonly from './preview-examples/input-legacy-readonly';
 import InputPattern from './preview-examples/input-pattern';
 import InputReadonly from './preview-examples/input-readonly';
 import InputTypes from './preview-examples/input-types';
+import InputFormTest from './preview-examples/input-form-test';
 import InputValidation from './preview-examples/input-validation';
 import InputWithSlots from './preview-examples/input-with-slots';
 import KeyValue from './preview-examples/key-value';
@@ -231,6 +234,7 @@ import timeInputDisabled from './preview-examples/time-input-disabled.tsx';
 import timeInputLabel from './preview-examples/time-input-label.tsx';
 import timeInputReadonly from './preview-examples/time-input-readonly.tsx';
 import timeInputValidation from './preview-examples/time-input-validation.tsx';
+import timeInputFormTest from './preview-examples/time-input-form-test.tsx';
 import timeInputWithSlots from './preview-examples/time-input-with-slots.tsx';
 import timeInput from './preview-examples/time-input.tsx';
 import TimeRange from './preview-examples/time-range';
@@ -444,6 +448,7 @@ const routes: IxPreviewRoutes = {
   '/preview/input-pattern': InputPattern,
   '/preview/input-readonly': InputReadonly,
   '/preview/input-types': InputTypes,
+  '/preview/input-form-test': InputFormTest,
   '/preview/input-validation': InputValidation,
   '/preview/input-with-slots': InputWithSlots,
   '/preview/textarea-legacy': TextareaLegacy,
@@ -511,6 +516,8 @@ const routes: IxPreviewRoutes = {
   '/preview/date-input-min-max-date': dateInputMinMaxDate,
   '/preview/date-input-readonly': dateInputReadonly,
   '/preview/date-input-validation': dateInputValidation,
+  '/preview/date-input-form-test': dateInputFormTest,
+  '/preview/datetime-input-form-test': datetimeInputFormTest,
   '/preview/event-list-custom-item-height-in-number':
     eventListCustomItemHeightInNumber,
   '/preview/time-input': timeInput,
@@ -518,6 +525,7 @@ const routes: IxPreviewRoutes = {
   '/preview/time-input-label': timeInputLabel,
   '/preview/time-input-readonly': timeInputReadonly,
   '/preview/time-input-validation': timeInputValidation,
+  '/preview/time-input-form-test': timeInputFormTest,
   '/preview/time-input-with-slots': timeInputWithSlots,
   '/preview/timepicker-format-adjusted': timepickerFormatAdjusted,
   '/preview/timepicker-intervals': timepickerIntervals,

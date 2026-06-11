@@ -18,44 +18,98 @@ LICENSE file in the root directory of this source tree.
     ix-datetime-input {
       margin-bottom: 1rem;
     }
+    section {
+      margin-bottom: 2rem;
+    }
+    h4 {
+      margin-bottom: 0.5rem;
+    }
   </style>
   <body>
-    <div>
-      <ix-datetime-input
-        label="Info"
-        value="2026/02/08 00:00:00"
-        info-text="Info text"
-        class="ix-info"
-      ></ix-datetime-input>
-    </div>
+    <section>
+      <h4>Static validation states</h4>
+      <div>
+        <ix-datetime-input
+          label="Info"
+          value="2026/02/08 00:00:00"
+          info-text="Info text"
+          class="ix-info"
+        ></ix-datetime-input>
+      </div>
 
-    <div>
-      <ix-datetime-input
-        label="Warning"
-        value="2026/02/08 00:00:00"
-        warning-text="Warning text"
-        class="ix-warning"
-      ></ix-datetime-input>
-    </div>
+      <div>
+        <ix-datetime-input
+          label="Warning"
+          value="2026/02/08 00:00:00"
+          warning-text="Warning text"
+          class="ix-warning"
+        ></ix-datetime-input>
+      </div>
 
-    <div>
-      <ix-datetime-input
-        label="Valid"
-        value="2026/02/08 00:00:00"
-        valid-text="Valid text"
-        class="ix-valid"
-      ></ix-datetime-input>
-    </div>
+      <div>
+        <ix-datetime-input
+          label="Valid"
+          value="2026/02/08 00:00:00"
+          valid-text="Valid text"
+          class="ix-valid"
+        ></ix-datetime-input>
+      </div>
 
-    <div>
+      <div>
+        <ix-datetime-input
+          label="Invalid"
+          value="2026/02/08 00:00:00"
+          invalid-text="Invalid text"
+          class="ix-invalid"
+        ></ix-datetime-input>
+      </div>
+    </section>
+
+    <section>
+      <h4>Required input</h4>
       <ix-datetime-input
-        label="Invalid"
-        value="2026/02/08 00:00:00"
-        invalid-text="Invalid text"
-        class="ix-invalid"
+        id="datetime-required"
+        required
+        label="Required datetime"
+        value="2026/02/08 09:30:00"
       ></ix-datetime-input>
-    </div>
+      <button id="clear-required" type="button">Clear (reset touched)</button>
+    </section>
+
+    <section>
+      <h4>Non-required input</h4>
+      <ix-datetime-input
+        id="datetime-optional"
+        label="Optional datetime"
+        value="2026/02/08 09:30:00"
+      ></ix-datetime-input>
+      <button id="clear-optional" type="button">Clear (reset touched)</button>
+    </section>
+
+    <section>
+      <h4>Novalidate form (required, but no validation)</h4>
+      <form novalidate>
+        <ix-datetime-input
+          id="datetime-novalidate"
+          required
+          label="Required inside novalidate"
+          value="2026/02/08 09:30:00"
+        ></ix-datetime-input>
+      </form>
+    </section>
 
     <script type="module" src="./init.js"></script>
+    <script>
+      document
+        .getElementById('clear-required')
+        .addEventListener('click', () => {
+          document.getElementById('datetime-required').clear();
+        });
+      document
+        .getElementById('clear-optional')
+        .addEventListener('click', () => {
+          document.getElementById('datetime-optional').clear();
+        });
+    </script>
   </body>
 </html>

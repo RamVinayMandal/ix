@@ -140,6 +140,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/date-input-readonly').then((m) => m.default),
   'preview/date-input-validation': () =>
     import('../preview-examples/date-input-validation').then((m) => m.default),
+  'preview/date-input-form-test': () =>
+    import('../preview-examples/date-input-form-test').then((m) => m.default),
   'preview/date-input-with-slots': () =>
     import('../preview-examples/date-input-with-slots').then((m) => m.default),
   'preview/datepicker': () =>
@@ -168,6 +170,10 @@ export const routePaths: IxPreviewRoutes = {
     ),
   'preview/datetime-input-validation': () =>
     import('../preview-examples/datetime-input-validation').then(
+      (m) => m.default
+    ),
+  'preview/datetime-input-form-test': () =>
+    import('../preview-examples/datetime-input-form-test').then(
       (m) => m.default
     ),
   'preview/datetime-input-with-slots': () =>
@@ -326,6 +332,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/input-readonly').then((m) => m.default),
   'preview/input-types': () =>
     import('../preview-examples/input-types').then((m) => m.default),
+  'preview/input-form-test': () =>
+    import('../preview-examples/input-form-test').then((m) => m.default),
   'preview/input-validation': () =>
     import('../preview-examples/input-validation').then((m) => m.default),
   'preview/input-with-slots': () =>
@@ -617,6 +625,8 @@ export const routePaths: IxPreviewRoutes = {
     import('../preview-examples/time-input-readonly').then((m) => m.default),
   'preview/time-input-validation': () =>
     import('../preview-examples/time-input-validation').then((m) => m.default),
+  'preview/time-input-form-test': () =>
+    import('../preview-examples/time-input-form-test').then((m) => m.default),
   'preview/time-input-with-slots': () =>
     import('../preview-examples/time-input-with-slots').then((m) => m.default),
   'preview/timepicker-format-adjusted': () =>

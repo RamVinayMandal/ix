@@ -73,6 +73,8 @@ import DateInput from '../preview-examples/date-input';
 import DateInputDisabled from '../preview-examples/date-input-disabled';
 import DateInputLabel from '../preview-examples/date-input-label';
 import DateInputReadonly from '../preview-examples/date-input-readonly';
+import DateInputFormTest from '../preview-examples/date-input-form-test';
+import DatetimeInputFormTest from '../preview-examples/datetime-input-form-test';
 import DateInputValidation from '../preview-examples/date-input-validation';
 import DateInputWithSlots from '../preview-examples/date-input-with-slots';
 import Datepicker from '../preview-examples/datepicker';
@@ -142,6 +144,7 @@ import IconToggleButtonSubtleSecondary from '../preview-examples/icon-toggle-but
 import IconToggleButtonSubtlePrimary from '../preview-examples/icon-toggle-button-subtle-primary';
 import Input from '../preview-examples/input';
 import InputDisabled from '../preview-examples/input-disabled';
+import InputFormTest from '../preview-examples/input-form-test';
 import InputFormValidation from '../preview-examples/input-form-validation';
 import InputLabel from '../preview-examples/input-label';
 import InputLegacy from '../preview-examples/input-legacy';
@@ -237,6 +240,7 @@ import TextareaValidation from '../preview-examples/textarea-validation';
 import ThemeSwitcher from '../preview-examples/theme-switcher';
 import Tile from '../preview-examples/tile';
 import TimeInput from '../preview-examples/time-input';
+import TimeInputFormTest from '../preview-examples/time-input-form-test';
 import TimeRange from '../preview-examples/time-range';
 import Timepicker from '../preview-examples/timepicker';
 import TimepickerMinMaxTime from '../preview-examples/timepicker-min-max-time';
@@ -272,6 +276,9 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     FormLayoutGrid,
     FormLayoutAuto,
     FormValidation,
+    DateInputFormTest,
+    DatetimeInputFormTest,
+    InputFormTest,
     InputFormValidation,
     AppComponent,
     AboutAndLegal,
@@ -472,6 +479,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     ThemeSwitcher,
     Tile,
     TimeInput,
+    TimeInputFormTest,
     TimeRange,
     Timepicker,
     TimepickerMinMaxTime,

@@ -18,30 +18,87 @@ LICENSE file in the root directory of this source tree.
     ix-time-input {
       margin-bottom: 1rem;
     }
+    section {
+      margin-bottom: 2rem;
+    }
+    h4 {
+      margin-bottom: 0.5rem;
+    }
   </style>
   <body>
-    <div>
-      <ix-time-input info-text="Info text" class="ix-info"></ix-time-input>
-    </div>
+    <section>
+      <h4>Static validation states</h4>
+      <div>
+        <ix-time-input info-text="Info text" class="ix-info"></ix-time-input>
+      </div>
 
-    <div>
+      <div>
+        <ix-time-input
+          warning-text="Warning text"
+          class="ix-warning"
+        ></ix-time-input>
+      </div>
+
+      <div>
+        <ix-time-input valid-text="Valid text" class="ix-valid"></ix-time-input>
+      </div>
+
+      <div>
+        <ix-time-input
+          invalid-text="Invalid text"
+          class="ix-invalid"
+        ></ix-time-input>
+      </div>
+    </section>
+
+    <section>
+      <h4>Required input</h4>
       <ix-time-input
-        warning-text="Warning text"
-        class="ix-warning"
+        id="time-required"
+        required
+        label="Required time"
+        value="09:30:00"
+        format="HH:mm:ss"
       ></ix-time-input>
-    </div>
+      <button id="clear-required" type="button">Clear (reset touched)</button>
+    </section>
 
-    <div>
-      <ix-time-input valid-text="Valid text" class="ix-valid"></ix-time-input>
-    </div>
-
-    <div>
+    <section>
+      <h4>Non-required input</h4>
       <ix-time-input
-        invalid-text="Invalid text"
-        class="ix-invalid"
+        id="time-optional"
+        label="Optional time"
+        value="09:30:00"
+        format="HH:mm:ss"
       ></ix-time-input>
-    </div>
+      <button id="clear-optional" type="button">Clear (reset touched)</button>
+    </section>
+
+    <section>
+      <h4>Novalidate form (required, but no validation)</h4>
+      <form novalidate>
+        <ix-time-input
+          id="time-novalidate"
+          required
+          label="Required inside novalidate"
+          value="09:30:00"
+          format="HH:mm:ss"
+        ></ix-time-input>
+      </form>
+    </section>
 
     <script type="module" src="./init.js"></script>
+    <script>
+      document
+        .getElementById('clear-required')
+        .addEventListener('click', () => {
+          document.getElementById('time-required').clear();
+        });
+      document
+        .getElementById('clear-optional')
+        .addEventListener('click', () => {
+          document.getElementById('time-optional').clear();
+        });
+    </script>
   </body>
 </html>
