@@ -196,6 +196,7 @@ import Pane from '../preview-examples/pane';
 import PaneLayout from '../preview-examples/pane-layout';
 import Pill from '../preview-examples/pill';
 import PillVariants from '../preview-examples/pill-variants';
+import Popover from '../preview-examples/popover';
 import PopoverNews from '../preview-examples/popover-news';
 import ProgressIndicator from '../preview-examples/progress-indicator';
 import ProgressIndicatorCircular from '../preview-examples/progress-indicator-circular';
@@ -433,6 +434,7 @@ import WorkflowVertical from '../preview-examples/workflow-vertical';
     PaneLayout,
     Pill,
     PillVariants,
+    Popover,
     PopoverNews,
     Radiobutton,
     Radio,
