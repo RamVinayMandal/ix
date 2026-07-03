@@ -125,6 +125,14 @@ export default class TimeInputFormTest {
     }
   }
 
+  async reportValidity(ref: any, label: string): Promise<void> {
+    const element = ref?.nativeElement || ref;
+    if (element && typeof element.reportValidity === 'function') {
+      const valid = await element.reportValidity();
+      this.addLog(`${label} reportValidity() = ${valid}`);
+    }
+  }
+
   onValueChange(event: CustomEvent, label: string): void {
     this.addLog(`${label} Value: "${event.detail ?? 'empty'}"`);
     this.updateValue(label, event.detail ?? '');

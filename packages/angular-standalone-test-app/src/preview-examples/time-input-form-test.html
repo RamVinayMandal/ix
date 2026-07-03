@@ -41,6 +41,7 @@ LICENSE file in the root directory of this source tree.
         <button type="button" (click)="requiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
         <button type="button" (click)="manualBlurAndDebug(requiredRef, '1️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
         <button type="button" (click)="clearAndLog(requiredRef, assignEmpty.bind(this, 'requiredValue'), '1️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        <button type="button" (click)="reportValidityAndLog(requiredRef, '1️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
       </div>
     </div>
 
@@ -62,6 +63,7 @@ LICENSE file in the root directory of this source tree.
         <button type="button" (click)="optionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
         <button type="button" (click)="manualBlurAndDebug(optionalRef, '2️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
         <button type="button" (click)="clearAndLog(optionalRef, assignEmpty.bind(this, 'optionalValue'), '2️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+        <button type="button" (click)="reportValidityAndLog(optionalRef, '2️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
       </div>
     </div>
 
@@ -86,6 +88,7 @@ LICENSE file in the root directory of this source tree.
           <button type="button" (click)="formRequiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
           <button type="button" (click)="manualBlurAndDebug(formRequiredRef, '3️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
           <button type="button" (click)="clearAndLog(formRequiredRef, assignEmpty.bind(this, 'formRequiredValue'), '3️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+          <button type="button" (click)="reportValidityAndLog(formRequiredRef, '3️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
         </div>
       </form>
     </div>
@@ -110,6 +113,7 @@ LICENSE file in the root directory of this source tree.
           <button type="button" (click)="formOptionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
           <button type="button" (click)="manualBlurAndDebug(formOptionalRef, '4️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
           <button type="button" (click)="clearAndLog(formOptionalRef, assignEmpty.bind(this, 'formOptionalValue'), '4️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+          <button type="button" (click)="reportValidityAndLog(formOptionalRef, '4️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
         </div>
       </form>
     </div>
@@ -135,6 +139,7 @@ LICENSE file in the root directory of this source tree.
           <button type="button" (click)="noValidateRequiredValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
           <button type="button" (click)="manualBlurAndDebug(noValidateRequiredRef, '5️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
           <button type="button" (click)="clearAndLog(noValidateRequiredRef, assignEmpty.bind(this, 'noValidateRequiredValue'), '5️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+          <button type="button" (click)="reportValidityAndLog(noValidateRequiredRef, '5️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
         </div>
       </form>
     </div>
@@ -159,6 +164,7 @@ LICENSE file in the root directory of this source tree.
           <button type="button" (click)="noValidateOptionalValue = 'invalid'" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff9800; color: white">Invalid</button>
           <button type="button" (click)="manualBlurAndDebug(noValidateOptionalRef, '6️⃣ MANUAL')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #ff5722; color: white">Manual Blur</button>
           <button type="button" (click)="clearAndLog(noValidateOptionalRef, assignEmpty.bind(this, 'noValidateOptionalValue'), '6️⃣ Cleared')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #9c27b0; color: white">Clear()</button>
+          <button type="button" (click)="reportValidityAndLog(noValidateOptionalRef, '6️⃣')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; border-radius: 4px; cursor: pointer; background-color: #1976d2; color: white">reportValidity()</button>
         </div>
       </form>
     </div>

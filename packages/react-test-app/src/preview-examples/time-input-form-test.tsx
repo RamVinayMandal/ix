@@ -111,6 +111,7 @@ export default function TimeInputFormTest() {
           <button onClick={() => setRequiredValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
           <button onClick={async () => { await triggerNativeBlur(requiredRef); setTimeout(() => debugValidationState(requiredRef, '1️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
           <button onClick={async () => { if (requiredRef.current) { await (requiredRef.current as any).clear?.(); setRequiredValue(''); addLog('1️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+          <button onClick={async () => { if (requiredRef.current) { const valid = await (requiredRef.current as any).reportValidity?.(); addLog(`1️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
         </div>
       </div>
 
@@ -132,6 +133,7 @@ export default function TimeInputFormTest() {
           <button onClick={() => setOptionalValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
           <button onClick={async () => { await triggerNativeBlur(optionalRef); setTimeout(() => debugValidationState(optionalRef, '2️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
           <button onClick={async () => { if (optionalRef.current) { await (optionalRef.current as any).clear?.(); setOptionalValue(''); addLog('2️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+          <button onClick={async () => { if (optionalRef.current) { const valid = await (optionalRef.current as any).reportValidity?.(); addLog(`2️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
         </div>
       </div>
 
@@ -156,6 +158,7 @@ export default function TimeInputFormTest() {
             <button type="button" onClick={() => setFormRequiredValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
             <button type="button" onClick={async () => { await triggerNativeBlur(formRequiredRef); setTimeout(() => debugValidationState(formRequiredRef, '3️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
             <button type="button" onClick={async () => { if (formRequiredRef.current) { await (formRequiredRef.current as any).clear?.(); setFormRequiredValue(''); addLog('3️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+            <button type="button" onClick={async () => { if (formRequiredRef.current) { const valid = await (formRequiredRef.current as any).reportValidity?.(); addLog(`3️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
           </div>
         </form>
       </div>
@@ -180,6 +183,7 @@ export default function TimeInputFormTest() {
             <button type="button" onClick={() => setFormOptionalValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
             <button type="button" onClick={async () => { await triggerNativeBlur(formOptionalRef); setTimeout(() => debugValidationState(formOptionalRef, '4️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
             <button type="button" onClick={async () => { if (formOptionalRef.current) { await (formOptionalRef.current as any).clear?.(); setFormOptionalValue(''); addLog('4️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+            <button type="button" onClick={async () => { if (formOptionalRef.current) { const valid = await (formOptionalRef.current as any).reportValidity?.(); addLog(`4️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
           </div>
         </form>
       </div>
@@ -205,6 +209,7 @@ export default function TimeInputFormTest() {
             <button type="button" onClick={() => setNoValidateRequiredValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
             <button type="button" onClick={async () => { await triggerNativeBlur(noValidateRequiredRef); setTimeout(() => debugValidationState(noValidateRequiredRef, '5️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
             <button type="button" onClick={async () => { if (noValidateRequiredRef.current) { await (noValidateRequiredRef.current as any).clear?.(); setNoValidateRequiredValue(''); addLog('5️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+            <button type="button" onClick={async () => { if (noValidateRequiredRef.current) { const valid = await (noValidateRequiredRef.current as any).reportValidity?.(); addLog(`5️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
           </div>
         </form>
       </div>
@@ -229,6 +234,7 @@ export default function TimeInputFormTest() {
             <button type="button" onClick={() => setNoValidateOptionalValue('invalid')} style={{ ...buttonStyle, backgroundColor: '#ff9800', color: 'white' }}>Invalid</button>
             <button type="button" onClick={async () => { await triggerNativeBlur(noValidateOptionalRef); setTimeout(() => debugValidationState(noValidateOptionalRef, '6️⃣ MANUAL'), 100); }} style={{ ...buttonStyle, backgroundColor: '#ff5722', color: 'white' }}>Manual Blur</button>
             <button type="button" onClick={async () => { if (noValidateOptionalRef.current) { await (noValidateOptionalRef.current as any).clear?.(); setNoValidateOptionalValue(''); addLog('6️⃣ Cleared'); } }} style={{ ...buttonStyle, backgroundColor: '#9c27b0', color: 'white' }}>Clear()</button>
+            <button type="button" onClick={async () => { if (noValidateOptionalRef.current) { const valid = await (noValidateOptionalRef.current as any).reportValidity?.(); addLog(`6️⃣ reportValidity() = ${valid}`); } }} style={{ ...buttonStyle, backgroundColor: '#1976d2', color: 'white' }}>reportValidity()</button>
           </div>
         </form>
       </div>

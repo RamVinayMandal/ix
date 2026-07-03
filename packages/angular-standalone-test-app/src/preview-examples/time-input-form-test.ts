@@ -111,6 +111,14 @@ export default class TimeInputFormTest {
     this.addLog(label);
   }
 
+  async reportValidityAndLog(ref: any, label: string): Promise<void> {
+    const element = ref?.nativeElement || ref;
+    if (element && typeof element.reportValidity === 'function') {
+      const valid = await element.reportValidity();
+      this.addLog(`${label} reportValidity() = ${valid}`);
+    }
+  }
+
   assignEmpty(propertyName: string): void {
     (this as any)[propertyName] = '';
   }
